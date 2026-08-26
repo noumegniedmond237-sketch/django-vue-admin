@@ -1,9 +1,9 @@
 <template>
   <div style="display: inline-block">
     <el-button size="small" type="success" icon="el-icon-upload" @click="handleImport">
-      <slot>导入</slot>
+      <slot>Importer</slot>
     </el-button>
-    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body destroy-on-close>
+    <el-dialog :title="upload.title || 'Importer des données'" :visible.sync="upload.open" width="400px" append-to-body destroy-on-close>
       <div v-loading="loading">
         <el-upload
           ref="upload"
@@ -19,22 +19,22 @@
         >
           <i class="el-icon-upload"/>
           <div class="el-upload__text">
-            将文件拖到此处，或
-            <em>点击上传</em>
+            Glissez-déposez le fichier ici ou
+            <em>cliquez pour sélectionner</em>
           </div>
-          <div slot="tip" class="el-upload__tip" style="color:red">提示：仅允许导入“xls”或“xlsx”格式文件！</div>
+          <div slot="tip" class="el-upload__tip" style="color:red">Formats acceptés : .xls ou .xlsx uniquement</div>
         </el-upload>
         <div>
-          <el-button type="warning" style="font-size:14px;margin-top: 20px" @click="importTemplate">下载导入模板
+          <el-button type="warning" style="font-size:14px;margin-top: 20px" @click="importTemplate">Télécharger le modèle
           </el-button>
           <el-button type="warning" style="font-size:14px;margin-top: 20px" @click="updateTemplate" v-if="showUpdate">
-            批量更新模板
+            Modèle de mise à jour
           </el-button>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" :disabled="loading" @click="submitFileForm">确 定</el-button>
-        <el-button :disabled="loading" @click="upload.open = false">取 消</el-button>
+        <el-button type="primary" :disabled="loading" @click="submitFileForm">Confirmer</el-button>
+        <el-button :disabled="loading" @click="upload.open = false">Annuler</el-button>
       </div>
     </el-dialog>
   </div>
@@ -52,22 +52,16 @@ export default {
       type: Object,
       default () {
         return {
-          // 是否显示弹出层
           open: false,
-          // 弹出层标题
           title: '',
-          // 是否禁用上传
           isUploading: false,
-          // 是否更新已经存在的用户数据
           updateSupport: 0,
-          // 设置上传的请求头部
           headers: { Authorization: 'JWT ' + util.cookies.get('token') },
-          // 上传的地址
           url: util.baseURL() + 'api/system/file/'
         }
       }
     },
-    api: { // 导入接口地址
+    api: {
       type: String,
       default () {
         return undefined
@@ -92,11 +86,9 @@ export default {
     }
   },
   methods: {
-    /** 导入按钮操作 */
     handleImport () {
       this.upload.open = true
     },
-    /** 下载模板操作 */
     importTemplate () {
       downloadFile({
         url: this.api + 'import_data/',
@@ -104,9 +96,6 @@ export default {
         method: 'get'
       })
     },
-    /***
-     * 批量更新模板
-     */
     updateTemplate () {
       downloadFile({
         url: this.api + 'update_template/',
@@ -114,18 +103,14 @@ export default {
         method: 'get'
       })
     },
-    // 文件上传中处理
     handleFileUploadProgress (event, file, fileList) {
       this.upload.isUploading = true
     },
-    // 文件上传成功处理
     handleFileSuccess (response, file, fileList) {
       const that = this
-      // that.upload.open = false
       that.upload.isUploading = false
       that.loading = true
       that.$refs.upload.clearFiles()
-      // 是否更新已经存在的用户数据
       return request({
         url: that.api + 'import_data/',
         method: 'post',
@@ -134,8 +119,8 @@ export default {
         }
       }).then(response => {
         that.loading = false
-        that.$alert('导入成功', '导入完成', {
-          confirmButtonText: '确定',
+        that.$alert('Importation réussie', 'Terminé', {
+          confirmButtonText: 'OK',
           callback: action => {
             that.refreshView()
           }
@@ -144,7 +129,6 @@ export default {
         that.loading = false
       })
     },
-    // 提交上传文件
     submitFileForm () {
       this.$refs.upload.submit()
     }

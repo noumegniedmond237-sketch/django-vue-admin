@@ -4,7 +4,7 @@
       <el-row type="flex" justify="space-around" style="padding:10px">
         <el-col :span="12">
           <div class="card-content">
-            <div class="card-content-label">登录次数</div>
+            <div class="card-content-label">Connexions Totales</div>
             <div class="card-content-value">{{ loginTotal }}</div>
           </div>
         </el-col>
@@ -21,25 +21,25 @@ import { request } from '@/api/service'
 
 export default {
   sort: 2,
-  title: '登录总次数',
+  title: 'Total des Connexions',
   name: 'loginTotal',
   icon: 'el-icon-user-solid',
-  description: '用户登录平台总次数',
+  description: 'Nombre total de connexions à la plateforme',
   height: 14,
   width: 16,
   isResizable: true,
   config: {
     color: {
-      label: '背景颜色',
+      label: "Couleur d'arrière-plan",
       type: 'color',
       value: '',
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: 'Laissez vide pour couleur aléatoire'
     },
     fontColor: {
-      label: '字体颜色',
+      label: 'Couleur du texte',
       type: 'color',
       value: '',
-      placeholder: '请选择字体颜色'
+      placeholder: 'Sélectionnez la couleur du texte'
     }
   },
   props: {
@@ -61,7 +61,6 @@ export default {
         this.loginTotal = res.data.login_total
       })
     },
-    // 生成一个随机整数
     randomColor () {
       if (this.config?.color?.value) {
         return this.config.color.value
@@ -77,7 +76,6 @@ export default {
 
 <style scoped lang="scss">
 .card-view {
-  //border-radius: 10px;
   color: $color-primary;
 
   .card-content {

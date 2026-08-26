@@ -120,23 +120,23 @@ export default {
     // 过滤的placeholder
     filterPlaceholder: {
       type: String,
-      default: '输入关键字进行过滤'
+      default: 'Filtrer par mot-clé'
     },
     placeholder: {
       type: String,
-      default: '请选择'
+      default: 'Sélectionner'
     },
     dialogTitle: {
       type: String,
-      default: '选择'
+      default: 'Sélection'
     },
     cancelText: {
       type: String,
-      default: '取消'
+      default: 'Annuler'
     },
     confirmText: {
       type: String,
-      default: '确定'
+      default: 'Confirmer'
     },
     // 树形组件节点过滤，可以配置elProps.filterNodeMethod ，覆盖默认的过滤方法
     treeFilter: {

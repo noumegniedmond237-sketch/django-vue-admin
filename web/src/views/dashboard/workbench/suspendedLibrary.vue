@@ -14,7 +14,7 @@
         class="menuclass"
       >
         <div class="titlea">
-          添加部件 <i style="color: #409eff" class="el-icon-plus"></i>
+          Ajouter un widget <i style="color: #409eff" class="el-icon-plus"></i>
           <span class="operateCallback">
             <slot name="operateButton"/>
           </span>
@@ -42,10 +42,6 @@ export default {
         'linear-gradient(150deg, #c5f8e6 0%, #10a465 100%)'
       ]
     }
-  },
-  created () {
-  },
-  mounted () {
   },
   methods: {
     onClick () {

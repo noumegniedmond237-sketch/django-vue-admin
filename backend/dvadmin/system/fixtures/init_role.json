@@ -1,20 +1,20 @@
 [
     {
-        "name": "管理员",
+        "name": "Super Administrateur",
         "key": "admin",
         "sort": 1,
         "status": true,
         "admin": true,
         "data_range": 3,
-        "remark": null
+        "remark": "Accès total au système"
     },
     {
-        "name": "用户",
+        "name": "Utilisateur Standard",
         "key": "public",
         "sort": 2,
         "status": true,
-        "admin": true,
+        "admin": false,
         "data_range": 3,
-        "remark": null
+        "remark": "Accès utilisateur standard"
     }
 ]

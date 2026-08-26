@@ -20,7 +20,7 @@
           <el-tab-pane
             v-for="page in opened"
             :key="page.fullPath"
-            :label="page.meta.title || '未命名'"
+            :label="(page.meta && (page.meta.title === '控制台' ? 'Tableau de bord' : page.meta.title)) || (page.fullPath === '/index' ? 'Tableau de bord' : 'Sans titre')"
             :name="page.fullPath"
             :closable="isTabClosable(page)"/>
         </el-tabs>
@@ -36,19 +36,19 @@
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="left">
             <d2-icon name="arrow-left" class="d2-mr-10"/>
-            关闭左侧
+            Fermer à gauche
           </el-dropdown-item>
           <el-dropdown-item command="right">
             <d2-icon name="arrow-right" class="d2-mr-10"/>
-            关闭右侧
+            Fermer à droite
           </el-dropdown-item>
           <el-dropdown-item command="other">
             <d2-icon name="times" class="d2-mr-10"/>
-            关闭其它
+            Fermer les autres
           </el-dropdown-item>
           <el-dropdown-item command="all">
             <d2-icon name="times-circle" class="d2-mr-10"/>
-            全部关闭
+            Tout fermer
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -71,14 +71,14 @@ export default {
       contentmenuX: 0,
       contentmenuY: 0,
       contextmenuListIndex: [
-        { icon: 'times-circle', title: '关闭全部', value: 'all' }
+        { icon: 'times-circle', title: 'Tout fermer', value: 'all' }
       ],
       contextmenuList: [
-        { icon: 'refresh', title: '刷新', value: 'refresh' },
-        { icon: 'arrow-left', title: '关闭左侧', value: 'left' },
-        { icon: 'arrow-right', title: '关闭右侧', value: 'right' },
-        { icon: 'times', title: '关闭其它', value: 'other' },
-        { icon: 'times-circle', title: '关闭全部', value: 'all' }
+        { icon: 'refresh', title: 'Actualiser', value: 'refresh' },
+        { icon: 'arrow-left', title: 'Fermer à gauche', value: 'left' },
+        { icon: 'arrow-right', title: 'Fermer à droite', value: 'right' },
+        { icon: 'times', title: 'Fermer les autres', value: 'other' },
+        { icon: 'times-circle', title: 'Tout fermer', value: 'all' }
       ],
       tagName: '/index'
     }
@@ -99,19 +99,16 @@ export default {
       'openedSort'
     ]),
     /**
-     * @description 计算某个标签页是否可关闭
-     * @param {Object} page 其中一个标签页
+     * @description Vérifie si l'onglet est fermable
      */
     isTabClosable (page) {
       return page.name !== 'index'
     },
     /**
-     * @description 右键菜单功能点击
-     * @param {Object} event 事件
+     * @description Clic sur le menu contextuel
      */
     handleContextmenu (event) {
       let target = event.target
-      // fix https://github.com/d2-projects/d2-admin/issues/54
       let flag = false
       if (target.className.indexOf('el-tabs__item') > -1) flag = true
       else if (target.parentNode.className.indexOf('el-tabs__item') > -1) {
@@ -128,16 +125,13 @@ export default {
       }
     },
     /**
-     * @description 右键菜单的 row-click 事件
-     * @param {String} command 事件类型
+     * @description Action du menu contextuel
      */
     contextmenuClick (command) {
       this.handleControlItemClick(command, this.tagName)
     },
     /**
-     * @description 接收点击关闭控制上选项的事件
-     * @param {String} command 事件类型
-     * @param {String} tagName tab 名称
+     * @description Gestion du clic sur les options de fermeture
      */
     handleControlItemClick (command, tagName = null) {
       if (tagName) this.contextmenuFlag = false
@@ -148,16 +142,13 @@ export default {
         case 'right': this.closeRight(params); break
         case 'other': this.closeOther(params); break
         case 'all': this.closeAll(); break
-        default: this.$message.error('无效的操作'); break
+        default: this.$message.error('Opération invalide'); break
       }
     },
     /**
-     * @description 接收点击 tab 标签的事件
-     * @param {object} tab 标签
-     * @param {object} event 事件
+     * @description Clic sur un onglet
      */
     handleClick (tab, event) {
-      // 找到点击的页面在 tag 列表里是哪个
       const page = this.opened.find(page => page.fullPath === tab.name)
       if (page) {
         const { name, params, query } = page
@@ -165,8 +156,7 @@ export default {
       }
     },
     /**
-     * @description 点击 tab 上的删除按钮触发这里
-     * @param {String} tagName tab 名称
+     * @description Suppression d'un onglet
      */
     handleTabRemove (tagName) {
       this.close({ tagName })
@@ -174,12 +164,14 @@ export default {
   },
   mounted () {
     const el = document.querySelectorAll('.d2-multiple-page-sort .el-tabs__nav')[0]
-    Sortable.create(el, {
-      onEnd: (evt) => {
-        const { oldIndex, newIndex } = evt
-        this.openedSort({ oldIndex, newIndex })
-      }
-    })
+    if (el) {
+      Sortable.create(el, {
+        onEnd: (evt) => {
+          const { oldIndex, newIndex } = evt
+          this.openedSort({ oldIndex, newIndex })
+        }
+      })
+    }
   }
 }
 </script>

@@ -39,10 +39,10 @@ export default {
     }),
     tooltipContent () {
       return this.logLength === 0
-        ? '没有日志或异常'
-        : `${this.logLength} 条日志${
+        ? 'Aucun journal ou anomalie'
+        : `${this.logLength} entrée(s) de journal${
             this.logLengthError > 0
-              ? ` | 包含 ${this.logLengthError} 个异常`
+              ? ` | ${this.logLengthError} erreur(s)`
               : ''
           }`
     }

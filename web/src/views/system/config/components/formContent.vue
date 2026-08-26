@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-row :gutter="10">
-      <el-col :span="4">变量标题</el-col>
-      <el-col :span="10">变量值</el-col>
-      <el-col :span="4" >变量名</el-col>
-      <el-col :span="2">是否前端配置</el-col>
-      <el-col :span="3" :offset="1">操作</el-col>
+    <el-row :gutter="10" style="font-weight: bold; color: #606266;">
+      <el-col :span="4">Titre du paramètre</el-col>
+      <el-col :span="10">Valeur</el-col>
+      <el-col :span="4">Clé (Key)</el-col>
+      <el-col :span="2">Actif</el-col>
+      <el-col :span="3" :offset="1">Actions</el-col>
     </el-row>
     <el-form ref="form" :model="form" label-width="240px" label-position="left" style="margin-top: 20px">
       <el-form-item :label="item.title" :prop="['array'].indexOf(item.form_item_type_label) >-1?'':item.key"
@@ -14,11 +14,11 @@
 
       >
         <template slot="label">
-          <el-input v-if="item.edit" v-model="item.title" style="display: inline-block;width: 200px;" placeholder="请输入标题"></el-input>
+          <el-input v-if="item.edit" v-model="item.title" style="display: inline-block;width: 200px;" placeholder="Entrez le titre"></el-input>
           <span v-else>{{item.title}}</span>
         </template>
         <el-col :span="11" >
-          <!--    文本      -->
+          <!--    texte      -->
           <el-input :key="index" v-if="['text','textarea'].indexOf(item.form_item_type_label) >-1"
                     :type="item.form_item_type_label"
                     v-model="form[item.key]" :placeholder="item.placeholder" clearable></el-input>
@@ -88,7 +88,7 @@
             active-color="#13ce66"
             inactive-color="#ff4949">
           </el-switch>
-          <!--     图片     -->
+          <!--     images     -->
           <div v-else-if="['img','imgs'].indexOf(item.form_item_type_label) >-1" :key="index">
             <el-upload
               :action="uploadUrl"
@@ -108,13 +108,13 @@
               list-type="picture-card"
             >
               <i class="el-icon-plus"></i>
-              <div slot="tip" class="el-upload__tip">选取图片后,需手动上传到服务器,并且只能上传jpg/png文件</div>
+              <div slot="tip" class="el-upload__tip">Sélectionnez une image (JPG/PNG)</div>
             </el-upload>
             <el-dialog :visible.sync="dialogImgVisible">
               <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
           </div>
-          <!--     文件     -->
+          <!--     fichiers     -->
           <div v-else-if="['file'].indexOf(item.form_item_type_label) >-1" :key="index">
             <el-upload
               :action="uploadUrl"
@@ -132,13 +132,13 @@
               list-type="picture-card"
             >
               <i class="el-icon-plus"></i>
-              <div slot="tip" class="el-upload__tip">选取图片后,需手动上传到服务器,并且只能上传jpg/png文件</div>
+              <div slot="tip" class="el-upload__tip">Sélectionnez un fichier</div>
             </el-upload>
             <el-dialog :visible.sync="dialogImgVisible">
               <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
           </div>
-          <!--    关联表      -->
+          <!--    association      -->
           <div v-else-if="['foreignkey','manytomany'].indexOf(item.form_item_type_label) >-1" :key="index">
             <table-selector
               v-model="form[item.key]"
@@ -154,7 +154,7 @@
               :multiple="item.form_item_type_label ==='manytomany'"
             ></table-selector>
           </div>
-          <!--   数组       -->
+          <!--   array / tableau       -->
           <div v-else-if="item.form_item_type_label==='array'" :key="index">
             <vxe-table
               border
@@ -166,39 +166,39 @@
               height="200"
               :edit-rules="validRules"
               :edit-config="{trigger: 'click', mode: 'row', showStatus: true}">
-              <vxe-column field="title" title="标题" :edit-render="{autofocus: '.vxe-input--inner'}">
+              <vxe-column field="title" title="Titre" :edit-render="{autofocus: '.vxe-input--inner'}">
                 <template #edit="{ row }">
                   <vxe-input v-model="row.title" type="text"></vxe-input>
                 </template>
               </vxe-column>
-              <vxe-column field="key" title="键名" :edit-render="{autofocus: '.vxe-input--inner'}">
+              <vxe-column field="key" title="Clé" :edit-render="{autofocus: '.vxe-input--inner'}">
                 <template #edit="{ row }">
                   <vxe-input v-model="row.key" type="text"></vxe-input>
                 </template>
               </vxe-column>
-              <vxe-column field="value" title="键值" :edit-render="{}">
+              <vxe-column field="value" title="Valeur" :edit-render="{}">
                 <template #edit="{ row }">
                   <vxe-input v-model="row.value" type="text"></vxe-input>
                 </template>
               </vxe-column>
-              <vxe-column title="操作" width="100" show-overflow>
+              <vxe-column title="Actions" width="100" show-overflow>
                 <template #default="{ row,index }">
                   <el-popconfirm
-                    title="删除后无法恢复,确定删除吗？"
+                    title="Cette suppression est irréversible, continuer ?"
                     @confirm="onRemoveChild(row,index,item.key)"
                   >
-                    <el-button slot="reference" type="text" >删除</el-button>
+                    <el-button slot="reference" type="text">Supprimer</el-button>
                   </el-popconfirm>
                 </template>
               </vxe-column>
             </vxe-table>
             <div>
-              <el-button size="mini" @click="onAppend('xTable_'+item.key)">追加</el-button>
+              <el-button size="mini" @click="onAppend('xTable_'+item.key)">Ajouter une ligne</el-button>
             </div>
           </div>
         </el-col>
         <el-col :span="4" :offset="1">
-          <el-input v-if="item.edit" v-model="item.new_key" style="width: 200px;" placeholder="请输入变量key">
+          <el-input v-if="item.edit" v-model="item.new_key" style="width: 200px;" placeholder="Entrez la clé">
             <template slot="prepend">
               <span style="padding: 0px 5px">{{ editableTabsItem.key }}</span>
               </template>
@@ -216,7 +216,7 @@
           <el-button v-if="item.edit" size="mini" type="primary"  icon="el-icon-success" @click="onEditSave(item)"></el-button>
           <el-button v-else size="mini" type="primary"  icon="el-icon-edit" @click="onEdit(index)"></el-button>
            <el-popconfirm
-              title="确定删除该条数据吗？"
+              title="Êtes-vous sûr de vouloir supprimer cet élément ?"
               @confirm="onDelRow(item)"
             >
               <el-button size="mini" type="danger" icon="el-icon-delete" slot="reference"></el-button>
@@ -225,7 +225,7 @@
         </el-col>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">确定</el-button>
+        <el-button type="primary" @click="onSubmit">Enregistrer</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -270,19 +270,19 @@ export default {
         title: [
           {
             required: true,
-            message: '必须填写'
+            message: 'Ce champ est requis'
           }
         ],
         key: [
           {
             required: true,
-            message: '必须填写'
+            message: 'Ce champ est requis'
           }
         ],
         value: [
           {
             required: true,
-            message: '必须填写'
+            message: 'Ce champ est requis'
           }
         ]
       },
@@ -296,7 +296,6 @@ export default {
     }
   },
   methods: {
-    // 获取数据
     getInit () {
       const that = this
       api.GetList({ parent: this.options.id, limit: 999 }).then(res => {
@@ -325,7 +324,6 @@ export default {
         this.form = Object.assign({}, form)
       })
     },
-    // 提交数据
     onSubmit () {
       const that = this
       const form = JSON.parse(JSON.stringify(this.form))
@@ -350,26 +348,23 @@ export default {
             }
             submitForm.push(child)
           }
-          // 必填项的判断
           for (const arr of item.rule) {
             if (arr.required && tableData.length === 0) {
-              that.$message.error(item.title + '不能为空')
+              that.$message.error(item.title + ' ne peut pas être vide')
               return
             }
           }
           item.value = tableData
         }
-        // 赋值操作
         keys.map((mapKey, mapIndex) => {
           if (mapKey === item.key) {
             if (item.form_item_type_label !== 'array') {
               item.value = values[mapIndex]
             }
-            // 必填项的验证
             if (['img', 'imgs'].indexOf(item.form_item_type_label) > -1) {
               for (const arr of item.rule) {
                 if (arr.required && item.value === null) {
-                  that.$message.error(item.title + '不能为空')
+                  that.$message.error(item.title + ' ne peut pas être vide')
                   return
                 }
               }
@@ -382,16 +377,14 @@ export default {
         if (valid) {
           api.saveContent(this.options.id,
             submitForm).then(res => {
-            this.$message.success('保存成功')
+            this.$message.success('Paramètres enregistrés avec succès')
             this.refreshView()
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
     },
-    // 追加
     async onAppend (tableName) {
       const $table = this.$refs[tableName][0]
       const { tableData } = $table.getTableData()
@@ -401,13 +394,12 @@ export default {
       } else {
         const errMap = await $table.validate().catch(errMap => errMap)
         if (errMap) {
-          this.$message.error('校验不通过！')
+          this.$message.error('Échec de la validation !')
         } else {
           $table.insert()
         }
       }
     },
-    // 子表删除
     onRemoveChild (row, index, refName) {
       if (row.id) {
         api.DelObj(row.id).then(res => {
@@ -419,19 +411,15 @@ export default {
         this.$refs[tableName][0].remove(row)
       }
     },
-    // 图片预览
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
       this.dialogImgVisible = true
     },
-    // 判断是否为图片
-    // 封装一个判断图片文件后缀名的方法
     isImage (fileName) {
       if (typeof fileName !== 'string') return
       const name = fileName.toLowerCase()
       return name.endsWith('.png') || name.endsWith('.jpeg') || name.endsWith('.jpg') || name.endsWith('.png') || name.endsWith('.bmp')
     },
-    // 上传成功
     handleUploadSuccess (response, file, fileList, imgKey) {
       const that = this
       const {
@@ -443,7 +431,7 @@ export default {
         const { name } = file
         const type = that.isImage(name)
         if (!type) {
-          this.$message.error('只允许上传图片')
+          this.$message.error('Seules les images sont autorisées')
         } else {
           const uploadImgKey = that.form[imgKey]
           if (!uploadImgKey || uploadImgKey === '') {
@@ -457,18 +445,15 @@ export default {
           that.form[imgKey].push(dict)
         }
       } else {
-        this.$message.error('上传失败,' + JSON.stringify(msg))
+        this.$message.error('Échec du téléversement : ' + JSON.stringify(msg))
       }
     },
-    // 上传失败
     handleError () {
-      this.$message.error('上传失败')
+      this.$message.error('Échec du téléversement')
     },
-    // 上传超出限制
     handleExceed () {
-      this.$message.error('超过文件上传数量')
+      this.$message.error('Nombre maximum de fichiers dépassé')
     },
-    // 删除时的钩子
     beforeRemove (file, fileList, key) {
       var index = 0
       this.form[key].map((value, inx) => {
@@ -476,19 +461,16 @@ export default {
       })
       this.form[key].splice(index, 1)
     },
-    // 配置的行删除
     onDelRow (obj) {
       api.DelObj(obj.id).then(res => {
         this.refreshView()
       })
     },
-    // 行编辑
     onEdit (index) {
       const that = this
       that.$set(that.formList[index], 'new_key', that.formList[index].key)
       that.$set(that.formList[index], 'edit', true)
     },
-    // 行编辑保存
     onEditSave (obj) {
       obj.key = JSON.parse(JSON.stringify(obj.new_key))
       api.UpdateObj(obj).then(res => {
@@ -497,7 +479,6 @@ export default {
     }
   },
   mounted () {
-    // this.getInit()
   }
 }
 </script>

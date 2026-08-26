@@ -216,9 +216,9 @@ export default {
       component: {
         props: { },
         clearable: true,
-        placeholder: '请输入'
+        placeholder: 'Veuillez saisir...'
       },
-      rules: [{ required: true, message: '请输入' }],
+      rules: [{ required: true, message: 'Ce champ est requis' }],
       itemProps: {
         class: { yxtInput: true }
       }
@@ -229,7 +229,7 @@ export default {
       component: {
         props: { },
         clearable: true,
-        placeholder: '请输入'
+        placeholder: 'Veuillez saisir...'
       },
       itemProps: {
         class: { yxtInput: true }

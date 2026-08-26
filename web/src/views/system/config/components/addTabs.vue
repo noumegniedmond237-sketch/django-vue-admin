@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="标题" prop="title">
-        <el-input v-model="form.title"></el-input>
+    <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+      <el-form-item label="Titre" prop="title">
+        <el-input v-model="form.title" placeholder="Ex: Paramètres Email"></el-input>
       </el-form-item>
-      <el-form-item label="key值" prop="key">
-        <el-input v-model="form.key"></el-input>
+      <el-form-item label="Clé unique" prop="key">
+        <el-input v-model="form.key" placeholder="Ex: email_config"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" @click="onSubmit">Créer le groupe</el-button>
+        <el-button @click="$emit('close')">Annuler</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -31,17 +31,17 @@ export default {
         title: [
           {
             required: true,
-            message: '请输入'
+            message: 'Le titre est requis'
           }
         ],
         key: [
           {
             required: true,
-            message: '请输入'
+            message: 'La clé est requise'
           },
           {
-            pattern: /^[A-Za-z0-9]+$/,
-            message: '只能是英文和数字'
+            pattern: /^[A-Za-z0-9_]+$/,
+            message: 'Uniquement des lettres, chiffres et underscores'
           }
         ]
       }
@@ -53,11 +53,10 @@ export default {
       that.$refs.form.validate((valid) => {
         if (valid) {
           api.createObj(that.form).then(res => {
-            this.$message.success('新增成功')
+            this.$message.success('Groupe créé avec succès')
             this.refreshView()
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })

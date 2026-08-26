@@ -7,7 +7,7 @@
     <div class="dvadmin-auth">
       <span>Powered by Django-Vue-Admin</span>
       <el-divider direction="vertical"></el-divider>
-      <span>Copyright dvadmin团队</span>
+      <span>© DvAdmin</span>
     </div>
   </div>
 </template>

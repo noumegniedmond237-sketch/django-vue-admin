@@ -10,7 +10,7 @@ export const crudOptions = (vm) => {
       componentType: 'row'
     },
     formOptions: {
-      defaultSpan: 12 // 默认的表单 span
+      defaultSpan: 12
     },
     columns: [
       {
@@ -22,7 +22,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '单选本地',
+        title: 'Sélection unique',
         key: 'select1',
         sortable: true,
         search: {
@@ -30,21 +30,21 @@ export const crudOptions = (vm) => {
         },
         type: 'select',
         dict: {
-          data: [{ value: '1', label: '开启' }, { value: '0', label: '关闭' }, { value: '2', label: '停止' }]
+          data: [{ value: '1', label: 'Activé' }, { value: '0', label: 'Désactivé' }, { value: '2', label: 'Arrêté' }]
         }
       },
       {
-        title: '多选,本地,自动染色',
+        title: 'Sélection multiple',
         key: 'select2',
         sortable: true,
         width: 180,
         search: {
           disabled: false,
-          title: '多选'
+          title: 'Sélection multiple'
         },
         type: 'select',
         form: {
-          title: '多选本地',
+          title: 'Sélection multiple',
           component: {
             props: {
               filterable: true,
@@ -54,9 +54,9 @@ export const crudOptions = (vm) => {
           }
         },
         dict: {
-          data: [{ value: 'sz', label: '深圳' }, { value: 'gz', label: '广州' }, { value: 'wh', label: '武汉' }, { value: 'sh', label: '上海' }]
+          data: [{ value: 'paris', label: 'Paris' }, { value: 'lyon', label: 'Lyon' }, { value: 'marseille', label: 'Marseille' }, { value: 'toulouse', label: 'Toulouse' }]
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }
     ]
   }

@@ -9,21 +9,21 @@ export const crudOptions = (vm) => {
       tableType: 'vxe-table',
       rowKey: false,
       width: '100%',
-      height: '100%' // 表格高度100%, 使用toolbar必须设置
+      height: '100%'
     },
     rowHandle: {
       width: 180,
       edit: {
         thin: true,
-        text: '编辑'
+        text: 'Modifier'
       },
       remove: {
         thin: true,
-        text: '删除'
+        text: 'Supprimer'
       }
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
+    indexRow: {
+      title: 'N°',
       align: 'center',
       width: 100
     },
@@ -32,11 +32,11 @@ export const crudOptions = (vm) => {
       componentType: 'form'
     },
     formOptions: {
-      defaultSpan: 24 // 默认的表单 span
+      defaultSpan: 24
     },
     columns: [
       {
-        title: '关键词',
+        title: 'Recherche',
         key: 'search',
         show: false,
         disabled: true,
@@ -46,10 +46,10 @@ export const crudOptions = (vm) => {
         form: {
           disabled: true,
           component: {
-            placeholder: '请输入关键词'
+            placeholder: 'Rechercher par mot-clé'
           }
         },
-        view: { // 查看对话框组件的单独配置
+        view: {
           disabled: true
         }
       },
@@ -63,7 +63,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '请求方式',
+        title: 'Méthode HTTP',
         key: 'method',
         sortable: true,
         search: {
@@ -91,10 +91,10 @@ export const crudOptions = (vm) => {
           ]
         },
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '必填项'
+              message: 'La méthode HTTP est requise'
             }
           ],
           component: {
@@ -106,7 +106,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '接口地址',
+        title: "URL de l'API",
         key: 'url',
         sortable: true,
         search: {
@@ -132,10 +132,10 @@ export const crudOptions = (vm) => {
           }
         },
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '必填项'
+              message: "L'URL est requise"
             }
           ],
           component: {
@@ -146,7 +146,6 @@ export const crudOptions = (vm) => {
                 filterable: true,
                 clearable: true
               }
-
             }
           },
           itemProps: {
@@ -154,19 +153,19 @@ export const crudOptions = (vm) => {
           },
           helper: {
             render (h) {
-              return (< el-alert title="请正确填写，以免请求时被拦截。匹配单例使用正则,例如:/api/xx/.*?/" type="warning"/>
+              return (< el-alert title="Format regex accepté, ex: /api/xx/.*?/" type="warning"/>
               )
             }
           }
         }
       },
       {
-        title: '数据权限认证',
+        title: 'Authentification données',
         key: 'enable_datasource',
         search: {
           disabled: false
         },
-        width: 150,
+        width: 170,
         type: 'radio',
         dict: {
           data: vm.dictionary('button_status_bool')
@@ -179,7 +178,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '备注',
+        title: 'Description',
         key: 'description',
         search: {
           disabled: true
@@ -187,7 +186,7 @@ export const crudOptions = (vm) => {
         type: 'textarea',
         form: {
           component: {
-            placeholder: '请输入内容',
+            placeholder: 'Entrez une description',
             showWordLimit: true,
             maxlength: '200',
             props: {

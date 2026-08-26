@@ -85,7 +85,7 @@ export default {
     // 选择文件按钮的大小
     btnSize: { default: 'small' },
     // 选择文件按钮的名称
-    btnName: { default: '选择文件' },
+    btnName: { default: 'Choisir un fichier' },
     // 可选哪些类型的文件
     accept: {},
     // 上传后端类型，[cos,qiniu,alioss,form]
@@ -241,7 +241,7 @@ export default {
               if (this.$message) {
                 const limitTip = this.computeFileSize(limit)
                 const fileSizeTip = this.computeFileSize(file.size)
-                this.$message({ message: '文件大小不能超过' + limitTip + '，当前文件大小:' + fileSizeTip, type: 'warning' })
+                this.$message({ message: 'La taille du fichier ne peut excéder ' + limitTip + ' (taille actuelle : ' + fileSizeTip + ')', type: 'warning' })
                 return false
               }
             }
@@ -368,8 +368,8 @@ export default {
       this.$emit('remove', file, fileList)
     },
     handleUploadFileError (err, file, fileList) {
-      console.error('文件上传失败', err, file, fileList)
-      this.$message({ type: 'error', message: '文件上传失败' })
+      console.error('Échec du téléversement du fichier', err, file, fileList)
+      this.$message({ type: 'error', message: 'Échec du téléversement du fichier' })
       this.$emit('error', err, file, fileList)
     },
     previewAvatar ($event) {
@@ -466,7 +466,7 @@ export default {
       }
       this.$message({
         showClose: true,
-        message: '已达最大限制数量，请删除一个文件后再上传',
+        message: 'Nombre maximum de fichiers atteint. Veuillez supprimer un fichier existant avant d\'en ajouter un nouveau.',
         type: 'warning'
       })
     },

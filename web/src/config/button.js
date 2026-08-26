@@ -3,11 +3,11 @@ export const BUTTON_VALUE_TO_COLOR_MAPPING = {
   true: 'success',
   0: 'danger',
   false: 'danger',
-  Search: 'warning', // 查询
-  Update: 'primary', // 编辑
-  Create: 'success', // 新增
-  Retrieve: 'info', // 单例
-  Delete: 'danger' // 删除
+  Search: 'warning',
+  Update: 'primary',
+  Create: 'success',
+  Retrieve: 'info',
+  Delete: 'danger'
 }
 
 export function getButtonSettings (objectSettings) {
@@ -19,16 +19,9 @@ export function getButtonSettings (objectSettings) {
     }
   })
 }
-// v2.0.2 中已弃用，改为 vm.dictionary('button_status_bool')
-// 启用 true/ 禁用 false
-export const BUTTON_STATUS_BOOL = getButtonSettings([{ label: '启用', value: true }, { label: '禁用', value: false }])
 
-// 启用 1/ 禁用 0
-export const BUTTON_STATUS_NUMBER = getButtonSettings([{ label: '启用', value: 1 }, { label: '禁用', value: 0 }])
-
-// 是 1/ 否 0
-export const BUTTON_WHETHER_NUMBER = getButtonSettings([{ label: '是', value: 1 }, { label: '否', value: 0 }])
-// 是 true/ 否 false
-export const BUTTON_WHETHER_BOOL = getButtonSettings([{ label: '是', value: true }, { label: '否', value: false }])
-// 用户类型
-export const USER_TYPE = getButtonSettings([{ label: '后台用户', value: 0 }, { label: '前台用户', value: 1 }])
+export const BUTTON_STATUS_BOOL = getButtonSettings([{ label: 'Activé', value: true }, { label: 'Désactivé', value: false }])
+export const BUTTON_STATUS_NUMBER = getButtonSettings([{ label: 'Activé', value: 1 }, { label: 'Désactivé', value: 0 }])
+export const BUTTON_WHETHER_NUMBER = getButtonSettings([{ label: 'Oui', value: 1 }, { label: 'Non', value: 0 }])
+export const BUTTON_WHETHER_BOOL = getButtonSettings([{ label: 'Oui', value: true }, { label: 'Non', value: false }])
+export const USER_TYPE = getButtonSettings([{ label: 'Administrateur', value: 0 }, { label: 'Utilisateur', value: 1 }])

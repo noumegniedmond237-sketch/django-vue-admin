@@ -5,11 +5,10 @@ export const crudOptions = (vm) => {
     },
     options: {
       tableType: 'vxe-table',
-      rowKey: true, // 必须设置，true or false
+      rowKey: true,
       rowId: 'id',
-      height: '100%', // 表格高度100%, 使用toolbar必须设置
+      height: '100%',
       highlightCurrentRow: false
-
     },
     rowHandle: {
       view: {
@@ -41,28 +40,26 @@ export const crudOptions = (vm) => {
         disabled () {
           return !vm.hasPermissions('Update')
         },
-        text: '权限管理',
+        text: 'Permissions',
         type: 'warning',
         size: 'small',
         emit: 'createPermission'
       }]
-
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
+    indexRow: {
+      title: 'N°',
       align: 'center',
       width: 100
     },
-
     viewOptions: {
       componentType: 'form'
     },
     formOptions: {
-      defaultSpan: 24, // 默认的表单 span
+      defaultSpan: 24,
       width: '35%'
     },
     columns: [{
-      title: '关键词',
+      title: 'Recherche',
       key: 'search',
       show: false,
       disabled: true,
@@ -75,10 +72,10 @@ export const crudOptions = (vm) => {
           props: {
             clearable: true
           },
-          placeholder: '请输入关键词'
+          placeholder: 'Rechercher par mot-clé'
         }
       },
-      view: { // 查看对话框组件的单独配置
+      view: {
         disabled: true
       }
     },
@@ -91,9 +88,8 @@ export const crudOptions = (vm) => {
         disabled: true
       }
     },
-
     {
-      title: '角色名称',
+      title: 'Nom du rôle',
       key: 'name',
       sortable: true,
       minWidth: 120,
@@ -105,17 +101,16 @@ export const crudOptions = (vm) => {
           }
         }
       },
-
       type: 'input',
       form: {
-        rules: [ // 表单校验规则
-          { required: true, message: '角色名称必填项' }
+        rules: [
+          { required: true, message: 'Le nom du rôle est requis' }
         ],
         component: {
           props: {
             clearable: true
           },
-          placeholder: '请输入角色名称'
+          placeholder: 'Entrez le nom du rôle'
         },
         itemProps: {
           class: { yxtInput: true }
@@ -123,26 +118,26 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '权限标识',
+      title: 'Code de permission',
       key: 'key',
       sortable: true,
-      minWidth: 100,
+      minWidth: 120,
       form: {
-        rules: [ // 表单校验规则
-          { required: true, message: '权限标识必填项' }
+        rules: [
+          { required: true, message: 'Le code de permission est requis' }
         ],
         component: {
           props: {
             clearable: true
           },
-          placeholder: '请输入标识字符'
+          placeholder: 'Entrez le code identifiant'
         },
         itemProps: {
           class: { yxtInput: true }
         }
       }
     }, {
-      title: '排序',
+      title: 'Ordre',
       key: 'sort',
       sortable: true,
       width: 80,
@@ -150,12 +145,12 @@ export const crudOptions = (vm) => {
       form: {
         value: 1,
         component: {
-          placeholder: '请输入排序'
+          placeholder: "Numéro d'ordre"
         }
       }
     },
     {
-      title: '是否管理员',
+      title: 'Administrateur',
       key: 'admin',
       sortable: true,
       type: 'radio',
@@ -166,7 +161,7 @@ export const crudOptions = (vm) => {
       form: {
         value: false,
         component: {
-          placeholder: '请选择是否管理员',
+          placeholder: 'Est-il administrateur ?',
           show (context) {
             return vm.info.is_superuser
           }
@@ -174,7 +169,7 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '状态',
+      title: 'Statut',
       key: 'status',
       sortable: true,
       search: {
@@ -188,7 +183,7 @@ export const crudOptions = (vm) => {
       form: {
         value: true,
         component: {
-          placeholder: '请选择状态'
+          placeholder: 'Sélectionnez le statut'
         }
       },
       component: { props: { color: 'auto' } }

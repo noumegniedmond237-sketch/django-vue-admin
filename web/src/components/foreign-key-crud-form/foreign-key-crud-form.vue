@@ -8,7 +8,7 @@
         <div style="text-align: center">{{ elProps.fields[key].name }}</div>
       </el-col>
       <el-col :span="2">
-        <div style="text-align: center">操作</div>
+        <div style="text-align: center">Actions</div>
       </el-col>
     </el-row>
     <el-form :model="currentForm" ref="currentFormRef" label-width="0px" size="mini" type="flex">
@@ -22,11 +22,11 @@
           <el-form-item
             :prop="'data.' + index + '.' + key"
             :rules="[
-                { required: elProps.fields[key].required, message: '不能为空', trigger: 'blur' },
+                { required: elProps.fields[key].required, message: 'Ce champ est requis', trigger: 'blur' },
               ]"
             style="text-align: center"
           >
-            <el-select v-model="field[key]" v-if="elProps.fields[key].type === 'select'" placeholder="请选择">
+            <el-select v-model="field[key]" v-if="elProps.fields[key].type === 'select'" placeholder="Sélectionner">
               <el-option
                 v-for="item in elProps.fields[key].option"
                 :key="item.value"
@@ -50,11 +50,11 @@
               <values-popover
                 v-model="field[key]"
                 :dict="elProps.fields[key].dict"
-                :elProps="{ type: elProps.fields[key].value?.type || 'manyToMany',  rowKey: elProps.fields[key].value?.rowKey || 'title', label: elProps.value?.title || '答复选项内容' }"
+                :elProps="{ type: elProps.fields[key].value?.type || 'manyToMany',  rowKey: elProps.fields[key].value?.rowKey || 'title', label: elProps.value?.title || 'Contenu de l\'option' }"
                 @listClick="manyToManyClick(index,key)">
               </values-popover>
             </span>
-            <el-input v-model="field[key]" v-else placeholder="请输入"></el-input>
+            <el-input v-model="field[key]" v-else placeholder="Saisir..."></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -69,12 +69,12 @@
       </el-row>
       <el-form-item>
         <el-col :span="12">
-          <el-button type="primary" @click="addDomain">新增</el-button>
+          <el-button type="primary" @click="addDomain">Ajouter</el-button>
         </el-col>
       </el-form-item>
     </el-form>
     <el-dialog
-      title="富文本内容编辑"
+      title="Édition de texte enrichi"
       :visible.sync="previewVisible"
       append-to-body
       width="900">
@@ -84,11 +84,11 @@
         :config="ueditorConfig">
       </d2p-ueditor>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="previewVisible = false">完成</el-button>
+        <el-button type="primary" @click="previewVisible = false">Terminé</el-button>
       </span>
     </el-dialog>
     <el-dialog
-      title="编辑"
+      title="Modifier"
       :visible.sync="manyToManyVisible"
       append-to-body
       v-if="currentForm.data && currentForm.data[manyToManyIndex] && manyToManyKey"
@@ -100,7 +100,7 @@
         @change="foreignChange"
       ></foreign-key-crud-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="manyToManyVisible = false">保存</el-button>
+        <el-button type="primary" @click="manyToManyVisible = false">Enregistrer</el-button>
       </span>
     </el-dialog>
   </div>
@@ -119,41 +119,41 @@ export default {
       type: Object,
       default () {
         return {
-          isInitRows: true, // 是否初始化一行
+          isInitRows: true,
           index: {
-            name: '序号',
+            name: 'N°',
             span: 2
           },
           fields: {
             description: {
-              name: '内容描述',
+              name: 'Description',
               type: 'input',
               span: 10,
               default: null,
               required: true
             },
             content: {
-              name: '类型',
+              name: 'Type',
               type: 'select',
               span: 4,
               default: 0,
               required: true,
               options: [{
                 value: '0',
-                label: '单选项'
+                label: 'Choix unique'
               }, {
                 value: '1',
-                label: '多选项'
+                label: 'Choix multiple'
               }, {
                 value: '2',
-                label: '单行填空'
+                label: 'Texte court'
               }, {
                 value: '3',
-                label: '多行填空'
+                label: 'Texte long'
               }]
             },
             score: {
-              name: '分数',
+              name: 'Score',
               type: 'number',
               span: 4,
               default: 0,
@@ -162,39 +162,38 @@ export default {
               max: null
             },
             option_data: {
-              name: '选项题目',
+              name: 'Options',
               type: 'many_to_many',
               span: 2,
               default: [],
               required: false,
-              unit: '个',
+              unit: '',
               value: {
                 type: 'strList',
                 rowKey: 'name',
-                title: '选项内容'
+                title: 'Contenu de l\'option'
               },
-              // 子级多对多
               isInitRows: true,
               dialogWidth: '700',
               dict: {
-                value: 'id', // 数据字典中value字段的属性名
-                label: 'name' // 数据字典中label字段的属性名
+                value: 'id',
+                label: 'name'
               },
               elProps: {
                 index: {
-                  name: '序号',
+                  name: 'N°',
                   span: 2
                 },
                 fields: {
                   name: {
-                    name: '题目选项内容',
+                    name: 'Libellé de l\'option',
                     type: 'input',
                     span: 10,
                     default: null,
                     required: true
                   },
                   sort: {
-                    name: '排序',
+                    name: 'Ordre',
                     type: 'number',
                     span: 8,
                     default: 0,

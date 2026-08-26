@@ -1,6 +1,6 @@
 <template>
   <el-dropdown placement="bottom" size="small" @command="handleChange">
-    <el-button class="d2-mr btn-text can-hover" type="text">
+    <el-button class="d2-mr btn-text can-hover" type="text" title="Taille des composants">
       <d2-icon name="font" style="font-size: 16px;"/>
     </el-button>
     <el-dropdown-menu slot="dropdown">
@@ -18,10 +18,10 @@ export default {
   data () {
     return {
       options: [
-        { label: '默认', value: 'default' },
-        { label: '中', value: 'medium' },
-        { label: '小', value: 'small' },
-        { label: '最小', value: 'mini' }
+        { label: 'Par défaut', value: 'default' },
+        { label: 'Moyen', value: 'medium' },
+        { label: 'Petit', value: 'small' },
+        { label: 'Mini', value: 'mini' }
       ]
     }
   },
@@ -40,9 +40,9 @@ export default {
     handleChange (value) {
       this.sizeSet(value)
       this.$notify({
-        title: '提示',
+        title: 'Information',
         dangerouslyUseHTMLString: true,
-        message: '已更新页面内 <b>组件</b> 的 <b>默认尺寸</b><br/>例如按钮大小，<b>非字号</b>',
+        message: 'Taille des <b>composants</b> mise à jour avec succès.',
         type: 'success'
       })
     },

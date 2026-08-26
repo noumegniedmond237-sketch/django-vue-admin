@@ -11,11 +11,11 @@ export const crudOptions = (vm) => {
       componentType: 'row'
     },
     formOptions: {
-      defaultSpan: 12 // 默认的表单 span
+      defaultSpan: 12
     },
     columns: [
       {
-        title: '编码',
+        title: 'ID',
         key: 'id',
         width: 90,
         form: {
@@ -23,7 +23,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '单选本地',
+        title: 'Sélection locale',
         key: 'select1',
         sortable: true,
         search: {
@@ -32,8 +32,8 @@ export const crudOptions = (vm) => {
         type: 'table-selector',
         dict: {
           url: '/api/system/user/',
-          value: 'id', // 数据字典中value字段的属性名
-          label: 'name', // 数据字典中label字段的属性名
+          value: 'id',
+          label: 'name',
           getData: (url, dict, { form, component }) => {
             return request({ url: url, params: { page: 1, limit: 1 } }).then(ret => {
               component._elProps.page = ret.data.page
@@ -53,49 +53,47 @@ export const crudOptions = (vm) => {
               columns: [
                 {
                   field: 'name',
-                  title: '名称'
+                  title: 'Nom'
                 },
                 {
                   field: 'username',
-                  title: '账号'
+                  title: 'Identifiant'
                 },
                 {
                   field: 'role',
-                  title: '角色Id'
+                  title: 'ID Rôle'
                 },
                 {
                   field: 'dept',
-                  title: '部门Id'
+                  title: 'ID Département'
                 }
-
               ]
             }
           }
         }
       },
       {
-        title: '头像',
+        title: 'Avatar',
         key: 'image',
-        // type: 'image-uploader',
         type: 'avatar-uploader',
         width: 150,
         align: 'left',
         form: {
           component: {
             props: {
-              elProps: { // 与el-uploader 配置一致
+              elProps: {
                 multiple: false,
-                limit: 5 // 限制5个文件
+                limit: 5
               },
-              sizeLimit: 50 * 1024 // 不能超过限制
+              sizeLimit: 50 * 1024
             },
             span: 24
           },
-          helper: '限制文件大小不能超过50k'
+          helper: 'Taille maximale : 50 Ko'
         }
       },
       {
-        title: '图片',
+        title: 'Images',
         key: 'files',
         type: 'image-uploader',
         width: 150,
@@ -103,29 +101,29 @@ export const crudOptions = (vm) => {
         form: {
           component: {
             props: {
-              elProps: { // 与el-uploader 配置一致
+              elProps: {
                 multiple: false,
-                limit: 5 // 限制5个文件
+                limit: 5
               },
-              sizeLimit: 50 * 1024 // 不能超过限制
+              sizeLimit: 50 * 1024
             },
             span: 24
           },
-          helper: '限制文件大小不能超过50k'
+          helper: 'Taille maximale : 50 Ko'
         }
       },
       {
-        title: '多选,本地,自动染色',
+        title: 'Sélection multiple',
         key: 'select2',
         sortable: true,
         width: 180,
         search: {
           disabled: false,
-          title: '多选'
+          title: 'Sélection multiple'
         },
         type: 'select',
         form: {
-          title: '多选本地',
+          title: 'Sélection multiple',
           component: {
             props: {
               filterable: true,
@@ -135,9 +133,9 @@ export const crudOptions = (vm) => {
           }
         },
         dict: {
-          data: [{ value: 'sz', label: '深圳' }, { value: 'gz', label: '广州' }, { value: 'wh', label: '武汉' }, { value: 'sh', label: '上海' }]
+          data: [{ value: 'paris', label: 'Paris' }, { value: 'lyon', label: 'Lyon' }, { value: 'marseille', label: 'Marseille' }, { value: 'toulouse', label: 'Toulouse' }]
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }
     ]
   }

@@ -6,14 +6,14 @@
   >
     <div :style="{color: config?.fontColor?.value}">
       <div>
-        <div class="card-content-label">数据库统计</div>
-        <i class="real-time">实时</i>
+        <div class="card-content-label">Base de données</div>
+        <i class="real-time">En direct</i>
       </div>
       <div class="absolute-left">
         <div class="card-content">
           <div class="card-content-value">{{ count }}</div>
           <div class="el-icon-coin">
-            数据库数量
+            Nombre de tables
           </div>
         </div>
       </div>
@@ -21,7 +21,7 @@
         <div class="card-content-time">
           <div class="attachment-value">{{ space }}</div>
           <div class="el-icon-s-flag">
-            占用空间
+            Espace occupé
           </div>
         </div>
       </div>
@@ -34,10 +34,10 @@ import { request } from '@/api/service'
 
 export default {
   sort: 4,
-  title: '数据库统计',
+  title: 'Base de données',
   name: 'databaseTotal',
   icon: 'el-icon-coin',
-  description: '数据库统计',
+  description: 'Statistiques et taille de la base de données',
   height: 14,
   width: 16,
   isResizable: true,
@@ -49,16 +49,16 @@ export default {
   },
   config: {
     color: {
-      label: '背景颜色',
+      label: "Couleur d'arrière-plan",
       type: 'color',
       value: '',
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: 'Laissez vide pour couleur aléatoire'
     },
     fontColor: {
-      label: '字体颜色',
+      label: 'Couleur du texte',
       type: 'color',
       value: '',
-      placeholder: '请选择字体颜色'
+      placeholder: 'Sélectionnez la couleur du texte'
     }
   },
   props: {
@@ -91,7 +91,6 @@ export default {
 
 <style scoped lang="scss">
 .card-view {
-  //border-radius: 10px;
   color: $color-primary;
 
   .card-content {

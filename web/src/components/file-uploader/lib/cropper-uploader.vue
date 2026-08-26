@@ -192,7 +192,7 @@ export default {
       }
       const onError = (e) => {
         item.status = 'error'
-        item.message = '文件上传出错:' + e.message
+        item.message = 'Erreur lors du téléversement : ' + e.message
         log.debug(e)
       }
       log.debug('blob:', blob)

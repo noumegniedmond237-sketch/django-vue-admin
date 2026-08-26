@@ -182,7 +182,7 @@ class LoginTokenView(TokenObtainPairView):
 class LogoutView(APIView):
     def post(self, request):
         Users.objects.filter(id=self.request.user.id).update(last_token=None)
-        return DetailResponse(msg="注销成功")
+        return DetailResponse(msg="Déconnexion réussie")
 
 
 class ApiLoginSerializer(CustomModelSerializer):
@@ -215,4 +215,4 @@ class ApiLogin(APIView):
             login(request, user_obj)
             return redirect("/")
         else:
-            return ErrorResponse(msg="账号/密码错误")
+            return ErrorResponse(msg="Identifiant ou mot de passe incorrect")

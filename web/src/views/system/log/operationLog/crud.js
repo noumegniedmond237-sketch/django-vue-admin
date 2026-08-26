@@ -5,11 +5,10 @@ export const crudOptions = (vm) => {
     },
     options: {
       tableType: 'vxe-table',
-      rowKey: true, // 必须设置，true or false
+      rowKey: true,
       rowId: 'id',
-      height: '100%', // 表格高度100%, 使用toolbar必须设置
+      height: '100%',
       highlightCurrentRow: false
-
     },
     rowHandle: {
       fixed: 'right',
@@ -31,7 +30,7 @@ export const crudOptions = (vm) => {
       },
       remove: {
         thin: true,
-        text: '删除',
+        text: 'Supprimer',
         show: false,
         disabled () {
           return !vm.hasPermissions('Delete')
@@ -43,16 +42,16 @@ export const crudOptions = (vm) => {
     },
     formOptions: {
       disabled: true,
-      defaultSpan: 12 // 默认的表单 span
+      defaultSpan: 12
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
+    indexRow: {
+      title: 'N°',
       align: 'center',
       width: 70
     },
     columns: [
       {
-        title: '关键词',
+        title: 'Recherche',
         key: 'search',
         show: false,
         disabled: true,
@@ -62,7 +61,7 @@ export const crudOptions = (vm) => {
         form: {
           show: false,
           component: {
-            placeholder: '请输入关键词'
+            placeholder: 'Rechercher par mot-clé'
           }
         }
       },
@@ -76,7 +75,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '请求模块',
+        title: 'Module',
         key: 'request_modular',
         search: {
           disabled: false
@@ -86,12 +85,12 @@ export const crudOptions = (vm) => {
         form: {
           disabled: true,
           component: {
-            placeholder: '请输入请求模块'
+            placeholder: 'Module de la requête'
           }
         }
       },
       {
-        title: '请求地址',
+        title: 'Chemin API',
         key: 'request_path',
         search: {
           disabled: false
@@ -101,12 +100,12 @@ export const crudOptions = (vm) => {
         form: {
           disabled: true,
           component: {
-            placeholder: '请输入请求地址'
+            placeholder: "Chemin de l'URL"
           }
         }
       },
       {
-        title: '请求参数',
+        title: 'Paramètres / Corps',
         key: 'request_body',
         search: {
           disabled: true
@@ -122,14 +121,14 @@ export const crudOptions = (vm) => {
             autosize: {
               minRows: 2, maxRows: 8
             },
-            placeholder: '请输入关键词'
+            placeholder: 'Paramètres'
           }
         }
       },
       {
-        title: '请求方法',
+        title: 'Méthode',
         key: 'request_method',
-        width: 80,
+        width: 100,
         type: 'input',
         search: {
           disabled: false
@@ -137,13 +136,13 @@ export const crudOptions = (vm) => {
         form: {
           disabled: true,
           component: {
-            placeholder: '请输入请求方法'
+            placeholder: 'Méthode HTTP'
           }
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       },
       {
-        title: '操作说明',
+        title: 'Description',
         key: 'request_msg',
         disabled: true,
         form: {
@@ -153,7 +152,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: 'IP地址',
+        title: 'Adresse IP',
         key: 'request_ip',
         search: {
           disabled: false
@@ -163,49 +162,50 @@ export const crudOptions = (vm) => {
         form: {
           disabled: true,
           component: {
-            placeholder: '请输入IP地址'
+            placeholder: 'Adresse IP'
           }
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       },
       {
-        title: '请求浏览器',
+        title: 'Navigateur',
         key: 'request_browser',
         width: 180,
         type: 'input',
         form: {
           disabled: true
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       },
       {
-        title: '响应码',
+        title: 'Code HTTP',
         key: 'response_code',
         search: {
           disabled: true
         },
-        width: 80,
+        width: 100,
         type: 'input',
         form: {
           disabled: true
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       },
       {
-        title: '操作系统',
+        title: "Système d'exploitation",
         key: 'request_os',
         disabled: true,
         search: {
           disabled: true
         },
+        width: 150,
         type: 'input',
         form: {
           disabled: true
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       },
       {
-        title: '返回信息',
+        title: 'Réponse JSON',
         key: 'json_result',
         search: {
           disabled: true
@@ -215,17 +215,17 @@ export const crudOptions = (vm) => {
         form: {
           disabled: true
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }, {
-        title: '操作人',
-        width: 100,
+        title: 'Opérateur',
+        width: 120,
         key: 'creator_name',
         form: {
           disabled: true
         }
       },
       {
-        title: '更新时间',
+        title: 'Date de modification',
         key: 'update_datetime',
         width: 160,
         show: false,
@@ -236,7 +236,7 @@ export const crudOptions = (vm) => {
       },
       {
         fixed: 'right',
-        title: '操作时间',
+        title: "Date de l'opération",
         key: 'create_datetime',
         width: 160,
         type: 'datetime',

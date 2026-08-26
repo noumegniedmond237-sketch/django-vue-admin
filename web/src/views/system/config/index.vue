@@ -4,7 +4,7 @@
       <el-header>
         <div class="yxt-flex-between">
           <div>
-            <el-tag>系统配置:您可以对您的网站进行自定义配置</el-tag>
+            <el-tag>Configuration Système : Vous pouvez personnaliser les paramètres de la plateforme</el-tag>
           </div>
           <div>
             <el-button-group>
@@ -14,7 +14,7 @@
                 icon="el-icon-folder-add"
                 @click="tabsDrawer=true"
               >
-                添加分组
+                Ajouter un groupe
               </el-button>
               <el-button
                 size="small"
@@ -22,7 +22,7 @@
                 icon="el-icon-edit-outline"
                 @click="contentDrawer=true"
               >
-                添加内容
+                Ajouter un paramètre
               </el-button>
             </el-button-group>
           </div>
@@ -32,7 +32,7 @@
     <div>
       <el-drawer
         v-if="tabsDrawer"
-        title="添加分组"
+        title="Ajouter un groupe"
         :visible.sync="tabsDrawer"
         direction="rtl"
         size="30%"
@@ -43,7 +43,7 @@
     <div>
       <el-drawer
         v-if="contentDrawer"
-        title="添加内容"
+        title="Ajouter un paramètre"
         :visible.sync="contentDrawer"
         direction="rtl"
         size="30%"
@@ -102,7 +102,7 @@ export default {
       }).then(res => {
         const { data } = res.data
         data.push({
-          title: '无',
+          title: 'Nouveau',
           icon: 'el-icon-plus',
           key: 'null'
         })

@@ -71,7 +71,7 @@ class CustomPagination(PageNumberPagination):
         }
         if not data:
             code = 2000
-            msg = "暂无数据"
+            msg = "Aucune donnée disponible"
             res['data'] = []
 
         return Response(OrderedDict([

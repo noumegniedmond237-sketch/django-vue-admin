@@ -1,16 +1,16 @@
 <template>
 <div>
-  <el-divider content-position="left">消息中心</el-divider>
+  <el-divider content-position="left">Centre de notifications</el-divider>
   <div v-if="msgObj">
      <h3>{{msgObj.title}}</h3>
     <div class="content-style" v-html="msgObj.content"></div>
   </div>
   <div v-else>
-    <el-empty :image-size="100"></el-empty>
+    <el-empty description="Aucune notification" :image-size="100"></el-empty>
   </div>
   <el-divider></el-divider>
   <div style="text-align: center">
-    <el-button type="text" @click="toPage">前往通知中心</el-button>
+    <el-button type="text" @click="toPage">Accéder aux messages</el-button>
   </div>
 </div>
 </template>
@@ -30,7 +30,6 @@ export default {
       'open'
     ]),
     toPage () {
-      // this.open({name:'messageCenter'})
       this.$router.push({
         name: 'messageCenter'
       })
@@ -49,7 +48,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3; /*3表示只显示3行*/
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
   }
 </style>

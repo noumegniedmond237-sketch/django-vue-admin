@@ -1,16 +1,15 @@
 export const crudOptions = (vm) => {
   return {
-
     pageOptions: {
       compact: true
     },
     options: {
       tableType: 'vxe-table',
-      rowKey: true, // 必须设置，true or false
+      rowKey: true,
       rowId: 'id',
-      height: '100%', // 表格高度100%, 使用toolbar必须设置
+      height: '100%',
       highlightCurrentRow: false,
-      treeConfig: { // 树形数据配置
+      treeConfig: {
         children: 'children',
         hasChild: 'hasChildren',
         expandAll: true
@@ -40,14 +39,14 @@ export const crudOptions = (vm) => {
         }
       },
       custom: [{
-        text: ' 字典配置',
+        text: ' Configurer',
         type: 'success',
         size: 'small',
         emit: 'dictionaryConfigure'
       }]
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
+    indexRow: {
+      title: 'N°',
       align: 'center',
       width: 80
     },
@@ -55,11 +54,11 @@ export const crudOptions = (vm) => {
       componentType: 'form'
     },
     formOptions: {
-      defaultSpan: 24, // 默认的表单 span
+      defaultSpan: 24,
       width: '35%'
     },
     columns: [{
-      title: '关键词',
+      title: 'Recherche',
       key: 'search',
       show: false,
       disabled: true,
@@ -72,10 +71,10 @@ export const crudOptions = (vm) => {
           props: {
             clearable: true
           },
-          placeholder: '请输入关键词'
+          placeholder: 'Rechercher par mot-clé'
         }
       },
-      view: { // 查看对话框组件的单独配置
+      view: {
         disabled: true
       }
     },
@@ -90,9 +89,9 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '字典名称',
+      title: 'Nom du dictionnaire',
       key: 'label',
-      minWidth: 100,
+      minWidth: 120,
       search: {
         disabled: false,
         component: {
@@ -101,17 +100,16 @@ export const crudOptions = (vm) => {
           }
         }
       },
-
       type: 'input',
       form: {
-        rules: [ // 表单校验规则
-          { required: true, message: '字典名称必填项' }
+        rules: [
+          { required: true, message: 'Le nom du dictionnaire est requis' }
         ],
         component: {
           props: {
             clearable: true
           },
-          placeholder: '请输入字典名称'
+          placeholder: 'Entrez le nom du dictionnaire'
         },
         itemProps: {
           class: { yxtInput: true }
@@ -119,9 +117,9 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '字典编号',
+      title: 'Code du dictionnaire',
       key: 'value',
-      minWidth: 100,
+      minWidth: 120,
       search: {
         disabled: true,
         component: {
@@ -132,29 +130,28 @@ export const crudOptions = (vm) => {
       },
       type: 'input',
       form: {
-        rules: [ // 表单校验规则
-          { required: true, message: '字典编号必填项' }
+        rules: [
+          { required: true, message: 'Le code du dictionnaire est requis' }
         ],
         component: {
           props: {
             clearable: true
           },
-          placeholder: '请输入字典编号'
+          placeholder: 'Entrez le code unique'
         },
         itemProps: {
           class: { yxtInput: true }
         },
         helper: {
           render (h) {
-            return (< el-alert title="使用方法：vm.dictionary('字典编号')" type="warning"/>
+            return (< el-alert title="Utilisation : vm.dictionary('code_du_dictionnaire')" type="warning"/>
             )
           }
         }
       }
     },
-
     {
-      title: '状态',
+      title: 'Statut',
       key: 'status',
       width: 90,
       search: {
@@ -170,12 +167,12 @@ export const crudOptions = (vm) => {
         }
       },
       form: {
-        rules: [ // 表单校验规则
-          { required: true, message: '状态必填项' }
+        rules: [
+          { required: true, message: 'Le statut est requis' }
         ],
         value: true,
         component: {
-          placeholder: '请选择状态'
+          placeholder: 'Sélectionnez le statut'
         },
         itemProps: {
           class: { yxtInput: true }
@@ -183,7 +180,7 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '排序',
+      title: 'Ordre',
       key: 'sort',
       width: 90,
       type: 'number',

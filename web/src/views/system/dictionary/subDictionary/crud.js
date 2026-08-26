@@ -1,12 +1,11 @@
 export const crudOptions = (vm) => {
   return {
-
     pageOptions: {
       compact: true
     },
     options: {
       rowId: 'id',
-      height: '100%', // 表格高度100%, 使用toolbar必须设置
+      height: '100%',
       border: false
     },
     rowHandle: {
@@ -37,15 +36,14 @@ export const crudOptions = (vm) => {
       componentType: 'form'
     },
     formOptions: {
-      appendToBody: true, // 子表格必须 否则弹出对话框无法显示最顶层
-      defaultSpan: 24, // 默认的表单 span
+      appendToBody: true,
+      defaultSpan: 24,
       width: '35%'
     },
     columns: [
       {
-        title: '名称',
+        title: 'Libellé',
         key: 'label',
-
         search: {
           disabled: false,
           component: {
@@ -54,17 +52,16 @@ export const crudOptions = (vm) => {
             }
           }
         },
-
         type: 'input',
         form: {
-          rules: [ // 表单校验规则
-            { required: true, message: '名称必填项' }
+          rules: [
+            { required: true, message: 'Le libellé est requis' }
           ],
           component: {
             props: {
               clearable: true
             },
-            placeholder: '请输入名称'
+            placeholder: 'Entrez le libellé'
           },
           itemProps: {
             class: { yxtInput: true }
@@ -72,7 +69,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '数据值类型',
+        title: 'Type de valeur',
         type: 'select',
         key: 'type',
         search: {
@@ -86,33 +83,32 @@ export const crudOptions = (vm) => {
         show: false,
         dict: {
           data: [
-            { label: 'text', value: 0 },
-            { label: 'number', value: 1 },
-            { label: 'date', value: 2 },
-            { label: 'datetime', value: 3 },
-            { label: 'time', value: 4 },
-            { label: 'file', value: 5 },
-            { label: 'boolean', value: 6 },
-            { label: 'images', value: 7 }
+            { label: 'Texte', value: 0 },
+            { label: 'Nombre', value: 1 },
+            { label: 'Date', value: 2 },
+            { label: 'Date et Heure', value: 3 },
+            { label: 'Heure', value: 4 },
+            { label: 'Fichier', value: 5 },
+            { label: 'Booléen', value: 6 },
+            { label: 'Image', value: 7 }
           ]
         },
         form: {
-          rules: [ // 表单校验规则
-            { required: true, message: '数据值类型必填项' }
+          rules: [
+            { required: true, message: 'Le type de valeur est requis' }
           ],
           value: 0,
           component: {
             props: {
               clearable: true
             },
-            placeholder: '请选择数据值类型'
+            placeholder: 'Sélectionnez le type de valeur'
           },
           itemProps: {
             class: { yxtInput: true }
           },
           valueChange (key, value, form, { getColumn, mode, component, immediate, getComponent }) {
             const template = vm.getEditFormTemplate('value')
-            // 选择框重新选择后，情况value值
             if (!immediate) {
               form.value = undefined
             }
@@ -149,8 +145,8 @@ export const crudOptions = (vm) => {
               template.component.props = {
                 dict: {
                   data: [
-                    { label: '是', value: 'true' },
-                    { label: '否', value: 'false' }
+                    { label: 'Oui', value: 'true' },
+                    { label: 'Non', value: 'false' }
                   ]
                 }
               }
@@ -163,7 +159,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '数据值',
+        title: 'Valeur',
         key: 'value',
         search: {
           disabled: true,
@@ -176,7 +172,6 @@ export const crudOptions = (vm) => {
         view: {
           component: { props: { height: 100, width: 100 } }
         },
-        // 提交时,处理数据
         valueResolve (row, col) {
           const value = row[col.key]
           const type = row.type
@@ -196,7 +191,6 @@ export const crudOptions = (vm) => {
             row[col.key] = value
           }
         },
-        // 接收时,处理数据
         valueBuilder (row, col) {
           const value = row[col.key]
           const type = row.type
@@ -210,21 +204,21 @@ export const crudOptions = (vm) => {
         },
         type: 'input',
         form: {
-          rules: [ // 表单校验规则
-            { required: true, message: '数据值必填项' }
+          rules: [
+            { required: true, message: 'La valeur est requise' }
           ],
           component: {
             props: {
               clearable: true
             },
-            placeholder: '请输入数据值'
+            placeholder: 'Entrez la valeur'
           },
           itemProps: {
             class: { yxtInput: true }
           }
         }
       }, {
-        title: '状态',
+        title: 'Statut',
         key: 'status',
         width: 80,
         search: {
@@ -236,8 +230,8 @@ export const crudOptions = (vm) => {
         },
         form: {
           value: true,
-          rules: [ // 表单校验规则
-            { required: true, message: '状态必填项' }
+          rules: [
+            { required: true, message: 'Le statut est requis' }
           ],
           component: {
           },
@@ -247,7 +241,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '排序',
+        title: 'Ordre',
         key: 'sort',
         width: 70,
         type: 'number',
@@ -255,15 +249,15 @@ export const crudOptions = (vm) => {
           value: 1,
           component: {
           },
-          rules: [ // 表单校验规则
-            { required: true, message: '排序必填项' }
+          rules: [
+            { required: true, message: "L'ordre est requis" }
           ],
           itemProps: {
             class: { yxtInput: true }
           }
         }
       }, {
-        title: '标签颜色',
+        title: 'Badge',
         key: 'color',
         width: 90,
         search: {

@@ -14,10 +14,10 @@ import { request } from '@/api/service'
 
 export default {
   sort: 7,
-  title: '登录区域分布',
+  title: 'Répartition des Connexions',
   name: 'loginRegion',
   icon: 'el-icon-s-data',
-  description: '登录区域分布详情',
+  description: 'Origine géographique des connexions utilisateurs',
   height: 28,
   width: 20,
   isResizable: true,
@@ -34,8 +34,9 @@ export default {
   watch: {
     pxData: {
       handler () {
-        // eslint-disable-next-line no-unused-expressions
-        this.myChart?.resize({ width: this.pxData.wpx, height: this.pxData.hpx })
+        if (this.myChart) {
+          this.myChart.resize({ width: this.pxData.wpx, height: this.pxData.hpx })
+        }
       },
       immediate: true,
       deep: true
@@ -56,20 +57,17 @@ export default {
         this.drawLine(this.data)
       })
     },
-    // 生成一个随机整数
     randomColor () {
       const color = ['#fffff']
       const ran = Math.floor(Math.random() * 4)
       return color[ran]
     },
     drawLine () {
-      // 基于准备好的dom，初始化echarts实例
-      // 绘制图表
       const xAxisData = this.data.map(item => item.region)
       const seriesData = this.data.map(item => item.count)
       const option = {
         title: {
-          text: '登录区域分布',
+          text: 'Répartition des Connexions',
           textStyle: {
             color: '#666666',
             fontSize: 14,
@@ -92,11 +90,11 @@ export default {
           },
           formatter: params => {
             const param = params[0]
-            return `<div style="padding: 8px;"><div style="color: #333;">${param.name}</div><div style="color: #FFA500;">${param.value} 次</div></div>`
+            return `<div style="padding: 8px;"><div style="color: #333;">${param.name}</div><div style="color: #FFA500;">${param.value} connexion(s)</div></div>`
           }
         },
         legend: {
-          data: ['登录区域分布'],
+          data: ['Connexions par région'],
           textStyle: {
             color: '#666',
             fontSize: 12
@@ -153,7 +151,7 @@ export default {
         },
         series: [
           {
-            name: '用户注册数',
+            name: 'Connexions',
             type: 'bar',
             data: seriesData,
             barWidth: 16,
@@ -195,7 +193,6 @@ export default {
 
 <style scoped lang="scss">
 .card-view {
-  //border-radius: 10px;
   color: $color-primary;
 }
 

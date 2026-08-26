@@ -27,7 +27,7 @@
             v-permission="'Create'"
             type="primary"
             @click="addRow"
-            ><i class="el-icon-plus" /> 新增</el-button
+            ><i class="el-icon-plus" /> Ajouter</el-button
           >
         </el-button-group>
         <crud-toolbar

@@ -7,16 +7,16 @@ const log = [
     h: 12,
     config: {
       color: {
-        label: '背景颜色',
+        label: "Couleur d'arrière-plan",
         type: 'color',
         value: 'rgba(255, 255, 255, 1)',
-        placeholder: '颜色为空则随机变换颜色'
+        placeholder: 'Laissez vide pour couleur aléatoire'
       },
       fontColor: {
-        label: '字体颜色',
+        label: 'Couleur du texte',
         type: 'color',
         value: null,
-        placeholder: '请选择字体颜色'
+        placeholder: 'Sélectionnez la couleur du texte'
       }
     },
     isResizable: true,
@@ -31,16 +31,16 @@ const log = [
     h: 12,
     config: {
       color: {
-        label: '背景颜色',
+        label: "Couleur d'arrière-plan",
         type: 'color',
         value: 'rgba(255, 255, 255, 1)',
-        placeholder: '颜色为空则随机变换颜色'
+        placeholder: 'Laissez vide pour couleur aléatoire'
       },
       fontColor: {
-        label: '字体颜色',
+        label: 'Couleur du texte',
         type: 'color',
         value: null,
-        placeholder: '请选择字体颜色'
+        placeholder: 'Sélectionnez la couleur du texte'
       }
     },
     isResizable: true,
@@ -55,16 +55,16 @@ const log = [
     h: 12,
     config: {
       color: {
-        label: '背景颜色',
+        label: "Couleur d'arrière-plan",
         type: 'color',
         value: 'rgba(255, 255, 255, 1)',
-        placeholder: '颜色为空则随机变换颜色'
+        placeholder: 'Laissez vide pour couleur aléatoire'
       },
       fontColor: {
-        label: '字体颜色',
+        label: 'Couleur du texte',
         type: 'color',
         value: null,
-        placeholder: '请选择字体颜色'
+        placeholder: 'Sélectionnez la couleur du texte'
       }
     },
     isResizable: true,
@@ -79,16 +79,16 @@ const log = [
     h: 12,
     config: {
       color: {
-        label: '背景颜色',
+        label: "Couleur d'arrière-plan",
         type: 'color',
         value: 'rgba(255, 255, 255, 1)',
-        placeholder: '颜色为空则随机变换颜色'
+        placeholder: 'Laissez vide pour couleur aléatoire'
       },
       fontColor: {
-        label: '字体颜色',
+        label: 'Couleur du texte',
         type: 'color',
         value: null,
-        placeholder: '请选择字体颜色'
+        placeholder: 'Sélectionnez la couleur du texte'
       }
     },
     isResizable: true,
@@ -125,26 +125,26 @@ const log = [
     h: 14,
     config: {
       src: {
-        label: '图片地址',
+        label: "URL de l'image",
         type: 'input',
         value: 'https://kfm-waiter.oss-cn-zhangjiakou.aliyuncs.com/dvadmin/img/chajianshichang.jpg',
-        placeholder: '请输入图片地址',
+        placeholder: "Entrez l'URL de l'image",
         rules: [
           {
             required: true,
-            message: '不能为空'
+            message: 'Ce champ est requis'
           }
         ]
       },
       url: {
-        label: '跳转地址',
+        label: 'Lien de redirection',
         type: 'input',
-        placeholder: '请输入跳转地址',
+        placeholder: 'Entrez le lien',
         value: 'https://bbs.django-vue-admin.com/plugMarket.html',
         rules: [
           {
             required: true,
-            message: '不能为空'
+            message: 'Ce champ est requis'
           }
         ]
       }
@@ -161,26 +161,26 @@ const log = [
     h: 14,
     config: {
       src: {
-        label: '图片地址',
+        label: "URL de l'image",
         type: 'input',
         value: '/image/card/tencent.jpg',
-        placeholder: '请输入图片地址',
+        placeholder: "Entrez l'URL de l'image",
         rules: [
           {
             required: true,
-            message: '不能为空'
+            message: 'Ce champ est requis'
           }
         ]
       },
       url: {
-        label: '跳转地址',
+        label: 'Lien de redirection',
         type: 'input',
-        placeholder: '请输入跳转地址',
+        placeholder: 'Entrez le lien',
         value: 'https://cloud.tencent.com/act/cps/redirect?redirect=1060&cps_key=b302a514a6688aa30823fac954464e5d&from=console',
         rules: [
           {
             required: true,
-            message: '不能为空'
+            message: 'Ce champ est requis'
           }
         ]
       }
@@ -197,26 +197,26 @@ const log = [
     h: 14,
     config: {
       src: {
-        label: '图片地址',
+        label: "URL de l'image",
         type: 'input',
         value: 'https://kfm-waiter.oss-cn-zhangjiakou.aliyuncs.com/dvadmin/img/aliyun-02.png',
-        placeholder: '请输入图片地址',
+        placeholder: "Entrez l'URL de l'image",
         rules: [
           {
             required: true,
-            message: '不能为空'
+            message: 'Ce champ est requis'
           }
         ]
       },
       url: {
-        label: '跳转地址',
+        label: 'Lien de redirection',
         type: 'input',
-        placeholder: '请输入跳转地址',
+        placeholder: 'Entrez le lien',
         value: 'https://www.aliyun.com/minisite/goods?userCode=jpef8a71&share_source=copy_link',
         rules: [
           {
             required: true,
-            message: '不能为空'
+            message: 'Ce champ est requis'
           }
         ]
       }
@@ -233,16 +233,16 @@ const log = [
     h: 24,
     config: {
       color: {
-        label: '背景颜色',
+        label: "Couleur d'arrière-plan",
         type: 'color',
         value: '',
-        placeholder: '颜色为空则随机变换颜色'
+        placeholder: 'Laissez vide pour couleur aléatoire'
       },
       fontColor: {
-        label: '字体颜色',
+        label: 'Couleur du texte',
         type: 'color',
         value: null,
-        placeholder: '请选择字体颜色'
+        placeholder: 'Sélectionnez la couleur du texte'
       }
     },
     isResizable: true,
@@ -257,22 +257,22 @@ const log = [
     h: 22,
     config: {
       showHeader: {
-        label: '显示头部信息',
+        label: "Afficher l'en-tête",
         type: 'boot',
         value: true,
-        placeholder: '颜色为空则随机变换颜色'
+        placeholder: ''
       },
       color: {
-        label: '背景颜色',
+        label: "Couleur d'arrière-plan",
         type: 'color',
         value: 'rgba(255, 255, 255, 1)',
-        placeholder: '颜色为空则随机变换颜色'
+        placeholder: 'Laissez vide pour couleur aléatoire'
       },
       fontColor: {
-        label: '字体颜色',
+        label: 'Couleur du texte',
         type: 'color',
         value: null,
-        placeholder: '请选择字体颜色'
+        placeholder: 'Sélectionnez la couleur du texte'
       }
     },
     isResizable: true,

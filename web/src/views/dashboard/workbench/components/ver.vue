@@ -1,13 +1,13 @@
 <template>
   <el-card
     shadow="hover"
-    :header="config?.showHeader?.value ? '版本信息' : ''"
+    :header="config?.showHeader?.value ? 'Informations de Version' : ''"
     class="card-view"
     :style="{backgroundColor:randomColor(),color: config?.fontColor?.value}"
   >
     <div style="text-align: center;">
       <h2 style="margin-top: 5px;">{{ title }}</h2>
-      <p style="margin-top: 5px;">最新版本 {{ ver }}</p>
+      <p style="margin-top: 5px;">Dernière version : {{ ver }}</p>
     </div>
   </el-card>
 </template>
@@ -17,31 +17,31 @@ import { mapState } from 'vuex'
 
 export default {
   sort: 10,
-  title: '版本信息',
+  title: 'Informations de Version',
   name: 'ver',
   icon: 'el-icon-monitor',
-  description: '当前项目版本信息',
+  description: 'Version actuelle du système',
   height: 14,
   width: 16,
   isResizable: true,
   config: {
     showHeader: {
-      label: '显示头部信息',
+      label: "Afficher l'en-tête",
       type: 'boot',
       value: true,
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: ''
     },
     color: {
-      label: '背景颜色',
+      label: "Couleur d'arrière-plan",
       type: 'color',
       value: '',
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: 'Laissez vide pour couleur aléatoire'
     },
     fontColor: {
-      label: '字体颜色',
+      label: 'Couleur du texte',
       type: 'color',
       value: '',
-      placeholder: '请选择字体颜色'
+      placeholder: 'Sélectionnez la couleur du texte'
     }
   },
   props: {
@@ -61,15 +61,14 @@ export default {
   },
   computed: {
     ...mapState('d2admin', {
-      siteName: state => state.settings.data['login.site_name'] // 网站名称
+      siteName: state => state.settings.data['login.site_name']
     })
   },
   methods: {
     async getVer () {
-      this.ver = `v${process.env.VUE_APP_VERSION}` || 'v2.1.5'
-      this.title = this.siteName || process.env.VUE_APP_TITLE
+      this.ver = `v${process.env.VUE_APP_VERSION}` || 'v2.0.0'
+      this.title = this.siteName || process.env.VUE_APP_TITLE || 'Django Vue Admin'
     },
-    // 生成一个颜色
     randomColor () {
       if (this.config?.color?.value) {
         return this.config.color.value
@@ -82,16 +81,10 @@ export default {
 <style scoped lang="scss">
 .card-view {
   color: $color-primary;
-  //background: rgb(80,168,244);
-  //box-shadow: 1px 6px 8px 2px rgba(80,168,244,0.2);
-  .card-content {
-    //text-align: center;
-  }
 }
 
 ::v-deep .el-card__body {
   height: 110px;
-
 }
 
 .el-card {

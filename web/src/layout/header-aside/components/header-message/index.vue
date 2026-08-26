@@ -1,9 +1,8 @@
 <template>
   <div>
-
     <el-tooltip
       effect="dark"
-      content="通知"
+      content="Notifications"
       placement="bottom">
       <el-popover
         placement="bottom"

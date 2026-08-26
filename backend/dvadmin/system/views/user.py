@@ -90,7 +90,7 @@ class UserCreateSerializer(CustomModelSerializer):
     username = serializers.CharField(
         max_length=50,
         validators=[
-            CustomUniqueValidator(queryset=Users.objects.all(), message="账号必须唯一")
+            CustomUniqueValidator(queryset=Users.objects.all(), message="L'identifiant doit être unique")
         ],
     )
     password = serializers.CharField(
@@ -98,9 +98,6 @@ class UserCreateSerializer(CustomModelSerializer):
     )
 
     def validate_password(self, value):
-        """
-        对密码进行验证
-        """
         password = self.initial_data.get("password")
         if password:
             return make_password(value)
@@ -123,21 +120,16 @@ class UserCreateSerializer(CustomModelSerializer):
 
 
 class UserUpdateSerializer(CustomModelSerializer):
-    """
-    用户修改-序列化器
-    """
-
     username = serializers.CharField(
         max_length=50,
         validators=[
-            CustomUniqueValidator(queryset=Users.objects.all(), message="账号必须唯一")
+            CustomUniqueValidator(queryset=Users.objects.all(), message="L'identifiant doit être unique")
         ],
     )
-    # password = serializers.CharField(required=False, allow_blank=True)
     mobile = serializers.CharField(
         max_length=50,
         validators=[
-            CustomUniqueValidator(queryset=Users.objects.all(), message="手机号必须唯一")
+            CustomUniqueValidator(queryset=Users.objects.all(), message="Le numéro de téléphone doit être unique")
         ],
         allow_blank=True
     )
@@ -159,13 +151,10 @@ class UserUpdateSerializer(CustomModelSerializer):
 
 
 class UserInfoUpdateSerializer(CustomModelSerializer):
-    """
-    用户修改-序列化器
-    """
     mobile = serializers.CharField(
         max_length=50,
         validators=[
-            CustomUniqueValidator(queryset=Users.objects.all(), message="手机号必须唯一")
+            CustomUniqueValidator(queryset=Users.objects.all(), message="Le numéro de téléphone doit être unique")
         ],
         allow_blank=True
     )
@@ -326,63 +315,57 @@ class UserViewSet(CustomModelViewSet):
         role = getattr(user, 'role', None)
         if role:
             result['role_info'] = role.values('id', 'name', 'key')
-        return DetailResponse(data=result, msg="获取成功")
+        return DetailResponse(data=result, msg="Récupéré avec succès")
 
     @action(methods=["PUT"], detail=False, permission_classes=[IsAuthenticated])
     def update_user_info(self, request):
-        """修改当前用户信息"""
         serializer = UserInfoUpdateSerializer(request.user, data=request.data, request=request)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return DetailResponse(data=None, msg="修改成功")
+        return DetailResponse(data=None, msg="Modifié avec succès")
 
     @action(methods=["PUT"], detail=True, permission_classes=[IsAuthenticated])
     def change_password(self, request, *args, **kwargs):
-        """密码修改"""
         data = request.data
         old_pwd = data.get("oldPassword")
         new_pwd = data.get("newPassword")
         new_pwd2 = data.get("newPassword2")
         if old_pwd is None or new_pwd is None or new_pwd2 is None:
-            return ErrorResponse(msg="参数不能为空")
+            return ErrorResponse(msg="Les paramètres ne peuvent pas être vides")
         if new_pwd != new_pwd2:
-            return ErrorResponse(msg="两次密码不匹配")
+            return ErrorResponse(msg="Les deux mots de passe ne correspondent pas")
         verify_password = check_password(old_pwd, self.request.user.password)
         if not verify_password:
             verify_password = check_password(hashlib.md5(old_pwd.encode(encoding='UTF-8')).hexdigest(), self.request.user.password)
         if verify_password:
             request.user.password = make_password(new_pwd)
             request.user.save()
-            return DetailResponse(data=None, msg="修改成功")
+            return DetailResponse(data=None, msg="Modifié avec succès")
         else:
-            return ErrorResponse(msg="旧密码不正确")
+            return ErrorResponse(msg="L'ancien mot de passe est incorrect")
 
     @action(methods=["PUT"], detail=True, permission_classes=[IsAuthenticated])
     def reset_to_default_password(self, request, *args, **kwargs):
-        """恢复默认密码"""
         instance = Users.objects.filter(id=kwargs.get("pk")).first()
         if instance:
             instance.set_password(dispatch.get_system_config_values("base.default_password"))
             instance.save()
-            return DetailResponse(data=None, msg="密码重置成功")
+            return DetailResponse(data=None, msg="Mot de passe réinitialisé avec succès")
         else:
-            return ErrorResponse(msg="未获取到用户")
+            return ErrorResponse(msg="Utilisateur introuvable")
 
     @action(methods=["PUT"], detail=True)
     def reset_password(self, request, pk):
-        """
-        密码重置
-        """
         instance = Users.objects.filter(id=pk).first()
         data = request.data
         new_pwd = data.get("newPassword")
         new_pwd2 = data.get("newPassword2")
         if instance:
             if new_pwd != new_pwd2:
-                return ErrorResponse(msg="两次密码不匹配")
+                return ErrorResponse(msg="Les deux mots de passe ne correspondent pas")
             else:
                 instance.password = make_password(new_pwd)
                 instance.save()
-                return DetailResponse(data=None, msg="修改成功")
+                return DetailResponse(data=None, msg="Modifié avec succès")
         else:
-            return ErrorResponse(msg="未获取到用户")
+            return ErrorResponse(msg="Utilisateur introuvable")

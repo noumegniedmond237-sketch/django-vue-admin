@@ -1,0 +1,22 @@
+{
+  "_element": "en",
+  "_name": "English",
+  "page": {
+    "login": {
+      "title": "Login",
+      "username": "Username",
+      "password": "Password",
+      "captcha": "Verification Code",
+      "btn": "Login",
+      "quick": "Quick Login (Dev)",
+      "trial": "Free Trial"
+    },
+    "demo": {
+      "playground": {
+        "locales": {
+          "text": "D2Admin is a completely open source and free enterprise middle and backend product frontend integration solution."
+        }
+      }
+    }
+  }
+}

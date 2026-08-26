@@ -5,7 +5,6 @@
       backgroundColor: randomColor(),
     }"
   >
-    <!-- shadow="always" -->
     <div id="myChart" :style="{width: pxData.wpx+'px',height: pxData.hpx+'px'}"></div>
   </el-card>
 </template>
@@ -14,10 +13,10 @@
 import { request } from '@/api/service'
 export default {
   sort: 6,
-  title: '用户登录趋势',
+  title: 'Tendance des Connexions',
   name: 'userLogin',
   icon: 'el-icon-s-data',
-  description: '用户登陆',
+  description: 'Évolution des connexions utilisateurs',
   height: 28,
   width: 20,
   isResizable: true,
@@ -34,8 +33,9 @@ export default {
   watch: {
     pxData: {
       handler () {
-        // eslint-disable-next-line no-unused-expressions
-        this.myChart?.resize({ width: this.pxData.wpx, height: this.pxData.hpx })
+        if (this.myChart) {
+          this.myChart.resize({ width: this.pxData.wpx, height: this.pxData.hpx })
+        }
       },
       immediate: true,
       deep: true
@@ -46,7 +46,6 @@ export default {
     return {
       data: [],
       radio: '7'
-
     }
   },
   methods: {
@@ -58,19 +57,25 @@ export default {
         this.drawLine(this.data)
       })
     },
-    // 生成一个随机整数
     randomColor () {
       const color = ['#fffff']
       const ran = Math.floor(Math.random() * 4)
       return color[ran]
     },
     drawLine () {
-      // 基于准备好的dom，初始化echarts实例
-      // 绘制图表
       const xAxisData = this.data.map(item => item.day)
       const seriesData = this.data.map(item => item.count)
 
       const option = {
+        title: {
+          text: 'Tendance des Connexions',
+          textStyle: {
+            color: '#666666',
+            fontSize: 14,
+            fontWeight: '600'
+          },
+          left: 'left'
+        },
         tooltip: {
           trigger: 'axis',
           backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -86,11 +91,11 @@ export default {
           },
           formatter: params => {
             const param = params[0]
-            return `<div style="padding: 8px;"><div style="color: #333;">${param.name}</div><div style="color: #FFA500;">${param.value} 次</div></div>`
+            return `<div style="padding: 8px;"><div style="color: #333;">${param.name}</div><div style="color: #FFA500;">${param.value} connexion(s)</div></div>`
           }
         },
         legend: {
-          data: ['用户登陆数'],
+          data: ['Connexions'],
           textStyle: {
             color: '#666',
             fontSize: 12
@@ -144,7 +149,7 @@ export default {
         },
         series: [
           {
-            name: '用户登陆数',
+            name: 'Connexions',
             type: 'line',
             data: seriesData,
             symbol: 'circle',
@@ -193,9 +198,8 @@ export default {
 }
 </script>
 
-  <style scoped lang="scss">
+<style scoped lang="scss">
 .card-view {
-  //border-radius: 10px;
   color: $color-primary;
 }
 .el-card{

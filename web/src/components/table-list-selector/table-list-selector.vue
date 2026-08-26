@@ -100,7 +100,7 @@
         </el-table-column>
       </template>
       <el-table-column
-        label="操作"
+        label="Actions"
         fixed="right"
         v-show="colButtons.show"
         :width="colButtons.width">
@@ -121,40 +121,36 @@ import lodash from 'lodash'
 import { d2CrudPlus } from 'd2-crud-plus'
 import { request } from '@/api/service'
 import XEUtils from 'xe-utils'
-// 表格选择组件
 export default {
   name: 'table-list-selector-input',
   mixins: [d2CrudPlus.input, d2CrudPlus.inputDict],
   props: {
-    // 值
     value: {
       type: [Number, String, Boolean, Array, Object]
     },
-    // 过滤，value中的nodes过滤方法 参数为nodes
     filter: {
       type: Function,
       require: false
     },
-    // 过滤的placeholder
     filterPlaceholder: {
       type: String,
-      default: '输入关键字进行过滤'
+      default: 'Filtrer par mot-clé...'
     },
     placeholder: {
       type: String,
-      default: '请选择'
+      default: 'Sélectionner'
     },
     dialogTitle: {
       type: String,
-      default: '选择'
+      default: 'Sélectionner'
     },
     cancelText: {
       type: String,
-      default: '取消'
+      default: 'Annuler'
     },
     confirmText: {
       type: String,
-      default: '确定'
+      default: 'Confirmer'
     },
     // 树形组件节点过滤，可以配置elProps.filterNodeMethod ，覆盖默认的过滤方法
     treeFilter: {

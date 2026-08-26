@@ -6,6 +6,10 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'application.settings')
     try:
         from django.core.management import execute_from_command_line

@@ -10,10 +10,10 @@
     >
       <div slot="header">
         <crud-search ref="search" :options="crud.searchOptions" @submit="handleSearch"  />
-        <el-button size="small" type="primary" @click="addRow"><i class="el-icon-plus"/> 新增</el-button>
+        <el-button size="small" type="primary" @click="addRow"><i class="el-icon-plus"/> Nouveau message</el-button>
         <el-tabs v-model="tabActivted" @tab-click="onTabClick">
-          <el-tab-pane label="我的发布" name="send"></el-tab-pane>
-          <el-tab-pane label="我的接收" name="receive"></el-tab-pane>
+          <el-tab-pane label="Messages envoyés" name="send"></el-tab-pane>
+          <el-tab-pane label="Boîte de réception" name="receive"></el-tab-pane>
         </el-tabs>
         <crud-toolbar :search.sync="crud.searchOptions.show"
                       :compact.sync="crud.pageOptions.compact"
@@ -77,7 +77,6 @@ export default {
       this.tabActivted = name
       this.doRefresh()
     },
-    // 关闭事件
     doDialogClosed (context) {
       this.doRefresh()
     }

@@ -19,7 +19,7 @@ const createAllUploadedValidator = (getFormComponentRef) => {
   return (rule, value, callback) => {
     const ref = getFormComponentRef(rule.fullField)
     if (ref && ref.isHasUploadingItem()) {
-      callback(new Error('还有未上传完成的文件'))
+      callback(new Error('Des téléversements de fichiers sont encore en cours'))
       return
     }
     callback()

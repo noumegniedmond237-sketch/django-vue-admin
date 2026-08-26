@@ -4,10 +4,8 @@ export const crudOptions = (vm) => {
       compact: true
     },
     options: {
-      // tableType: 'vxe-table',
-      // rowKey: true, // 必须设置，true or false
       rowId: 'id',
-      height: '100%', // 表格高度100%, 使用toolbar必须设置
+      height: '100%',
       highlightCurrentRow: false
     },
     rowHandle: {
@@ -30,7 +28,7 @@ export const crudOptions = (vm) => {
       },
       remove: {
         thin: true,
-        text: '删除',
+        text: 'Supprimer',
         show: false,
         disabled () {
           return !vm.hasPermissions('Delete')
@@ -42,16 +40,16 @@ export const crudOptions = (vm) => {
     },
     formOptions: {
       disabled: true,
-      defaultSpan: 12 // 默认的表单 span
+      defaultSpan: 12
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
+    indexRow: {
+      title: 'N°',
       align: 'center',
       width: 70
     },
     columns: [
       {
-        title: '关键词',
+        title: 'Recherche',
         key: 'search',
         show: false,
         disabled: true,
@@ -61,7 +59,7 @@ export const crudOptions = (vm) => {
         form: {
           show: false,
           component: {
-            placeholder: '请输入关键词'
+            placeholder: 'Rechercher par mot-clé'
           }
         }
       },
@@ -75,7 +73,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '登录用户名',
+        title: "Nom d'utilisateur",
         key: 'username',
         search: {
           disabled: false
@@ -85,12 +83,12 @@ export const crudOptions = (vm) => {
         form: {
           disabled: true,
           component: {
-            placeholder: '请输入登录用户名'
+            placeholder: "Nom d'utilisateur"
           }
         }
       },
       {
-        title: '登录ip',
+        title: 'Adresse IP',
         key: 'ip',
         search: {
           disabled: false
@@ -100,11 +98,11 @@ export const crudOptions = (vm) => {
         form: {
           disabled: true,
           component: {
-            placeholder: '请输入登录ip'
+            placeholder: 'Adresse IP'
           }
         }
       }, {
-        title: '运营商',
+        title: 'Fournisseur (FAI)',
         key: 'isp',
         search: {
           disabled: true
@@ -114,179 +112,122 @@ export const crudOptions = (vm) => {
         type: 'input',
         form: {
           component: {
-            placeholder: '请输入运营商'
+            placeholder: 'FAI'
           }
         }
       }, {
-        title: '大州',
+        title: 'Continent',
         key: 'continent',
-        width: 80,
+        width: 100,
         type: 'input',
         form: {
           disabled: true,
           component: {
-            placeholder: '请输入大州'
+            placeholder: 'Continent'
           }
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }, {
-        title: '国家',
+        title: 'Pays',
         key: 'country',
-        width: 80,
+        width: 100,
         type: 'input',
         form: {
           component: {
-            placeholder: '请输入国家'
+            placeholder: 'Pays'
           }
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }, {
-        title: '省份',
+        title: 'Province / Région',
         key: 'province',
-        width: 80,
+        width: 120,
         type: 'input',
         form: {
           component: {
-            placeholder: '请输入省份'
+            placeholder: 'Région'
           }
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }, {
-        title: '城市',
+        title: 'Ville',
         key: 'city',
-        width: 80,
+        width: 100,
         type: 'input',
         form: {
           component: {
-            placeholder: '请输入城市'
+            placeholder: 'Ville'
           }
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }, {
-        title: '县区',
-        key: 'district',
-        width: 80,
-        type: 'input',
-        form: {
-          component: {
-            placeholder: '请输入县区'
-          }
-        },
-        component: { props: { color: 'auto' } } // 自动染色
-      }, {
-        title: '区域代码',
+        title: 'Code Région',
         key: 'area_code',
         width: 100,
         type: 'input',
         form: {
           component: {
-            placeholder: '请输入区域代码'
+            placeholder: 'Code région'
           }
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }, {
-        title: '英文全称',
-        key: 'country_english',
-        width: 120,
-        type: 'input',
-        form: {
-          component: {
-            placeholder: '请输入英文全称'
-          }
-        },
-        component: { props: { color: 'auto' } } // 自动染色
-      }, {
-        title: '简称',
-        key: 'country_code',
-        width: 100,
-        type: 'input',
-        form: {
-          component: {
-            placeholder: '请输入简称'
-          }
-        },
-        component: { props: { color: 'auto' } } // 自动染色
-      }, {
-        title: '经度',
-        key: 'longitude',
-        width: 80,
-        type: 'input',
-        disabled: true,
-        form: {
-          component: {
-            placeholder: '请输入经度'
-          }
-        },
-        component: { props: { color: 'auto' } } // 自动染色
-      }, {
-        title: '纬度',
-        key: 'latitude',
-        width: 80,
-        type: 'input',
-        disabled: true,
-        form: {
-          component: {
-            placeholder: '请输入纬度'
-          }
-        },
-        component: { props: { color: 'auto' } } // 自动染色
-      }, {
-        title: '登录类型',
+        title: 'Type de connexion',
         key: 'login_type',
-        width: 100,
+        width: 140,
         type: 'select',
         search: {
           disabled: false
         },
         dict: {
           data: [
-            { label: '普通登录', value: 1 },
-            { label: '普通扫码登录', value: 2 },
-            { label: '微信扫码登录', value: 3 },
-            { label: '飞书扫码登录', value: 4 },
-            { label: '钉钉扫码登录', value: 5 },
-            { label: '短信登录', value: 6 }]
+            { label: 'Identifiant / Mot de passe', value: 1 },
+            { label: 'QR Code Standard', value: 2 },
+            { label: 'WeChat QR Code', value: 3 },
+            { label: 'Feishu QR Code', value: 4 },
+            { label: 'DingTalk QR Code', value: 5 },
+            { label: 'SMS OTP', value: 6 }]
         },
         form: {
           component: {
-            placeholder: '请选择登录类型'
+            placeholder: 'Type de connexion'
           }
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }, {
-        title: '操作系统',
+        title: "Système d'exploitation",
         key: 'os',
         width: 180,
         type: 'input',
         form: {
           component: {
-            placeholder: '请输入操作系统'
+            placeholder: "Système d'exploitation"
           }
         }
       }, {
-        title: '浏览器名',
+        title: 'Navigateur',
         key: 'browser',
         width: 180,
         type: 'input',
         form: {
           component: {
-            placeholder: '请输入浏览器名'
+            placeholder: 'Navigateur'
           }
         }
       }, {
-        title: 'agent信息',
+        title: 'User Agent',
         key: 'agent',
         disabled: true,
         width: 180,
         type: 'input',
         form: {
           component: {
-            placeholder: '请输入agent信息'
+            placeholder: 'User Agent'
           }
         }
       }, {
         fixed: 'right',
-        title: '登录时间',
+        title: 'Date de connexion',
         key: 'create_datetime',
         width: 160,
         type: 'datetime',

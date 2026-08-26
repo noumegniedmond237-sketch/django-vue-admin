@@ -2,33 +2,33 @@
   <d2-container>
     <suspended-library ref="suspendedLibrary">
       <div class="set-btn-class" slot="callbackButton">
-        <el-button v-if="customizing" type="primary" icon="el-icon-check" round @click="save">完成&nbsp;&nbsp;
+        <el-button v-if="customizing" type="primary" icon="el-icon-check" round @click="save">Terminer&nbsp;&nbsp;
         </el-button>
-        <el-button v-else type="primary" icon="el-icon-edit" round @click="custom">自定义</el-button>
-        <el-button v-if="minimize" type="warning" icon="el-icon-plus" round @click="clickMinimize">展开&nbsp;&nbsp;
+        <el-button v-else type="primary" icon="el-icon-edit" round @click="custom">Personnaliser</el-button>
+        <el-button v-if="minimize" type="warning" icon="el-icon-plus" round @click="clickMinimize">Déplier&nbsp;&nbsp;
         </el-button>
       </div>
       <div slot="operateButton">
-        <el-tooltip class="item" effect="dark" content="清空画布" placement="top">
+        <el-tooltip class="item" effect="dark" content="Vider le tableau" placement="top">
           <el-button v-if="customizing" type="danger" icon="el-icon-delete" circle size="mini"
                      @click="clickEmpty"></el-button>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="最小化" placement="top">
+        <el-tooltip class="item" effect="dark" content="Réduire" placement="top">
           <el-button v-if="customizing" type="success" icon="el-icon-minus" circle size="mini"
                      @click="clickMinimize"></el-button>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="恢复默认" placement="top">
+        <el-tooltip class="item" effect="dark" content="Rétablir par défaut" placement="top">
           <el-button v-if="customizing" type="primary" icon="el-icon-refresh-right" circle size="mini"
                      @click="backDefault()"></el-button>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="关闭" placement="top">
+        <el-tooltip class="item" effect="dark" content="Fermer" placement="top">
           <el-button v-if="customizing" type="danger" icon="el-icon-close" circle size="mini"
                      @click="close()"></el-button>
         </el-tooltip>
       </div>
       <div slot="widgetsList">
         <div v-if="myCompsList.length<=0" class="widgets-list-nodata">
-          <el-empty description="没有部件啦" :image-size="60"></el-empty>
+          <el-empty description="Aucun widget disponible" :image-size="60"></el-empty>
         </div>
         <div class="widgetsListBox">
           <span v-for="item in myCompsList" :key="item.title">
@@ -48,7 +48,7 @@
     <div class="widgets" ref="widgets">
       <div :class="['widgets-wrapper',customizing?'widgets-wrapper-bg':'']">
         <div v-if="nowCompsList.length<=0" class="no-widgets">
-          <el-empty image="img/no-widgets.svg" description="没有部件啦" :image-size="280"></el-empty>
+          <el-empty image="img/no-widgets.svg" description="Aucun widget disponible" :image-size="280"></el-empty>
         </div>
         <grid-layout
           ref="gridlayout"
@@ -81,7 +81,7 @@
               <label>
                 <i :class="allComps[item.element].icon"></i>
                 {{ allComps[item.element].title }}</label>
-              <div style="color:#000;">宽{{ item.w }} x 高{{ item.h }}</div>
+              <div style="color:#000;">L : {{ item.w }} x H : {{ item.h }}</div>
             </div>
             <component :class="customizing?'set-component-bg':''" :is="allComps[item.element]"
                        :config="item.config || {}" :width="item.w" :height="item.h" :pxData="pxData[item.i]"></component>
@@ -161,7 +161,6 @@ export default {
     }
   },
   methods: {
-    // 开启自定义
     custom () {
       this.customizing = true
       this.$refs.suspendedLibrary.menu = true
@@ -174,7 +173,6 @@ export default {
     getLayoutElementNumber (elementName) {
       return elementName + this.layout.length
     },
-    // 追加
     push (item) {
       this.layout.push({
         i: this.getLayoutElementNumber(item.key),
@@ -187,13 +185,10 @@ export default {
         element: item.key
       })
     },
-    // 删除组件
     remove (index) {
       this.layout.splice(index, 1)
     },
-    // 保存
     async save () {
-      console.log(this.layout)
       this.customizing = false
       this.minimize = false
       this.$refs.suspendedLibrary.menu = false
@@ -209,14 +204,12 @@ export default {
         user: true
       }, { root: true })
     },
-    // 恢复默认
     backDefault () {
       this.customizing = false
       this.minimize = false
       this.$refs.suspendedLibrary.menu = false
       this.$refs.widgets.style.removeProperty('transform')
       this.layout = JSON.parse(JSON.stringify(this.defaultLayout))
-      // 设为默认
       this.$store.dispatch('d2admin/db/set', {
         dbName: 'sys',
         path: 'grid-layout',
@@ -224,7 +217,6 @@ export default {
         user: true
       }, { root: true })
     },
-    // 关闭
     async close () {
       this.customizing = false
       this.minimize = false
@@ -237,11 +229,9 @@ export default {
         user: true
       }, { root: true })
     },
-    // 清空画布
     clickEmpty () {
       this.layout = []
     },
-    // 保存配置
     saveConfig (myComp, items) {
       this.layout.map(val => {
         if (val.i === items.i) {
@@ -249,18 +239,15 @@ export default {
         }
       })
     },
-    // 最小化
     clickMinimize () {
       this.minimize = !this.minimize
       this.$refs.suspendedLibrary.menu = !this.$refs.suspendedLibrary.menu
     },
-    // 打开系统配置
     clickConfig (itme) {
       this.$refs.dashboardConfig.deviceUpgradeDrawer = true
       this.$refs.dashboardConfig.initData(this.allComps[itme.element], JSON.parse(JSON.stringify(itme)))
       this.minimize = false
     },
-    // 设置实际的宽度和高度
     containerResizedEvent: function (i, newH, newW, newHPx, newWPx) {
       this.layout.map(val => {
         if (val.i === i) {
@@ -342,7 +329,6 @@ export default {
 }
 
 .set-component-bg {
-  //background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(0, 0, 0, .5);
 }
 

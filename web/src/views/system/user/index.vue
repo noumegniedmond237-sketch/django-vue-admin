@@ -19,22 +19,22 @@
             type="primary"
             @click="addRow"
           >
-            <i class="el-icon-plus" /> 新增
+            <i class="el-icon-plus" /> Ajouter
           </el-button>
           <el-button size="small" type="danger" @click="batchDelete">
-            <i class="el-icon-delete"></i> 批量删除
+            <i class="el-icon-delete"></i> Supprimer la sélection
           </el-button>
           <el-button
             size="small"
             type="warning"
             @click="onExport"
             v-permission="'Export'"
-            ><i class="el-icon-download" /> 导出
+            ><i class="el-icon-download" /> Exporter
           </el-button>
           <importExcel
             api="api/system/user/"
             v-permission="'Import'"
-            >导入
+            >Importer
           </importExcel>
         </el-button-group>
         <crud-toolbar
@@ -49,7 +49,7 @@
         <el-button
           class="square"
           size="mini"
-          title="批量删除"
+          title="Supprimer la sélection"
           @click="batchDelete"
           icon="el-icon-delete"
           :disabled="!multipleSelection || multipleSelection.length == 0"
@@ -57,13 +57,13 @@
       </span>
     </d2-crud-x>
     <el-dialog
-      title="密码重置"
+      title="Réinitialisation du mot de passe"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
       width="30%"
     >
       <el-form :model="resetPwdForm" ref="resetPwdForm" :rules="passwordRules">
-        <el-form-item label="密码" prop="pwd">
+        <el-form-item label="Nouveau mot de passe" prop="pwd">
           <el-input
             v-model="resetPwdForm.pwd"
             type="password"
@@ -72,7 +72,7 @@
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item label="再次输入密码" prop="pwd2">
+        <el-form-item label="Confirmer le mot de passe" prop="pwd2">
           <el-input
             v-model="resetPwdForm.pwd2"
             type="password"
@@ -83,8 +83,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="resetPwdSubmit">重 置</el-button>
+        <el-button @click="dialogFormVisible = false">Annuler</el-button>
+        <el-button type="primary" @click="resetPwdSubmit">Réinitialiser</el-button>
       </div>
     </el-dialog>
   </d2-container>
@@ -101,9 +101,9 @@ export default {
     var validatePass = (rule, value, callback) => {
       const pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}')
       if (value === '') {
-        callback(new Error('请输入密码'))
+        callback(new Error('Veuillez entrer le mot de passe'))
       } else if (!pwdRegex.test(value)) {
-        callback(new Error('您的密码复杂度太低(密码中必须包含字母、数字)'))
+        callback(new Error('Le mot de passe doit comporter au moins 8 caractères avec lettres et chiffres'))
       } else {
         if (this.resetPwdForm.pwd2 !== '') {
           this.$refs.resetPwdForm.validateField('pwd2')
@@ -113,9 +113,9 @@ export default {
     }
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'))
+        callback(new Error('Veuillez confirmer le mot de passe'))
       } else if (value !== this.resetPwdForm.pwd) {
-        callback(new Error('两次输入密码不一致!'))
+        callback(new Error('Les deux mots de passe ne correspondent pas !'))
       } else {
         callback()
       }
@@ -129,11 +129,11 @@ export default {
       },
       passwordRules: {
         pwd: [
-          { required: true, message: '必填项' },
+          { required: true, message: 'Ce champ est requis' },
           { validator: validatePass, trigger: 'blur' }
         ],
         pwd2: [
-          { required: true, message: '必填项' },
+          { required: true, message: 'Ce champ est requis' },
           { validator: validatePass2, trigger: 'blur' }
         ]
       }
@@ -161,21 +161,19 @@ export default {
     },
     onExport () {
       const that = this
-      this.$confirm('是否确认导出所有数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('Confirmez-vous l\'exportation de toutes les données ?', 'Confirmation', {
+        confirmButtonText: 'Confirmer',
+        cancelButtonText: 'Annuler',
         type: 'warning'
       }).then(function () {
         const query = that.getSearch().getForm()
         return api.exportData({ ...query })
       })
     },
-    // 重置密码弹框
     resetPassword ({ row }) {
       this.dialogFormVisible = true
       this.resetPwdForm.id = row.id
     },
-    // 重置密码确认
     resetPwdSubmit () {
       const that = this
       that.$refs.resetPwdForm.validate((valid) => {
@@ -192,14 +190,13 @@ export default {
               pwd: null,
               pwd2: null
             }
-            that.$message.success('修改成功')
+            that.$message.success('Mot de passe modifié avec succès')
           })
         } else {
-          that.$message.error('表单校验失败，请检查')
+          that.$message.error('Veuillez vérifier les erreurs du formulaire')
         }
       })
     },
-    // 部门懒加载
     loadChildrenMethod ({ row }) {
       return new Promise(resolve => {
         setTimeout(() => {

@@ -7,11 +7,11 @@ export const crudOptions = (vm) => {
     },
     options: {
       tableType: 'vxe-table',
-      rowKey: false, // 必须设置，true or false
+      rowKey: false,
       height: '100%',
       rowId: 'code',
       highlightCurrentRow: true,
-      treeConfig: { // 树形数据配置
+      treeConfig: {
         lazy: true,
         children: 'children',
         hasChild: 'hasChildren',
@@ -26,47 +26,19 @@ export const crudOptions = (vm) => {
             return ret.data.data
           })
         },
-        iconLoaded: 'el-icon-loading' // 美化loading图标
+        iconLoaded: 'el-icon-loading'
       }
     },
-    // rowHandle: {
-    //   show: false,
-    //   width: 140,
-    //   view: {
-    //     thin: true,
-    //     text: '',
-    //     show: false,
-    //     disabled () {
-    //       return !vm.hasPermissions('Retrieve')
-    //     }
-    //   },
-    //   edit: {
-    //     thin: true,
-    //     text: '',
-    //     show: false,
-    //     disabled () {
-    //       return !vm.hasPermissions('Update')
-    //     }
-    //   },
-    //   remove: {
-    //     thin: true,
-    //     text: '',
-    //     show: false,
-    //     disabled () {
-    //       return !vm.hasPermissions('Delete')
-    //     }
-    //   }
-    // },
     rowHandle: false,
     viewOptions: {
       componentType: 'form'
     },
     formOptions: {
-      defaultSpan: 24, // 默认的表单 span
+      defaultSpan: 24,
       width: '30%'
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
+    indexRow: {
+      title: 'N°',
       align: 'center',
       width: 100
     },
@@ -81,22 +53,13 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '父级地区',
+        title: 'Région parente',
         key: 'pcode',
         show: false,
         search: {
           disabled: false
         },
         type: 'area-selector',
-        // dict: {
-        //   url: areaJointPrefix,
-        //   lazy: true,
-        //   isTree: true,
-        //   cache: false,
-        //   value: 'code', // 数据字典中value字段的属性名
-        //   label: 'name', // 数据字典中label字段的属性名
-        //   children: 'children' // 数据字典中children字段的属性名
-        // },
         valueResolve (row, key) {
           if (row.pcode === null) {
             row.pcode = undefined
@@ -104,13 +67,13 @@ export const crudOptions = (vm) => {
         },
         form: {
           component: {
-            showAllLevels: false, // 仅显示最后一级
+            showAllLevels: false,
             props: {
               elProps: {
                 clearable: true,
-                showAllLevels: false, // 仅显示最后一级
+                showAllLevels: false,
                 props: {
-                  checkStrictly: true, // 可以不需要选到最后一级
+                  checkStrictly: true,
                   emitPath: false,
                   clearable: true
                 }
@@ -120,7 +83,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '名称',
+        title: 'Nom',
         key: 'name',
         search: {
           disabled: false
@@ -129,11 +92,11 @@ export const crudOptions = (vm) => {
         width: 160,
         type: 'input',
         form: {
-          rules: [ // 表单校验规则
-            { required: true, message: '名称必填项' }
+          rules: [
+            { required: true, message: 'Le nom est requis' }
           ],
           component: {
-            placeholder: '请输入名称'
+            placeholder: 'Entrez le nom'
           },
           itemProps: {
             class: { yxtInput: true }
@@ -141,18 +104,18 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '地区编码',
+        title: 'Code région',
         key: 'code',
         search: {
           disabled: false
         },
         type: 'input',
         form: {
-          rules: [ // 表单校验规则
-            { required: true, message: '地区编码必填项' }
+          rules: [
+            { required: true, message: 'Le code région est requis' }
           ],
           component: {
-            placeholder: '请输入地区编码'
+            placeholder: 'Entrez le code région'
           },
           itemProps: {
             class: { yxtInput: true }
@@ -160,25 +123,25 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '拼音',
+        title: 'Code Pinyin / Romanisé',
         key: 'pinyin',
         search: {
           disabled: true
         },
         type: 'input',
         form: {
-          rules: [ // 表单校验规则
-            { required: true, message: '拼音必填项' }
+          rules: [
+            { required: true, message: 'Ce champ est requis' }
           ],
           itemProps: {
             class: { yxtInput: true }
           },
           component: {
-            placeholder: '请输入拼音'
+            placeholder: 'Code romanisé'
           }
         }
       }, {
-        title: '地区层级',
+        title: 'Niveau',
         key: 'level',
         search: {
           disabled: true
@@ -186,33 +149,33 @@ export const crudOptions = (vm) => {
         type: 'input',
         form: {
           disabled: false,
-          rules: [ // 表单校验规则
-            { required: true, message: '拼音必填项' }
+          rules: [
+            { required: true, message: 'Le niveau est requis' }
           ],
           itemProps: {
             class: { yxtInput: true }
           },
           component: {
-            placeholder: '请输入拼音'
+            placeholder: 'Niveau'
           }
         }
       }, {
-        title: '首字母',
+        title: 'Initiale',
         key: 'initials',
         form: {
-          rules: [ // 表单校验规则
-            { required: true, message: '首字母必填项' }
+          rules: [
+            { required: true, message: "L'initiale est requise" }
           ],
           itemProps: {
             class: { yxtInput: true }
           },
           component: {
-            placeholder: '请输入首字母'
+            placeholder: 'Initiale'
           }
         }
       },
       {
-        title: '是否启用',
+        title: 'Actif',
         key: 'enable',
         search: {
           disabled: false

@@ -2,7 +2,7 @@
   <div class="d2-page-cover">
     <p class="d2-page-cover__title" @click="$open('https://github.com/greper/d2-crud-plus')">
       <d2-icon-svg class="logo" name="d2-admin"/> d2-crud-plus {{$version}}</p>
-    <p class="d2-page-cover__sub-title">d2-crud加强版，简化d2-crud配置，定义字段类型，快速开发crud功能</p>
+    <p class="d2-page-cover__sub-title">Framework d2-crud enrichi, configuration simplifiée et développement CRUD rapide</p>
     <div class="exampleBox">
 <!--      <div class="left">-->
 <!--        <d2-highlight :code="helper.crud" lang="javascript"/>-->
@@ -18,7 +18,7 @@
     <p class="d2-page-cover__build-time">FINAL BUILD TIME {{$buildTime}}</p>
     <slot name="footer"/>
     <div style="">
-      <div class="toStar">喜欢就去star一下吧 <i class="fa fa-hand-o-right"></i></div>
+      <div class="toStar">Suivez le projet sur GitHub <i class="fa fa-hand-o-right"></i></div>
       <a target="blank" href="https://github.com/greper/d2-crud-plus" >
         <img
           style="position: absolute; top: 0; right: 0; border: 0;vertical-align:top; width: 150px;"

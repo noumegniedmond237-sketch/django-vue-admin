@@ -181,7 +181,7 @@ Vue.use(D2pUploader, {
     type: 'form',
     successHandle (ret, option) {
       if (ret.data === null || ret.data === '') {
-        throw new Error('上传失败')
+        throw new Error('Échec du téléversement')
       }
       return { url: ret.data.url, key: option.data.key, id: ret.data.id }
     },
@@ -268,7 +268,7 @@ Vue.prototype.commonEndColumns = function (param = {}) {
   }
   return [
     {
-      title: '备注',
+      title: 'Description',
       key: 'description',
       show: showData.description.showTable,
       search: {
@@ -278,7 +278,7 @@ Vue.prototype.commonEndColumns = function (param = {}) {
       form: {
         disabled: !showData.description.showForm,
         component: {
-          placeholder: '请输入内容',
+          placeholder: 'Entrez une description',
           showWordLimit: true,
           maxlength: '200',
           props: {
@@ -288,16 +288,16 @@ Vue.prototype.commonEndColumns = function (param = {}) {
       }
     },
     {
-      title: '修改人',
+      title: 'Modifié par',
       show: showData.modifier_name.showTable,
-      width: 100,
+      width: 120,
       key: 'modifier_name',
       form: {
         disabled: !showData.modifier_name.showForm
       }
     },
     {
-      title: '所属部门',
+      title: 'Département',
       key: 'dept_belong_id',
       show: showData.dept_belong_id.showTable,
       width: 150,
@@ -308,21 +308,9 @@ Vue.prototype.commonEndColumns = function (param = {}) {
       dict: {
         cache: false,
         url: '/api/system/dept/all_dept/',
-        // isTree: true,
-        // dept: true,
-        value: 'id', // 数据字典中value字段的属性名
-        label: 'name', // 数据字典中label字段的属性名
-        children: 'children' // 数据字典中children字段的属性名
-        // getData: (url, dict, {
-        //   _,
-        //   component
-        // }) => {
-        //   return request({
-        //     url: url
-        //   }).then(ret => {
-        //     return XEUtils.toArrayTree(ret.data, { parentKey: 'parent', strict: false })
-        //   })
-        // }
+        value: 'id',
+        label: 'name',
+        children: 'children'
       },
       component: {
         name: 'dept-format',
@@ -335,12 +323,11 @@ Vue.prototype.commonEndColumns = function (param = {}) {
         },
         helper: {
           render (h) {
-            return (< el-alert title="默认不填则为当前创建用户的部门ID" type="info" />
+            return (< el-alert title="Par défaut, département de l'utilisateur connecté" type="info" />
             )
           }
         }
       },
-      // 接收时,处理数据
       valueBuilder (row, col) {
         if (row[col.key]) {
           row[col.key] = Number(row[col.key])
@@ -348,7 +335,7 @@ Vue.prototype.commonEndColumns = function (param = {}) {
       }
     },
     {
-      title: '更新时间',
+      title: 'Date de modification',
       key: 'update_datetime',
       width: 160,
       show: showData.update_datetime.showTable,
@@ -359,19 +346,19 @@ Vue.prototype.commonEndColumns = function (param = {}) {
       }
     },
     {
-      title: '创建时间',
+      title: 'Date de création',
       key: 'create_datetime',
       width: 160,
       search: {
         disabled: !showData.create_datetime.showForm,
         width: 240,
-        component: { // 查询框组件配置，默认根据form配置生成
+        component: {
           name: 'el-date-picker',
           props: {
             type: 'daterange',
-            'range-separator': '至',
-            'start-placeholder': '开始',
-            'end-placeholder': '结束',
+            'range-separator': 'au',
+            'start-placeholder': 'Début',
+            'end-placeholder': 'Fin',
             valueFormat: 'yyyy-MM-dd'
           }
         }

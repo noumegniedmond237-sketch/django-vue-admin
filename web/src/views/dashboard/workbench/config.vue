@@ -4,23 +4,23 @@
       :visible.sync="deviceUpgradeDrawer"
       :size="500">
       <div slot="title">
-        <span>部件配置</span>
+        <span>Configuration du Widget</span>
         <el-tag size="small" style="margin-left: 10px">{{ myComp.title }}</el-tag>
       </div>
-      <!--   组件内容   -->
-      <el-form ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <!-- Contenu du composant -->
+      <el-form ref="ruleForm" label-width="160px" class="demo-ruleForm" style="padding: 20px;">
         <el-form-item
           v-for="(item,index) in items.config"
           :label="item.label"
           :key="index"
           :rules="item.rules">
-          <el-input v-if="item.type==='input'" v-model="item.value" :placeholder="item.placeholder || '请输入'"></el-input>
+          <el-input v-if="item.type==='input'" v-model="item.value" :placeholder="item.placeholder || 'Entrez la valeur'"></el-input>
           <el-switch v-if="item.type==='boot'" v-model="item.value" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
           <el-color-picker v-if="item.type==='color'" v-model="item.value" show-alpha :predefine="predefineColors"></el-color-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="saveConfig">保存</el-button>
-          <el-button @click="deviceUpgradeDrawer = false">关闭</el-button>
+          <el-button type="primary" @click="saveConfig">Enregistrer</el-button>
+          <el-button @click="deviceUpgradeDrawer = false">Fermer</el-button>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -53,20 +53,16 @@ export default {
       ]
     }
   },
-  mounted () {
-  },
   methods: {
     initData (myComp, items) {
       this.myComp = myComp
       this.items = items
-      console.log(1112, this.myComp, this.items)
     },
     saveConfig () {
       this.deviceUpgradeDrawer = false
       this.$emit('saveConfig', this.myComp, this.items)
     }
   }
-
 }
 </script>
 

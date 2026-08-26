@@ -26,7 +26,7 @@
             v-permission="'Create'"
             type="primary"
             @click="addRow"
-            ><i class="el-icon-plus" /> 新增</el-button
+            ><i class="el-icon-plus" /> Ajouter</el-button
           >
         </el-button-group>
         <crud-toolbar
@@ -41,14 +41,14 @@
 <!--  角色授权  -->
     <div>
       <el-drawer
-        title="角色授权"
+        title="Autorisation du rôle"
         :visible.sync="rolePermissionShow"
         direction="rtl"
         size="70%"
         >
         <template slot="title">
           <div>
-            当前角色<el-tag>{{roleObj?roleObj.name:'无'}}</el-tag>
+            Rôle actuel : <el-tag>{{roleObj?roleObj.name:'Aucun'}}</el-tag>
           </div>
         </template>
         <div>

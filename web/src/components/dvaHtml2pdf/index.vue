@@ -80,7 +80,7 @@ export default {
     // 下载按钮标题
     downloadButtonTitle: {
       type: String,
-      default: '下载报告'
+      default: 'Télécharger le rapport'
     },
     // 是否显示预览按钮
     previewButtonShow: {
@@ -99,7 +99,7 @@ export default {
     // 预览按钮标题
     previewButtonTitle: {
       type: String,
-      default: '预览报告'
+      default: 'Aperçu du rapport'
     }
   },
   data () {
@@ -131,7 +131,7 @@ export default {
             pdf.setFontSize(10)
             pdf.setTextColor(150)
             pdf.text(
-              '第 ' + i + '页  共 ' + totalPages + '页',
+              'Page ' + i + ' sur ' + totalPages,
               pdf.internal.pageSize.getWidth() * 0.45,
               pdf.internal.pageSize.getHeight() - 2
             )

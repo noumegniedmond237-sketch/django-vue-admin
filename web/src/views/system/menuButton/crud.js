@@ -1,11 +1,3 @@
-/*
- * @创建文件时间: 2021-06-03 00:50:28
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-07-29 22:49:02
- * 联系Qq:1638245306
- * @文件介绍: 菜单的按钮和接口配置
- */
 import { request } from '@/api/service'
 export const crudOptions = (vm) => {
   return {
@@ -16,21 +8,21 @@ export const crudOptions = (vm) => {
       tableType: 'vxe-table',
       rowKey: false,
       width: '100%',
-      height: '100%' // 表格高度100%, 使用toolbar必须设置
+      height: '100%'
     },
     rowHandle: {
       width: 180,
       edit: {
         thin: true,
-        text: '编辑'
+        text: 'Modifier'
       },
       remove: {
         thin: true,
-        text: '删除'
+        text: 'Supprimer'
       }
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
+    indexRow: {
+      title: 'N°',
       align: 'center',
       width: 100
     },
@@ -39,10 +31,10 @@ export const crudOptions = (vm) => {
       componentType: 'form'
     },
     formOptions: {
-      defaultSpan: 24 // 默认的表单 span
+      defaultSpan: 24
     },
     columns: [{
-      title: '关键词',
+      title: 'Recherche',
       key: 'search',
       show: false,
       disabled: true,
@@ -52,13 +44,13 @@ export const crudOptions = (vm) => {
           props: {
             clearable: true
           },
-          placeholder: '请输入关键词'
+          placeholder: 'Rechercher par mot-clé'
         }
       },
       form: {
         disabled: true
       },
-      view: { // 查看对话框组件的单独配置
+      view: {
         disabled: true
       }
     },
@@ -73,7 +65,7 @@ export const crudOptions = (vm) => {
     },
 
     {
-      title: '权限名称',
+      title: 'Nom du bouton',
       key: 'name',
       sortable: true,
       width: 150,
@@ -87,8 +79,8 @@ export const crudOptions = (vm) => {
         value: 'label'
       },
       form: {
-        rules: [ // 表单校验规则
-          { required: true, message: '必填项' }
+        rules: [
+          { required: true, message: 'Le nom est requis' }
         ],
         component: {
           span: 12,
@@ -106,9 +98,7 @@ export const crudOptions = (vm) => {
         },
         valueChange (key, value, form, { getColumn, mode, component, immediate, getComponent }) {
           if (value != null) {
-            // console.log('component.dictOptions', component.dictOptions)
             const obj = component.dictOptions.find(item => {
-              // console.log(item.label, value)
               return item.label === value
             })
             if (obj && obj.value) {
@@ -119,14 +109,14 @@ export const crudOptions = (vm) => {
         },
         helper: {
           render (h) {
-            return (< el-alert title="可手动输入不在列表中的新值" type="warning" description="比较常用的建议放在字典管理中"/>
+            return (< el-alert title="Saisie personnalisée autorisée" type="warning" description="Configurez les boutons courants dans le gestionnaire de dictionnaires"/>
             )
           }
         }
       }
     },
     {
-      title: '权限值',
+      title: 'Code de la permission',
       key: 'value',
       sortable: true,
       width: 200,
@@ -135,12 +125,12 @@ export const crudOptions = (vm) => {
       },
       type: 'input',
       form: {
-        rules: [ // 表单校验规则
-          { required: true, message: '必填项' }
+        rules: [
+          { required: true, message: 'Le code de la permission est requis' }
         ],
         component: {
           span: 12,
-          placeholder: '请输入权限值',
+          placeholder: 'Ex: Create, Update, Delete',
           props: {
             elProps: {
               clearable: true
@@ -152,14 +142,14 @@ export const crudOptions = (vm) => {
         },
         helper: {
           render (h) {
-            return (< el-alert title="用于前端按钮权限的判断展示" type="warning" description="使用方法：vm.hasPermissions(权限值)"/>
+            return (< el-alert title="Code utilisé pour vm.hasPermissions(code)" type="warning"/>
             )
           }
         }
       }
     },
     {
-      title: '请求方式',
+      title: 'Méthode HTTP',
       key: 'method',
       sortable: true,
       width: 150,
@@ -176,8 +166,8 @@ export const crudOptions = (vm) => {
         ]
       },
       form: {
-        rules: [ // 表单校验规则
-          { required: true, message: '必填项' }
+        rules: [
+          { required: true, message: 'La méthode HTTP est requise' }
         ],
         component: {
           span: 12
@@ -188,7 +178,7 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '接口地址',
+      title: "URL de l'API",
       key: 'api',
       sortable: true,
       search: {
@@ -215,8 +205,8 @@ export const crudOptions = (vm) => {
         }
       },
       form: {
-        rules: [ // 表单校验规则
-          { required: true, message: '必填项' }
+        rules: [
+          { required: true, message: "L'URL est requise" }
         ],
         component: {
           span: 24,
@@ -234,7 +224,7 @@ export const crudOptions = (vm) => {
         },
         helper: {
           render (h) {
-            return (< el-alert title="请正确填写，以免请求时被拦截。匹配单例使用正则,例如:/api/xx/.*?/" type="warning" />
+            return (< el-alert title="Format regex accepté pour les paramètres dynamiques, ex: /api/xx/.*?/" type="warning" />
             )
           }
         }

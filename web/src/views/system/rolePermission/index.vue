@@ -1,11 +1,3 @@
-<!--
- * @创建文件时间: 2021-06-01 22:41:21
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-09-26 21:18:29
- * 联系Qq:1638245306
- * @文件介绍:授权管理
--->
 <template>
   <div>
     <div style="margin: 10px">
@@ -14,7 +6,7 @@
         size="mini"
         @click="submitPermisson"
         v-permission="'Save'"
-      >保存
+      >Enregistrer
       </el-button>
     </div>
     <el-container style="height: 80vh; border: 1px solid #eee">
@@ -23,7 +15,7 @@
           <div style="margin-bottom: 20px">
             <div class="yxt-flex-align-center">
               <div class="yxt-divider"></div>
-              <span>数据授权</span>
+              <span>Périmètre des Données</span>
               <el-tooltip
                 class="item"
                 effect="dark"
@@ -71,7 +63,7 @@
             <div style="margin-bottom: 20px">
               <div class="yxt-flex-align-center">
                 <div class="yxt-divider"></div>
-                <span>菜单授权</span>
+                <span>Permissions des Menus</span>
                 <el-tooltip
                   class="item"
                   effect="dark"
@@ -92,7 +84,7 @@
               :expand-on-click-node="false"
               :default-checked-keys="menuCheckedKeys"
               :check-on-click-node="false"
-              empty-text="请先选择角色"
+              empty-text="Veuillez d'abord sélectionner un rôle"
               :check-strictly="menuCheckStrictly"
               @check-change="handleCheckClick"
             >
@@ -140,34 +132,34 @@ export default {
       data: [],
       menuOptions: [],
       permissionData: [],
-      menuCheckedKeys: [], // 菜单默认选中的节点
+      menuCheckedKeys: [],
       menuCheckStrictly: false,
       deptOptions: [],
       deptCheckedKeys: [],
       dataScopeOptions: [
         {
           value: 0,
-          label: '仅本人数据权限'
+          label: 'Uniquement ses propres données'
         },
         {
           value: 1,
-          label: '本部门及以下数据权限'
+          label: 'Ce département et sous-départements'
         },
         {
           value: 2,
-          label: '本部门数据权限'
+          label: 'Ce département uniquement'
         },
         {
           value: 3,
-          label: '全部数据权限'
+          label: 'Toutes les données'
         },
         {
           value: 4,
-          label: '自定义数据权限'
+          label: 'Périmètre personnalisé'
         }
       ],
-      dataAuthorizationTips: '授权用户可操作的数据范围',
-      menuAuthorizationTips: '授权用户在菜单中可操作的范围'
+      dataAuthorizationTips: 'Portée des données accessibles pour ce rôle',
+      menuAuthorizationTips: 'Menus et fonctionnalités accessibles pour ce rôle'
     }
   },
   watch: {
@@ -198,8 +190,8 @@ export default {
     initNode () {
       this.getDeptData()
       this.getMenuData(this.roleObj)
-      this.menuCheckedKeys = this.roleObj.menu // 加载已勾选的菜单
-      this.menuCheckStrictly = true // 父子不相互关联
+      this.menuCheckedKeys = this.roleObj.menu
+      this.menuCheckStrictly = true
       this.deptCheckedKeys = this.roleObj.dept
       this.GetDataScope()
     },
@@ -212,17 +204,14 @@ export default {
     delRequest (row) {
       return api.DelObj(row.id)
     },
-    // 获取部门数据
     getDeptData () {
       api.GetDataScopeDept().then(ret => {
         this.deptOptions = XEUtils.toArrayTree(ret.data, { parentKey: 'parent', strict: false })
       })
     },
-    // 获取菜单数据
     getMenuData (data) {
       api.GetMenuData(data).then(res => {
         res.forEach(x => {
-          // 根据当前角色的permission,对menuPermisson进行勾选处理
           x.menuPermission.forEach(a => {
             if (data.permission.indexOf(a.id) > -1) {
               this.$set(a, 'checked', true)
@@ -231,41 +220,44 @@ export default {
             }
           })
         })
-        // 将菜单列表转换为树形列表
         this.menuOptions = XEUtils.toArrayTree(res, {
           parentKey: 'parent',
           strict: true
         })
       })
     },
-    // 获取权限范围
     GetDataScope () {
       api.GetDataScope().then(res => {
-        this.dataScopeOptions = res.data
+        if (res.data && res.data.length > 0) {
+          const frenchLabels = {
+            0: 'Uniquement ses propres données',
+            1: 'Ce département et sous-départements',
+            2: 'Ce département uniquement',
+            3: 'Toutes les données',
+            4: 'Périmètre personnalisé'
+          }
+          this.dataScopeOptions = res.data.map(item => ({
+            ...item,
+            label: frenchLabels[item.value] || item.label
+          }))
+        }
       })
     },
-    // 所有勾选菜单节点数据
     getMenuAllCheckedKeys () {
-      // 目前被选中的菜单节点
       const checkedKeys = this.$refs.menuTree.getCheckedKeys()
-      // 半选中的菜单节点
       const halfCheckedKeys = this.$refs.menuTree.getHalfCheckedKeys()
       checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys)
       return checkedKeys
     },
-    // 所有自定义权限时,勾选的部门节点数据
     getDeptAllCheckedKeys () {
-      // 目前被选中的部门节点
       const checkedKeys = this.$refs.dept.getCheckedKeys()
-      // 半选中的部门节点
       const halfCheckedKeys = this.$refs.dept.getHalfCheckedKeys()
       checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys)
       return checkedKeys
     },
-    // 提交修改
     submitPermisson () {
-      this.roleObj.menu = this.getMenuAllCheckedKeys() // 获取选中的菜单
-      this.roleObj.dept = this.getDeptAllCheckedKeys() // 获取选中的部门
+      this.roleObj.menu = this.getMenuAllCheckedKeys()
+      this.roleObj.dept = this.getDeptAllCheckedKeys()
       const menuData = XEUtils.toTreeArray(this.menuOptions)
       const permissionData = []
       menuData.forEach(x => {
@@ -281,19 +273,13 @@ export default {
       })
       this.roleObj.permission = permissionData
       return this.updateRequest(this.roleObj).then(res => {
-        this.$message.success('更新成功')
+        this.$message.success('Autorisations mises à jour avec succès')
       })
     },
-    /** 选择角色权限范围触发 */
     dataScopeSelectChange (value) {
       if (value !== 4) {
-        // this.$refs.dept.setCheckedKeys([]);
       }
     },
-    /**
-     * 菜单树点击,全选权限部分数据
-     * @param data
-     */
     handleCheckClick (data, checked) {
       const {
         menuPermission,
@@ -325,14 +311,14 @@ export default {
 }
 
 .dept-tree::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
+  display: none;
 }
 
 .dept-tree {
   height: 160px;
   overflow-y: scroll;
-  scrollbar-width: none; /* firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .flow-tree {

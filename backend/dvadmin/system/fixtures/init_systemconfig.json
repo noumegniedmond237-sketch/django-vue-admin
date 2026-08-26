@@ -1,7 +1,7 @@
 [
     {
         "parent": null,
-        "title": "基础配置",
+        "title": "Configuration de Base",
         "key": "base",
         "value": null,
         "sort": 0,
@@ -14,7 +14,7 @@
         "children": [
             {
                 "parent": 10,
-                "title": "开启验证码",
+                "title": "Activer le code de vérification (Captcha)",
                 "key": "captcha_state",
                 "value": true,
                 "sort": 1,
@@ -23,17 +23,17 @@
                 "form_item_type": 9,
                 "rule": [
                     {
-                        "message": "必填项不能为空",
+                        "message": "Ce champ est obligatoire",
                         "required": true
                     }
                 ],
-                "placeholder": "请选择",
+                "placeholder": "Veuillez choisir",
                 "setting": null,
                 "children": []
             },
             {
                 "parent": 10,
-                "title": "创建用户默认密码",
+                "title": "Mot de passe par défaut des nouveaux utilisateurs",
                 "key": "default_password",
                 "value": "admin123456",
                 "sort": 2,
@@ -42,17 +42,17 @@
                 "form_item_type": 0,
                 "rule": [
                     {
-                        "message": "必填项不能为空",
+                        "message": "Ce champ est obligatoire",
                         "required": true
                     }
                 ],
-                "placeholder": "请输入默认密码",
+                "placeholder": "Entrez le mot de passe par défaut",
                 "setting": null,
                 "children": []
             },
             {
                 "parent": 10,
-                "title": "开启单点登录",
+                "title": "Activer l'authentification unique (SSO)",
                 "key": "single_login",
                 "value": false,
                 "sort": 1,
@@ -61,11 +61,11 @@
                 "form_item_type": 9,
                 "rule": [
                     {
-                        "message": "必填项不能为空",
+                        "message": "Ce champ est obligatoire",
                         "required": true
                     }
                 ],
-                "placeholder": "请选择",
+                "placeholder": "Veuillez choisir",
                 "setting": null,
                 "children": []
             }
@@ -73,7 +73,7 @@
     },
     {
         "parent": null,
-        "title": "登录页配置",
+        "title": "Configuration de la Page de Connexion",
         "key": "login",
         "value": null,
         "sort": 1,
@@ -86,26 +86,26 @@
         "children": [
             {
                 "parent": 1,
-                "title": "网站名称",
+                "title": "Nom de l'application",
                 "key": "site_name",
-                "value": "企业级后台管理系统",
+                "value": "Django Vue Admin",
                 "sort": 1,
                 "status": true,
                 "data_options": null,
                 "form_item_type": 0,
                 "rule": [
                     {
-                        "message": "必填项不能为空",
+                        "message": "Ce champ est obligatoire",
                         "required": true
                     }
                 ],
-                "placeholder": "请输入网站名称",
+                "placeholder": "Entrez le nom du site",
                 "setting": null,
                 "children": []
             },
             {
                 "parent": 1,
-                "title": "登录网站logo",
+                "title": "Logo du site",
                 "key": "site_logo",
                 "value": null,
                 "sort": 2,
@@ -113,13 +113,13 @@
                 "data_options": null,
                 "form_item_type": 7,
                 "rule": [],
-                "placeholder": "请上传网站logo",
+                "placeholder": "Téléverser le logo",
                 "setting": null,
                 "children": []
             },
             {
                 "parent": 1,
-                "title": "登录页背景图",
+                "title": "Image d'arrière-plan de connexion",
                 "key": "login_background",
                 "value": null,
                 "sort": 3,
@@ -127,51 +127,51 @@
                 "data_options": null,
                 "form_item_type": 7,
                 "rule": [],
-                "placeholder": "请上传登录背景页",
+                "placeholder": "Téléverser l'arrière-plan",
                 "setting": null,
                 "children": []
             },
             {
                 "parent": 1,
-                "title": "版权信息",
+                "title": "Mentions de copyright",
                 "key": "copyright",
-                "value": "2021-2022 django-vue-admin.com 版权所有",
+                "value": "2026 Django-Vue-Admin. Tous droits réservés.",
                 "sort": 4,
                 "status": true,
                 "data_options": null,
                 "form_item_type": 0,
                 "rule": [
                     {
-                        "message": "必填项不能为空",
+                        "message": "Ce champ est obligatoire",
                         "required": true
                     }
                 ],
-                "placeholder": "请输入版权信息",
+                "placeholder": "Entrez les mentions de copyright",
                 "setting": null,
                 "children": []
             },
             {
                 "parent": 1,
-                "title": "备案信息",
+                "title": "Mentions légales / Version",
                 "key": "keep_record",
-                "value": "晋ICP备18005113号-3",
+                "value": "v2.0.0 (Édition Française)",
                 "sort": 5,
                 "status": true,
                 "data_options": null,
                 "form_item_type": 0,
                 "rule": [
                     {
-                        "message": "必填项不能为空",
+                        "message": "Ce champ est obligatoire",
                         "required": true
                     }
                 ],
-                "placeholder": "请输入备案信息",
+                "placeholder": "Entrez les mentions légales",
                 "setting": null,
                 "children": []
             },
             {
                 "parent": 1,
-                "title": "帮助链接",
+                "title": "Lien d'aide",
                 "key": "help_url",
                 "value": "https://django-vue-admin.com",
                 "sort": 6,
@@ -179,13 +179,13 @@
                 "data_options": null,
                 "form_item_type": 0,
                 "rule": "",
-                "placeholder": "请输入帮助信息",
+                "placeholder": "Entrez le lien d'aide",
                 "setting": null,
                 "children": []
             },
             {
                 "parent": 1,
-                "title": "隐私链接",
+                "title": "Lien de confidentialité",
                 "key": "privacy_url",
                 "value": "#",
                 "sort": 7,
@@ -193,13 +193,13 @@
                 "data_options": null,
                 "form_item_type": 0,
                 "rule": [],
-                "placeholder": "请填写隐私链接",
+                "placeholder": "Entrez le lien de confidentialité",
                 "setting": null,
                 "children": []
             },
             {
                 "parent": 1,
-                "title": "条款链接",
+                "title": "Conditions Générales d'Utilisation",
                 "key": "clause_url",
                 "value": "#",
                 "sort": 8,
@@ -207,7 +207,7 @@
                 "data_options": null,
                 "form_item_type": 0,
                 "rule": [],
-                "placeholder": "请输入条款链接",
+                "placeholder": "Entrez le lien des conditions",
                 "setting": null,
                 "children": []
             }

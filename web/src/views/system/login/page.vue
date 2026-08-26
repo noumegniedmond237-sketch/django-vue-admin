@@ -13,8 +13,8 @@
           <h2 style="text-align: center">{{ siteName || processTitle }}</h2>
           <el-card shadow="always" class="card">
             <el-tabs v-model="activeName">
-              <el-tab-pane label="账号密码登录" name="first" stretch>
-                <span slot="label"><span style="margin: 30px">账号密码登录</span></span>
+              <el-tab-pane :label="$t('page.login.title') || 'Login'" name="first" stretch>
+                <span slot="label"><span style="margin: 30px">{{ $t('page.login.title') || 'Login' }}</span></span>
                 <br/>
                 <el-form
                   ref="loginForm"
@@ -28,7 +28,7 @@
                       type="text"
                       v-model="formLogin.username"
                       prefix-icon="el-icon-user-solid"
-                      placeholder="用户名"
+                      :placeholder="($t('page.login.username') || 'Username') + ' (superadmin)'"
                     >
                     </el-input>
                   </el-form-item>
@@ -38,7 +38,7 @@
                       v-model="formLogin.password"
                       prefix-icon="el-icon-s-promotion"
                       show-password
-                      placeholder="密码"
+                      :placeholder="($t('page.login.password') || 'Password') + ' (admin123456)'"
                       @keyup.enter.native='submit'
                     >
                     </el-input>
@@ -46,17 +46,17 @@
                   <el-form-item
                     prop="captcha"
                     v-if="captchaState"
-                    :rules="{required: true,message: '请输入验证码',trigger: 'blur'}"
+                    :rules="{required: true,message: $t('page.login.captcha') || 'Captcha',trigger: 'blur'}"
                   >
                     <el-input
                       type="text"
                       v-model="formLogin.captcha"
-                      placeholder="验证码"
+                      :placeholder="$t('page.login.captcha') || 'Captcha'"
                       @keyup.enter.native="submit"
                     >
                       <template slot="append">
                         <img
-                          alt="请检查后端是否正常~~"
+                          alt="Captcha"
                           class="login-code"
                           style="cursor: pointer;width:145px;height: 33px;"
                           height="33px"
@@ -71,18 +71,18 @@
                 </el-form>
                 <el-row v-if="isTenant && isPublic">
                   <el-col :span="11">
-                    <button class="btn btn-primary btn-block" style="padding: 10px 10px;" @click="submit">登录</button>
+                    <button class="btn btn-primary btn-block" style="padding: 10px 10px;" @click="submit">{{ $t('page.login.btn') || 'Login' }}</button>
                   </el-col>
                   <el-col :span="11" :offset="2">
                     <button
                       class="btn btn-primary btn-block"
                       style="padding: 10px 10px;background-color: #409eff;color: #fff;"
                       @click="$router.push('/register')">
-                      免费试用
+                      {{ $t('page.login.trial') || 'Trial' }}
                     </button>
                   </el-col>
                 </el-row>
-                <button v-else class="btn btn-primary btn-block" style="padding: 10px 10px;" @click="submit">登录</button>
+                <button v-else class="btn btn-primary btn-block" style="padding: 10px 10px;" @click="submit">{{ $t('page.login.btn') || 'Login' }}</button>
                 <component v-if="componentTag" :is="componentTag"></component>
               </el-tab-pane>
             </el-tabs>
@@ -94,7 +94,7 @@
             @click="selectUsersDialogVisible = true"
             v-if="$env === 'development'"
           >
-            快速选择用户登录（限dev环境）
+            {{ $t('page.login.quick') || 'Quick Login' }}
           </el-button>
           <!-- footer -->
           <div class="footer">
@@ -124,7 +124,7 @@
       <!-- //main content -->
     </div>
     <!-- //container -->
-    <el-dialog title="快速选择用户" :visible.sync="selectUsersDialogVisible" width="400px" append-to-body>
+    <el-dialog title="Sélection rapide d'utilisateur" :visible.sync="selectUsersDialogVisible" width="400px" append-to-body>
       <el-row :gutter="10" style="margin: -20px 0px -10px 0px">
         <el-col v-for="(user, index) in users" :key="index" :span="8">
           <div class="page-login--quick-user" @click="handleUserBtnClick(user)">

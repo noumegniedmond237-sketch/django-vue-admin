@@ -1,6 +1,6 @@
 [
     {
-        "name": "DVAdmin团队",
+        "name": "Direction Générale",
         "key": "dvadmin",
         "sort": 1,
         "owner": "",
@@ -10,8 +10,8 @@
         "parent": null,
         "children": [
             {
-                "name": "运营部",
-                "key": "",
+                "name": "Département Opérations",
+                "key": "operations",
                 "sort": 2,
                 "owner": "",
                 "phone": "",
@@ -21,14 +21,14 @@
                 "children": []
             },
             {
-                "name": "技术部",
+                "name": "Département Informatique & R&D",
                 "key": "technology",
                 "sort": 1,
                 "owner": "",
                 "phone": "",
                 "email": "",
                 "status": true,
-                "parent": 3,
+                "parent": 1,
                 "children": []
             }
         ]

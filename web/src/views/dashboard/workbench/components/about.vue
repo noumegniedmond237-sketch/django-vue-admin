@@ -1,11 +1,6 @@
 <template>
-  <el-card shadow="hover" :header="config?.showHeader?.value ? '关于项目' : ''" class="card-view" :style="{backgroundColor:randomColor(),color: config?.fontColor?.value}">
-    <p :style="{color: config?.fontColor?.value}">基于RBAC模型的权限控制的一整套基础开发平台，前后端分离，后端采用 django+django-rest-framework，前端采用
-      vue+ElementUI+d2-crud-plus。如果喜欢就点个星星支持一下。
-      <a href='https://gitee.com/liqianglog/django-vue-admin'>
-        <img src='https://gitee.com/liqianglog/django-vue-admin/badge/star.svg?theme=dark' alt='star'
-             style="position: absolute;right: 20px;bottom: 10px;"/>
-      </a>
+  <el-card shadow="hover" :header="config?.showHeader?.value ? 'À propos du projet' : ''" class="card-view" :style="{backgroundColor:randomColor(),color: config?.fontColor?.value}">
+    <p :style="{color: config?.fontColor?.value}">Plateforme complète de gestion et d'administration d'entreprise basée sur le modèle RBAC (rôles et permissions). Backend propulsé par Django & Django REST Framework, Frontend développé avec Vue.js et Element UI.
     </p>
   </el-card>
 </template>
@@ -13,31 +8,31 @@
 <script>
 export default {
   sort: 9,
-  title: '关于项目',
+  title: 'À propos',
   name: 'about',
   icon: 'el-icon-setting',
-  description: '点个星星支持一下',
+  description: 'Informations sur le projet et la plateforme',
   height: 20,
   width: 16,
   isResizable: true,
   config: {
     showHeader: {
-      label: '显示头部信息',
+      label: "Afficher l'en-tête",
       type: 'boot',
       value: true,
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: ''
     },
     color: {
-      label: '背景颜色',
+      label: "Couleur d'arrière-plan",
       type: 'color',
       value: '',
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: 'Laissez vide pour couleur aléatoire'
     },
     fontColor: {
-      label: '字体颜色',
+      label: 'Couleur du texte',
       type: 'color',
       value: '',
-      placeholder: '请选择字体颜色'
+      placeholder: 'Sélectionnez la couleur du texte'
     }
   },
   props: {
@@ -50,7 +45,6 @@ export default {
     return {}
   },
   methods: {
-    // 生成一个颜色
     randomColor () {
       if (this.config?.color?.value) {
         return this.config.color.value
@@ -66,7 +60,8 @@ export default {
   color: $color-primary;
 
   p {
-    font-size: 0.8em;
+    font-size: 0.9em;
+    line-height: 1.6;
     color: $color-primary;
   }
 }
@@ -75,6 +70,5 @@ export default {
 }
 ::v-deep .el-card__body {
   height: 110px;
-
 }
 </style>

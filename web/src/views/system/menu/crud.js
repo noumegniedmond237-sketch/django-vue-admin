@@ -2,7 +2,6 @@ import { request } from '@/api/service'
 import { urlPrefix as menuPrefix } from './api'
 import XEUtils from 'xe-utils'
 export const crudOptions = (vm) => {
-  // 验证路由地址
   const validateWebPath = (rule, value, callback) => {
     const isLink = vm.getEditForm().is_link
     let pattern = /^\/.*?/
@@ -12,7 +11,7 @@ export const crudOptions = (vm) => {
       pattern = /^\/.*?/
     }
     if (!pattern.test(value)) {
-      callback(new Error('请正确的地址'))
+      callback(new Error('Veuillez saisir une adresse valide'))
     } else {
       callback()
     }
@@ -26,10 +25,8 @@ export const crudOptions = (vm) => {
       tableType: 'vxe-table',
       rowKey: true,
       rowId: 'id',
-      height: '100%', // 表格高度100%, 使用toolbar必须设置
+      height: '100%',
       highlightCurrentRow: false,
-      // defaultExpandAll: true,
-      // expandAll: true,
       treeConfig: {
         transform: true,
         rowField: 'id',
@@ -74,15 +71,14 @@ export const crudOptions = (vm) => {
         disabled () {
           return !vm.hasPermissions('Update')
         },
-        text: ' 菜单按钮',
+        text: ' Boutons',
         type: 'warning',
         size: 'small',
         emit: 'createPermission'
       }]
-
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
+    indexRow: {
+      title: 'N°',
       align: 'center',
       width: 80
     },
@@ -90,11 +86,11 @@ export const crudOptions = (vm) => {
       componentType: 'form'
     },
     formOptions: {
-      defaultSpan: 12 // 默认的表单 span
+      defaultSpan: 12
     },
     columns: [
       {
-        title: '关键词',
+        title: 'Recherche',
         key: 'search',
         show: false,
         disabled: true,
@@ -104,7 +100,7 @@ export const crudOptions = (vm) => {
             props: {
               clearable: true
             },
-            placeholder: '请输入关键词'
+            placeholder: 'Rechercher par mot-clé'
           }
         },
         form: {
@@ -115,7 +111,7 @@ export const crudOptions = (vm) => {
             }
           }
         },
-        view: { // 查看对话框组件的单独配置
+        view: {
           disabled: true
         }
       },
@@ -131,7 +127,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '父级菜单',
+        title: 'Menu parent',
         key: 'parent',
         show: false,
         search: {
@@ -142,14 +138,14 @@ export const crudOptions = (vm) => {
           url: menuPrefix,
           cache: false,
           isTree: true,
-          value: 'id', // 数据字典中value字段的属性名
-          label: 'name', // 数据字典中label字段的属性名
-          children: 'children', // 数据字典中children字段的属性名
-          getData: (url, dict, { form, component }) => { // 配置此参数会覆盖全局的getRemoteDictFunc
+          value: 'id',
+          label: 'name',
+          children: 'children',
+          getData: (url, dict, { form, component }) => {
             return request({ url: url, params: { limit: 999, status: 1, is_catalog: 1 } }).then(ret => {
               const responseData = ret.data.data
               const result = XEUtils.toArrayTree(responseData, { parentKey: 'parent', strict: true })
-              return [{ id: null, name: '根节点', children: result }]
+              return [{ id: null, name: 'Racine', children: result }]
             })
           }
         },
@@ -158,9 +154,9 @@ export const crudOptions = (vm) => {
             props: {
               elProps: {
                 clearable: true,
-                showAllLevels: false, // 仅显示最后一级
+                showAllLevels: false,
                 props: {
-                  checkStrictly: true, // 可以不需要选到最后一级
+                  checkStrictly: true,
                   emitPath: false,
                   clearable: true
                 }
@@ -170,10 +166,10 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '菜单名称',
+        title: 'Nom du menu',
         key: 'name',
         sortable: true,
-        treeNode: true, // 设置为树形列
+        treeNode: true,
         search: {
           disabled: false,
           component: {
@@ -185,48 +181,47 @@ export const crudOptions = (vm) => {
         minWidth: 180,
         type: 'input',
         form: {
-          rules: [ // 表单校验规则
-            { required: true, message: '菜单名称必填项' }
+          rules: [
+            { required: true, message: 'Le nom du menu est requis' }
           ],
           component: {
             props: {
               clearable: true
             },
-            placeholder: '请输入菜单名称'
+            placeholder: 'Entrez le nom du menu'
           },
           itemProps: {
             class: { yxtInput: true }
           }
-
         }
       },
       {
-        title: '图标',
+        title: 'Icône',
         key: 'icon',
-        width: 60,
+        width: 70,
         type: 'icon-selector',
         form: {
           component: {
-            placeholder: '请输入图标'
+            placeholder: "Sélectionnez l'icône"
           }
         }
       },
       {
-        title: '排序',
+        title: 'Ordre',
         key: 'sort',
-        width: 60,
+        width: 70,
         type: 'number',
         form: {
           value: 1,
           component: {
-            placeholder: '请输入排序'
+            placeholder: "Numéro d'ordre"
           }
         }
       },
       {
-        title: '是否目录',
+        title: 'Est un catalogue',
         key: 'is_catalog',
-        width: 100,
+        width: 120,
         type: 'dict-switch',
         search: {
           disabled: true
@@ -237,7 +232,7 @@ export const crudOptions = (vm) => {
         form: {
           value: false,
           component: {
-            placeholder: '请选择是否目录'
+            placeholder: 'Est-ce un catalogue ?'
           },
           valueChange (key, value, form, { getColumn, mode, component, immediate, getComponent }) {
             if (!value) {
@@ -251,9 +246,9 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '外链接',
+        title: 'Lien externe',
         key: 'is_link',
-        width: 70,
+        width: 100,
         type: 'radio',
         dict: {
           data: vm.dictionary('button_whether_bool')
@@ -265,27 +260,27 @@ export const crudOptions = (vm) => {
               const { form } = context
               return !form.is_catalog
             },
-            placeholder: '请选择是否外链接'
+            placeholder: 'Est-ce un lien externe ?'
           },
           valueChange (key, value, form, { getColumn, mode, component, immediate, getComponent }) {
             form.web_path = undefined
             form.component = undefined
             form.component_name = undefined
             if (value) {
-              getColumn('web_path').title = '外链接地址'
-              getColumn('web_path').component.placeholder = '请输入外链接地址'
+              getColumn('web_path').title = 'URL externe'
+              getColumn('web_path').component.placeholder = 'Entrez l\'URL externe'
               getColumn('web_path').helper = {
                 render (h) {
-                  return (< el-alert title="外链接地址,请以https|http|ftp|rtsp|mms开头" type="warning" />
+                  return (< el-alert title="URL externe commençant par https:// ou http://" type="warning" />
                   )
                 }
               }
             } else {
-              getColumn('web_path').title = '路由地址'
-              getColumn('web_path').component.placeholder = '请输入路由地址'
+              getColumn('web_path').title = 'Route Web'
+              getColumn('web_path').component.placeholder = 'Entrez le chemin de la route'
               getColumn('web_path').helper = {
                 render (h) {
-                  return (< el-alert title="浏览器中url的地址,请以/开头" type="warning" />
+                  return (< el-alert title="Chemin d'accès dans le navigateur, débutant par /" type="warning" />
                   )
                 }
               }
@@ -294,13 +289,13 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '路由地址',
+        title: 'Route Web',
         key: 'web_path',
         width: 150,
         show: false,
         form: {
           rules: [
-            { required: true, message: '请输入正确的路由地址' },
+            { required: true, message: 'Veuillez saisir un chemin de route valide' },
             { validator: validateWebPath, trigger: 'change' }
           ],
           component: {
@@ -311,18 +306,18 @@ export const crudOptions = (vm) => {
             props: {
               clearable: true
             },
-            placeholder: '请输入路由地址'
+            placeholder: 'Exemple : /mon-menu'
           },
           helper: {
             render (h) {
-              return (< el-alert title="浏览器中url的地址,请以/开头" type="warning" />
+              return (< el-alert title="Chemin d'accès dans le navigateur, débutant par /" type="warning" />
               )
             }
           }
         }
       },
       {
-        title: '组件地址',
+        title: 'Composant Vue',
         key: 'component',
         type: 'select',
         show: false,
@@ -332,7 +327,7 @@ export const crudOptions = (vm) => {
         },
         form: {
           rules: [
-            { required: true, message: '请选择组件地址' }
+            { required: true, message: 'Veuillez choisir un composant' }
           ],
           component: {
             show (context) {
@@ -341,25 +336,25 @@ export const crudOptions = (vm) => {
             },
             props: {
               clearable: true,
-              filterable: true // 可过滤选择项
+              filterable: true
             },
-            placeholder: '请输入组件地址'
+            placeholder: 'Sélectionnez le fichier composant'
           },
           helper: {
             render (h) {
-              return (< el-alert title="src/views下的文件夹地址" type="warning" />
+              return (< el-alert title="Chemin du composant sous src/views/" type="warning" />
               )
             }
           }
         }
       },
       {
-        title: '组件名称',
+        title: 'Nom du composant',
         key: 'component_name',
         width: 170,
         form: {
           rules: [
-            { required: true, message: '请输入组件名称' }
+            { required: true, message: 'Le nom du composant est requis' }
           ],
           component: {
             show (context) {
@@ -369,25 +364,25 @@ export const crudOptions = (vm) => {
             props: {
               clearable: true
             },
-            placeholder: '请输入组件名称'
+            placeholder: 'Nom du composant Vue'
           },
           helper: {
             render (h) {
-              return (< el-alert title="xx.vue文件中的name" type="warning" />
+              return (< el-alert title="Propriété 'name' dans le fichier .vue" type="warning" />
               )
             }
           }
         }
       },
       {
-        title: '拥有权限',
+        title: 'Permissions',
         key: 'menuPermission',
         type: 'select',
         width: 300,
         form: {
           disabled: true,
           component: {
-            elProps: { // el-select的配置项，https://element.eleme.cn/#/zh-CN/component/select
+            elProps: {
               filterable: true,
               multiple: true,
               clearable: true
@@ -396,12 +391,12 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '缓存',
+        title: 'Cache',
         key: 'cache',
         search: {
           disabled: false
         },
-        width: 60,
+        width: 70,
         type: 'radio',
         dict: {
           data: vm.dictionary('button_whether_bool')
@@ -413,23 +408,23 @@ export const crudOptions = (vm) => {
               const { form } = context
               return !form.is_catalog
             },
-            placeholder: '请选择是否缓存'
+            placeholder: 'Activer le cache ?'
           },
           helper: {
             render (h) {
-              return (< el-alert title="是否开启页面缓存,需要组件名称和xx.vue页面的name一致" type="warning" />
+              return (< el-alert title="Activer le cache (keep-alive) pour cette page" type="warning" />
               )
             }
           }
         }
       },
       {
-        title: '侧边可见',
+        title: 'Visible menu',
         key: 'visible',
         search: {
           disabled: false
         },
-        width: 75,
+        width: 100,
         type: 'radio',
         dict: {
           data: vm.dictionary('button_whether_bool')
@@ -437,25 +432,25 @@ export const crudOptions = (vm) => {
         form: {
           value: true,
           component: {
-            placeholder: '请选择侧边可见'
+            placeholder: 'Afficher dans le menu latéral ?'
           },
-          rules: [ // 表单校验规则
-            { required: true, message: '侧边可见必填项' }
+          rules: [
+            { required: true, message: 'Ce champ est requis' }
           ],
           helper: {
             render (h) {
-              return (< el-alert title="是否显示在侧边菜单中" type="warning" />
+              return (< el-alert title="Afficher ou masquer dans le menu latéral" type="warning" />
               )
             }
           }
         }
       }, {
-        title: '主框架外展示',
+        title: 'Hors-cadre',
         key: 'frame_out',
         search: {
           disabled: false
         },
-        width: 75,
+        width: 90,
         type: 'radio',
         dict: {
           data: vm.dictionary('button_whether_bool')
@@ -463,27 +458,27 @@ export const crudOptions = (vm) => {
         form: {
           value: false,
           component: {
-            placeholder: '请选择主框架外展示'
+            placeholder: 'Afficher hors du cadre principal ?'
           },
-          rules: [ // 表单校验规则
-            { required: true, message: '主框架外展示必填项' }
+          rules: [
+            { required: true, message: 'Ce champ est requis' }
           ],
           helper: {
             render (h) {
-              return (< el-alert title="是否显示在主框架外展示" type="warning" />
+              return (< el-alert title="Afficher sans la disposition (layout) standard" type="warning" />
               )
             }
           }
         }
       },
       {
-        title: '状态',
+        title: 'Statut',
         key: 'status',
         sortable: true,
         search: {
           disabled: false
         },
-        width: 70,
+        width: 80,
         type: 'radio',
         dict: {
           data: vm.dictionary('button_status_bool')
@@ -491,10 +486,10 @@ export const crudOptions = (vm) => {
         form: {
           value: true,
           component: {
-            placeholder: '请选择状态'
+            placeholder: 'Sélectionnez le statut'
           },
-          rules: [ // 表单校验规则
-            { required: true, message: '状态必填项' }
+          rules: [
+            { required: true, message: 'Le statut est requis' }
           ]
         }
       }

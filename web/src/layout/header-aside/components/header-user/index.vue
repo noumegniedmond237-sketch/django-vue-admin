@@ -7,31 +7,31 @@
       v-if="isTenants"
       >
       <span>
-        当前租户：{{info.tenant_name}}
+        Locataire : {{info.tenant_name}}
       </span>
       <span style="color: #E6A23C;" v-if="info.tenant_id && info.tenant_id !== 100000" @click="clientInfo">
-        切换套餐
+        Changer d'offre
       </span>
       <span class="btn-text">{{
-      info.name ? `你好 ${info.name}` : "未登录"
+      info.name ? `Bonjour ${info.name}` : "Non connecté"
     }}</span>
     </el-link>
     <span class="btn-text" v-else>{{
-      info.name ? `你好 ${info.name}` : "未登录"
+      info.name ? `Bonjour ${info.name}` : "Non connecté"
     }}</span>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item @click.native="userInfo">
-        <d2-icon name="cog" class="d2-mr-5" />个人信息
+        <d2-icon name="user" class="d2-mr-5" />Mon Profil
       </el-dropdown-item>
       <el-dropdown-item @click.native="clientInfo" v-if="info.tenant_id && info.tenant_id !== 100000">
-        <d2-icon name="cog" class="d2-mr-5" />租户信息
+        <d2-icon name="building" class="d2-mr-5" />Infos Locataire
       </el-dropdown-item>
       <el-dropdown-item @click.native="logOff" divided>
         <d2-icon name="power-off" class="d2-mr-5" />
-        注销
+        Déconnexion
       </el-dropdown-item>
     </el-dropdown-menu>
-    <el-image v-if="info.avatar" :src="info.avatar" :preview-src-list="[info.avatar]" style="width: 20px;height: 20px;border-radius: 20%;top: 5px;" alt="头像"></el-image>
+    <el-image v-if="info.avatar" :src="info.avatar" :preview-src-list="[info.avatar]" style="width: 20px;height: 20px;border-radius: 20%;top: 5px;" alt="Avatar"></el-image>
   </el-dropdown>
 </template>
 
@@ -49,18 +49,18 @@ export default {
   methods: {
     ...mapActions('d2admin/account', ['logout']),
     /**
-     * @description 登出
+     * @description Déconnexion
      */
     logOff () {
       this.logout({
         confirm: true
       })
     },
-    /** 个人信息 */
+    /** Mon Profil */
     userInfo () {
       this.$router.push({ path: 'userInfo' })
     },
-    /** 租户信息 */
+    /** Infos Locataire */
     clientInfo () {
       this.$router.push({ path: 'myClientInfo' })
     }

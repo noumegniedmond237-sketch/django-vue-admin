@@ -1,48 +1,45 @@
 <template>
   <d2-container class="page">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="用户设置" name="userInfo">
+      <el-tab-pane label="Paramètres du profil" name="userInfo">
         <el-row :gutter="20">
-          <el-col :span="10" :offset="6">
+          <el-col :span="12" :offset="6">
             <el-form
               ref="userInfoForm"
-              label-width="100px"
+              label-width="140px"
               :model="userInfo"
               required-asterisk
               :rules="userInforules"
               :label-position="position"
               center
             >
-              <el-form-item prop="avatar" label="头像">
+              <el-form-item prop="avatar" label="Photo de profil">
                 <d2p-cropper-uploader :value="userInfo.avatar || '/image/avatar.png'" @input="handleAvatarSuccess"/>
               </el-form-item>
-              <el-form-item prop="username" label="账号">
+              <el-form-item prop="username" label="Identifiant">
                 <el-input v-model="userInfo.username" disabled></el-input>
               </el-form-item>
-              <el-form-item prop="name" required label="昵称">
+              <el-form-item prop="name" required label="Nom d'affichage">
                 <el-input v-model="userInfo.name" clearable></el-input>
               </el-form-item>
-              <el-form-item label="电话号码" required prop="mobile">
+              <el-form-item label="Téléphone" required prop="mobile">
                 <el-input v-model="userInfo.mobile" clearable disabled></el-input>
               </el-form-item>
-              <el-form-item label="邮箱" prop="email">
+              <el-form-item label="Email" prop="email">
                 <el-input v-model="userInfo.email" clearable></el-input>
               </el-form-item>
-              <el-form-item label="性別" prop="gender">
+              <el-form-item label="Genre" prop="gender">
                 <el-radio-group v-model="userInfo.gender">
-                  <el-radio :label="1">男</el-radio>
-                  <el-radio :label="0">女</el-radio>
-                  <el-radio :label="-1">未知</el-radio>
+                  <el-radio :label="1">Homme</el-radio>
+                  <el-radio :label="0">Femme</el-radio>
+                  <el-radio :label="-1">Non précisé</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item label="用户名" prop="dept">
-                <el-input :value="userInfo.username" clearable disabled></el-input>
-              </el-form-item>
-              <el-form-item label="所属部门" prop="dept">
+              <el-form-item label="Département" prop="dept">
                 <el-input :value="userInfo.dept_info && userInfo.dept_info.dept_name" clearable disabled></el-input>
               </el-form-item>
-              <el-form-item label="当前角色" prop="role">
-                <el-select :value="userInfo.role" multiple placeholder="请选择" disabled size="mini" style="width: 100%;">
+              <el-form-item label="Rôle(s) actuel(s)" prop="role">
+                <el-select :value="userInfo.role" multiple placeholder="Sélectionner" disabled size="mini" style="width: 100%;">
                   <el-option
                     v-for="item in userInfo.role_info"
                     :key="item.id"
@@ -54,58 +51,59 @@
               <el-form-item>
                 <el-button @click="updateInfo" type="primary">
                   <i class="fa fa-check"></i>
-                  更新
+                  Mettre à jour
                 </el-button>
                 <el-button @click="resetForm('info')" type="info">
                   <i class="fa fa-reply-all"></i>
-                  重置
+                  Réinitialiser
                 </el-button>
               </el-form-item>
             </el-form>
           </el-col>
         </el-row>
       </el-tab-pane>
-      <el-tab-pane label="密码设置" name="passwrod">
+      <el-tab-pane label="Sécurité du mot de passe" name="passwrod">
         <el-row :gutter="20">
-          <el-col :span="10" :offset="6">
+          <el-col :span="12" :offset="6">
             <el-form
               ref="userPasswordForm"
               :model="userPasswordInfo"
               required-asterisk
-              label-width="100px"
+              label-width="160px"
               :label-position="position"
               :rules="passwordRules"
               center
             >
-              <el-form-item label="原密码" required prop="oldPassword">
+              <el-form-item label="Ancien mot de passe" required prop="oldPassword">
                 <el-input
+                  type="password"
                   v-model="userPasswordInfo.oldPassword"
-                  placeholder="请输入原始密码"
+                  placeholder="Entrez votre mot de passe actuel"
                   clearable
                 ></el-input>
               </el-form-item>
-              <el-form-item required prop="newPassword" label="新密码">
+              <el-form-item required prop="newPassword" label="Nouveau mot de passe">
                 <el-input
                   type="password"
                   v-model="userPasswordInfo.newPassword"
-                  placeholder="请输入新密码"
+                  placeholder="Entrez le nouveau mot de passe"
                   clearable
                 ></el-input>
               </el-form-item>
-              <el-form-item required prop="newPassword2" label="确认密码">
+              <el-form-item required prop="newPassword2" label="Confirmer le mot de passe">
                 <el-input
                   type="password"
                   v-model="userPasswordInfo.newPassword2"
-                  placeholder="请再次输入新密码"
+                  placeholder="Confirmez le nouveau mot de passe"
                   clearable
                 ></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="settingPassword">
-                  <i class="fa fa-check"></i>提交
+                  <i class="fa fa-check"></i> Enregistrer
                 </el-button>
                 <el-button @click="resetForm('passwordForm')" type="info">
-                  <i class="fa fa-reply-all"></i>重置
+                  <i class="fa fa-reply-all"></i> Réinitialiser
                 </el-button>
               </el-form-item>
             </el-form>
@@ -125,11 +123,11 @@ export default {
     var validatePass = (rule, value, callback) => {
       const pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}')
       if (value === '') {
-        callback(new Error('请输入密码'))
+        callback(new Error('Veuillez saisir un mot de passe'))
       } else if (value === this.userPasswordInfo.oldPassword) {
-        callback(new Error('原密码与新密码一致'))
+        callback(new Error('Le nouveau mot de passe doit être différent de l\'ancien'))
       } else if (!pwdRegex.test(value)) {
-        callback(new Error('您的密码复杂度太低(密码中必须包含字母、数字)'))
+        callback(new Error('Le mot de passe doit contenir au moins 8 caractères, incluant lettres et chiffres'))
       } else {
         if (this.userPasswordInfo.newPassword2 !== '') {
           this.$refs.userPasswordForm.validateField('newPassword2')
@@ -139,9 +137,9 @@ export default {
     }
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'))
+        callback(new Error('Veuillez confirmer votre mot de passe'))
       } else if (value !== this.userPasswordInfo.newPassword) {
-        callback(new Error('两次输入密码不一致!'))
+        callback(new Error('Les deux mots de passe ne correspondent pas !'))
       } else {
         callback()
       }
@@ -162,8 +160,7 @@ export default {
         email: ''
       },
       userInforules: {
-        name: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
-        mobile: [{ pattern: /^1[3-9]\d{9}$/, message: '请输入正确手机号' }]
+        name: [{ required: true, message: 'Veuillez saisir un nom d\'affichage', trigger: 'blur' }]
       },
       userPasswordInfo: {
         oldPassword: '',
@@ -174,7 +171,7 @@ export default {
         oldPassword: [
           {
             required: true,
-            message: '请输入原密码',
+            message: 'Veuillez entrer le mot de passe actuel',
             trigger: 'blur'
           }
         ],
@@ -188,9 +185,6 @@ export default {
   },
   methods: {
     ...mapActions('d2admin/account', ['logout']),
-    /**
-     * 获取当前用户信息
-     */
     getCurrentUserInfo () {
       const _self = this
       return request({
@@ -201,9 +195,6 @@ export default {
         _self.userInfo = res.data
       })
     },
-    /**
-     * 更新用户信息
-     */
     updateInfo () {
       const _self = this
 
@@ -216,17 +207,14 @@ export default {
             method: 'put',
             data: userInfo
           }).then((res) => {
-            _self.$message.success('修改成功')
+            _self.$message.success('Profil mis à jour avec succès')
             _self.getCurrentUserInfo()
           })
         } else {
-          // 校验失败
-          // 登录表单校验失败
-          this.$message.error('表单校验失败，请检查')
+          this.$message.error('Veuillez vérifier les champs du formulaire')
         }
       })
     },
-    // 重置
     resetForm (name) {
       const _self = this
       if (name === 'info') {
@@ -235,7 +223,6 @@ export default {
         _self.userPasswordForm = {}
       }
     },
-    // tab切换
     handleClick (tab, event) {
       const _self = this
       if (tab.paneName === 'userInfo') {
@@ -245,9 +232,6 @@ export default {
         _self.$refs.userInfoForm.resetFields()
       }
     },
-    /**
-     * 重新设置密码
-     */
     settingPassword () {
       const _self = this
 
@@ -265,22 +249,15 @@ export default {
               data: params
             }).then((res) => {
               _self.activeName = 'userInfo'
-              _self.$message.success('修改成功')
+              _self.$message.success('Mot de passe modifié avec succès')
               _self.logout({})
             })
           }
         } else {
-          // 校验失败
-          // 登录表单校验失败
-          this.$message.error('表单校验失败，请检查')
+          this.$message.error('Veuillez vérifier les champs du formulaire')
         }
       })
     },
-    /**
-     * 头像上传
-     * @param res
-     * @param file
-     */
     handleAvatarSuccess (res, file) {
       this.userInfo.avatar = res
     }

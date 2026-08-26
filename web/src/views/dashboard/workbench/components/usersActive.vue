@@ -13,7 +13,7 @@
           <div class="enroll-time">
             <div class="enroll-number"><h3>{{ data.today_users || 0 }}</h3>
             </div>
-            <div class="enroll-text">今日注册
+            <div class="enroll-text">Inscriptions aujourd'hui
             </div>
           </div>
         </el-col>
@@ -28,7 +28,7 @@
           <div class="enroll-time">
             <div class="enroll-number"><h3>{{ data.today_logins || 0 }}</h3>
             </div>
-            <div class="enroll-text">今日登录
+            <div class="enroll-text">Connexions aujourd'hui
             </div>
           </div>
         </el-col>
@@ -43,7 +43,7 @@
           <div class="enroll-time">
             <div class="enroll-number"><h3>{{ data.three_days || 0 }}</h3>
             </div>
-            <div class="enroll-text">三日新增
+            <div class="enroll-text">Nouveaux (3 jours)
             </div>
           </div>
         </el-col>
@@ -58,7 +58,7 @@
           <div class="enroll-time">
             <div class="enroll-number"><h3>{{ data.seven_days || 0 }}</h3>
             </div>
-            <div class="enroll-text">七日活跃
+            <div class="enroll-text">Actifs (7 jours)
             </div>
           </div>
         </el-col>
@@ -73,7 +73,7 @@
           <div class="enroll-time">
             <div class="enroll-number"><h3>{{ data.seven_days_active || 0 }}</h3>
             </div>
-            <div class="enroll-text">七日新增
+            <div class="enroll-text">Nouveaux (7 jours)
             </div>
           </div>
         </el-col>
@@ -88,7 +88,7 @@
           <div class="enroll-time">
             <div class="enroll-number"><h3>{{ data.monthly_active || 0 }}</h3>
             </div>
-            <div class="enroll-text">月活跃
+            <div class="enroll-text">Actifs mensuels
             </div>
           </div>
         </el-col>
@@ -102,25 +102,25 @@ import { request } from '@/api/service'
 
 export default {
   sort: 5,
-  title: '用户新增统计',
+  title: 'Activité des Utilisateurs',
   name: 'usersActive',
   icon: 'el-icon-user-solid',
-  description: '用户新增以及活跃统计数据',
+  description: 'Statistiques d\'inscriptions et d\'utilisateurs actifs',
   height: 18,
   width: 20,
   isResizable: true,
   config: {
     color: {
-      label: '背景颜色',
+      label: "Couleur d'arrière-plan",
       type: 'color',
       value: '',
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: 'Laissez vide pour couleur aléatoire'
     },
     fontColor: {
-      label: '字体颜色',
+      label: 'Couleur du texte',
       type: 'color',
       value: '',
-      placeholder: '请选择字体颜色'
+      placeholder: 'Sélectionnez la couleur du texte'
     }
   },
   props: {
@@ -145,7 +145,6 @@ export default {
         this.data = res.data
       })
     },
-    // 生成一个随机整数
     randomColor () {
       const color = [
         '#fffff'
@@ -159,7 +158,6 @@ export default {
 
 <style scoped lang="scss">
 .card-view {
-  // border-radius: 10px;
   color: $color-primary;
 }
 .enroll-number{

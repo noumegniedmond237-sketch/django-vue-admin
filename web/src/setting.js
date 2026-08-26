@@ -19,7 +19,7 @@ export default {
         name: 'index',
         fullPath: '/index',
         meta: {
-          title: '控制台',
+          title: 'Tableau de bord',
           auth: false
         }
       }
@@ -33,7 +33,7 @@ export default {
   theme: {
     list: [
       {
-        title: 'd2admin 经典',
+        title: 'D2Admin Classique',
         name: 'd2',
         preview: 'image/theme/d2/preview@2x.png'
       },
@@ -48,24 +48,24 @@ export default {
         preview: 'image/theme/element/preview@2x.jpg'
       },
       {
-        title: '紫罗兰',
+        title: 'Violet',
         name: 'violet',
         preview: 'image/theme/violet/preview@2x.jpg'
       },
       {
-        title: '简约线条',
+        title: 'Lignes Épurées',
         name: 'line',
         backgroundImage: 'image/theme/line/bg.jpg',
         preview: 'image/theme/line/preview@2x.jpg'
       },
       {
-        title: '流星',
+        title: 'Météore',
         name: 'star',
         backgroundImage: 'image/theme/star/bg.jpg',
         preview: 'image/theme/star/preview@2x.jpg'
       },
       {
-        title: 'Tomorrow Night Blue (vsCode)',
+        title: 'Tomorrow Night Blue (VSCode)',
         name: 'tomorrow-night-blue',
         preview: 'image/theme/tomorrow-night-blue/preview@2x.jpg'
       }

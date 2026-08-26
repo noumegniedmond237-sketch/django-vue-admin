@@ -14,10 +14,10 @@ import { request } from '@/api/service'
 
 export default {
   sort: 7,
-  title: '注册用户趋势',
+  title: 'Tendance des Inscriptions',
   name: 'registeredUser',
   icon: 'el-icon-s-data',
-  description: '用户注册',
+  description: 'Évolution des nouveaux utilisateurs',
   height: 28,
   width: 20,
   isResizable: true,
@@ -34,8 +34,9 @@ export default {
   watch: {
     pxData: {
       handler () {
-        // eslint-disable-next-line no-unused-expressions
-        this.myChart?.resize({ width: this.pxData.wpx, height: this.pxData.hpx })
+        if (this.myChart) {
+          this.myChart.resize({ width: this.pxData.wpx, height: this.pxData.hpx })
+        }
       },
       immediate: true,
       deep: true
@@ -56,18 +57,24 @@ export default {
         this.drawLine(this.data)
       })
     },
-    // 生成一个随机整数
     randomColor () {
       const color = ['#fffff']
       const ran = Math.floor(Math.random() * 4)
       return color[ran]
     },
     drawLine () {
-      // 基于准备好的dom，初始化echarts实例
-      // 绘制图表
       const xAxisData = this.data.map(item => item.day)
       const seriesData = this.data.map(item => item.count)
       const option = {
+        title: {
+          text: 'Tendance des Inscriptions',
+          textStyle: {
+            color: '#666666',
+            fontSize: 14,
+            fontWeight: '600'
+          },
+          left: 'left'
+        },
         tooltip: {
           trigger: 'axis',
           backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -83,11 +90,11 @@ export default {
           },
           formatter: params => {
             const param = params[0]
-            return `<div style="padding: 8px;"><div style="color: #333;">${param.name}</div><div style="color: #FFA500;">${param.value} 人</div></div>`
+            return `<div style="padding: 8px;"><div style="color: #333;">${param.name}</div><div style="color: #FFA500;">${param.value} utilisateur(s)</div></div>`
           }
         },
         legend: {
-          data: ['用户注册数'],
+          data: ['Inscriptions'],
           textStyle: {
             color: '#666',
             fontSize: 12
@@ -141,7 +148,7 @@ export default {
         },
         series: [
           {
-            name: '用户注册数',
+            name: 'Inscriptions',
             type: 'line',
             data: seriesData,
             symbol: 'circle',
@@ -191,7 +198,6 @@ export default {
 
 <style scoped lang="scss">
 .card-view {
-  //border-radius: 10px;
   color: $color-primary;
 }
 

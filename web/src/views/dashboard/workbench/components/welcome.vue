@@ -1,36 +1,36 @@
 <template>
   <el-card
     shadow="hover"
-    :header="config?.showHeader?.value ? '欢迎使用' : ''"
+    :header="config?.showHeader?.value ? 'Bienvenue' : ''"
     class="card-view"
     :style="{background: randomColor(), color: config?.fontColor?.value}">
     <div class="welcome">
       <div class="logo">
         <img src="/image/django-vue-admin.png">
-        <h2>欢迎体验 Dvadmin</h2>
+        <h2>Bienvenue sur Django-Vue-Admin</h2>
       </div>
       <div class="tips">
         <div class="tips-item">
           <div class="tips-item-icon">
             <i class="el-icon-menu"></i>
           </div>
-          <div class="tips-item-message">这里是项目控制台，你可以点击右上方的“自定义”按钮来添加移除或者移动部件。</div>
+          <div class="tips-item-message">Voici votre console d'administration. Cliquez sur "Personnaliser" pour ajouter, déplacer ou réorganiser les widgets.</div>
         </div>
         <div class="tips-item">
           <div class="tips-item-icon">
             <i class="el-icon-star-on"></i>
           </div>
-          <div class="tips-item-message">热爱Python和Vue,打造一个低代码开源平台，并且持续着。</div>
+          <div class="tips-item-message">Solution complète d'administration basée sur Django REST Framework et Vue.js, prête à l'emploi.</div>
         </div>
         <div class="tips-item">
           <div class="tips-item-icon">
             <i class="el-icon-milk-tea"></i>
           </div>
-          <div class="tips-item-message">项目目的：让前端和后端工作更快乐</div>
+          <div class="tips-item-message">Architecture modulaire, gestion des rôles (RBAC), sécurité renforcée et performances optimales.</div>
         </div>
       </div>
       <div class="actions">
-        <el-button type="primary" icon="el-icon-check" size="large" @click="godoc">文档</el-button>
+        <el-button type="primary" icon="el-icon-document" size="large" @click="godoc">Documentation</el-button>
       </div>
     </div>
   </el-card>
@@ -39,31 +39,31 @@
 <script>
 export default {
   sort: 11,
-  title: '欢迎使用',
+  title: 'Bienvenue',
   name: 'welcome',
   icon: 'el-icon-present',
-  description: '项目特色以及文档链接',
+  description: 'Présentation de la plateforme et documentation',
   width: 16,
   height: 45,
   isResizable: true,
   config: {
     showHeader: {
-      label: '显示头部信息',
+      label: "Afficher l'en-tête",
       type: 'boot',
       value: true,
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: ''
     },
     color: {
-      label: '背景颜色',
+      label: "Couleur d'arrière-plan",
       type: 'color',
       value: '',
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: 'Laissez vide pour couleur aléatoire'
     },
     fontColor: {
-      label: '字体颜色',
+      label: 'Couleur du texte',
       type: 'color',
       value: '',
-      placeholder: '请选择字体颜色'
+      placeholder: 'Sélectionnez la couleur du texte'
     }
   },
   props: {
@@ -79,7 +79,6 @@ export default {
     godoc () {
       window.open('https://www.django-vue-admin.com/')
     },
-    // 生成一个颜色
     randomColor () {
       if (this.config?.color?.value) {
         return this.config.color.value
@@ -106,7 +105,7 @@ export default {
 }
 
 .welcome .logo h2 {
-  font-size: 30px;
+  font-size: 24px;
   font-weight: normal;
   display: flex;
   align-items: center;
@@ -145,7 +144,7 @@ export default {
 
 .actions {
   text-align: center;
-  margin: 40rpx 0 20rpx 0;
+  margin-top: 20px;
 }
 .el-card{
   height: 100%;

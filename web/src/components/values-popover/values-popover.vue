@@ -1,4 +1,3 @@
-<!-- value值展示组件 -->
 <template>
   <div>
     <div v-if="elProps.type === 'list'">
@@ -30,7 +29,7 @@
       <el-descriptions class="margin-top" :column="1" size="mini" border>
         <el-descriptions-item v-for="(item,index) in value" :key="index" labelStyle="width: 60px;">
           <template slot="label">
-            选项{{ index + 1 }}
+            Option {{ index + 1 }}
           </template>
           {{ item[dict.label] }}
         </el-descriptions-item>
@@ -47,7 +46,7 @@
         <el-descriptions class="margin-top" :column="1" size="mini" border>
           <el-descriptions-item v-for="(item,index) in value" :key="index" labelStyle="width: 60px;">
             <template slot="label">
-              选项{{ index + 1 }}
+              Option {{ index + 1 }}
             </template>
             {{ item[dict.label] }}
           </el-descriptions-item>
@@ -70,10 +69,10 @@
         @show="showEvents"
         @hide="show=false">
         <div v-html="value" v-if="show"></div>
-        <el-button type="primary" plain size="mini" slot="reference" @click="previewClick"><span>预览</span>
+        <el-button type="primary" plain size="mini" slot="reference" @click="previewClick"><span>Aperçu</span>
         </el-button>
       </el-popover>
-      <el-button v-else type="primary" plain size="mini" slot="reference" @click="previewClick"><span>预览</span>
+      <el-button v-else type="primary" plain size="mini" slot="reference" @click="previewClick"><span>Aperçu</span>
       </el-button>
     </div>
   </div>
@@ -91,27 +90,24 @@ export default {
   },
   mixins: [d2CrudPlus.input, d2CrudPlus.inputDict],
   props: {
-    // 值
     value: {
       type: [String, Number, Array],
       required: false,
       default: ''
     },
-    // 数据字典配置
     dict: {
       type: Object,
       require: true
     },
-    // 其他配置
     elProps: {
       type: Object,
       require: false,
       default () {
         return {
-          type: 'text', // test/tree/list/ueditor
+          type: 'text',
           rowKey: 'users',
-          label: '标题',
-          unit: '个'
+          label: 'Titre',
+          unit: 'élément(s)'
         }
       }
     }

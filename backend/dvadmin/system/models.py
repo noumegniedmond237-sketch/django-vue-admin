@@ -262,12 +262,12 @@ class Dictionary(CoreModel):
         verbose_name_plural = verbose_name
         ordering = ("sort",)
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        super().save(force_insert, force_update, using, update_fields)
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         dispatch.refresh_dictionary()  # 有更新则刷新字典配置
 
-    def delete(self, using=None, keep_parents=False):
-        res = super().delete(using, keep_parents)
+    def delete(self, *args, **kwargs):
+        res = super().delete(*args, **kwargs)
         dispatch.refresh_dictionary()
         return res
 
@@ -470,16 +470,16 @@ class SystemConfig(CoreModel):
     def __str__(self):
         return f"{self.title}"
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+    def save(self, *args, **kwargs):
         # from application.websocketConfig import websocket_push
         # websocket_push("dvadmin", message={"sender": 'system', "contentType": 'SYSTEM',
         #                                    "content": '系统配置有变化~', "systemConfig": True})
 
-        super().save(force_insert, force_update, using, update_fields)
+        super().save(*args, **kwargs)
         dispatch.refresh_system_config()  # 有更新则刷新系统配置
 
-    def delete(self, using=None, keep_parents=False):
-        res = super().delete(using, keep_parents)
+    def delete(self, *args, **kwargs):
+        res = super().delete(*args, **kwargs)
         dispatch.refresh_system_config()
         from application.websocketConfig import websocket_push
         websocket_push("dvadmin", message={"sender": 'system', "contentType": 'SYSTEM',

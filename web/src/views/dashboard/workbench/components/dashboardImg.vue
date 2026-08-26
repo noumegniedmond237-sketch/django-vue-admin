@@ -7,27 +7,27 @@
 <script>
 export default {
   sort: 8,
-  title: '宣传图',
+  title: 'Bannière / Image',
   name: 'dashboardImg',
-  icon: 'el-icon-medal',
-  description: '用于展示各种图片宣传页',
+  icon: 'el-icon-picture-outline',
+  description: 'Affichage d\'une image avec lien de redirection',
   height: 10,
   width: 16,
   isResizable: true,
   config: {
     src: {
-      label: '图片地址',
+      label: "URL de l'image",
       type: 'input',
       value: '/image/card/tencent.jpg',
-      placeholder: '请输入图片地址',
-      rules: [{ required: true, message: '不能为空' }]
+      placeholder: "Entrez l'URL de l'image",
+      rules: [{ required: true, message: 'Ce champ est requis' }]
     },
     url: {
-      label: '跳转地址',
+      label: 'Lien de redirection',
       type: 'input',
-      placeholder: '请输入跳转地址',
-      value: 'https://cloud.tencent.com/act/cps/redirect?redirect=1060&cps_key=b302a514a6688aa30823fac954464e5d&from=console',
-      rules: [{ required: true, message: '不能为空' }]
+      placeholder: 'Entrez le lien',
+      value: 'https://django-vue-admin.com',
+      rules: [{ required: true, message: 'Ce champ est requis' }]
     }
   },
   props: {
@@ -42,7 +42,9 @@ export default {
   },
   methods: {
     Jump () {
-      window.open(this.config.url.value, '_black')
+      if (this.config.url.value) {
+        window.open(this.config.url.value, '_blank')
+      }
     }
   }
 }
@@ -62,7 +64,7 @@ export default {
   height: 100%;
 }
 ::v-deep .el-card__body {
-    padding: 0;
+  padding: 0;
   border-radius: 4px;
 }
 </style>

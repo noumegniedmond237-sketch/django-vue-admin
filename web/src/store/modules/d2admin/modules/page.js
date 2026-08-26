@@ -53,8 +53,12 @@ export default {
       // 处理数据
       state.opened = value
         .map(opened => {
-          // 忽略控制台
+          // Tableau de bord
           if (opened.fullPath === '/index') {
+            opened.meta = opened.meta || {}
+            if (!opened.meta.title || opened.meta.title === '控制台') {
+              opened.meta.title = 'Tableau de bord'
+            }
             valid.push(1)
             return opened
           }

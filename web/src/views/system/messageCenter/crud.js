@@ -2,15 +2,15 @@ import { request } from '@/api/service'
 
 export const crudOptions = (vm) => {
   return {
-    indexRow: { // 或者直接传true,不显示title，不居中
+    indexRow: {
       width: 60,
-      title: '序号',
+      title: 'N°',
       align: 'center'
     },
     options: {
       tableType: 'vxe-table',
-      rowKey: true, // 必须设置，true or false
-      height: '100%' // 表格高度100%, 使用toolbar必须设置
+      rowKey: true,
+      height: '100%'
     },
     rowHandle: {
       width: 160,
@@ -50,40 +50,40 @@ export const crudOptions = (vm) => {
     },
     columns: [
       {
-        title: 'id',
+        title: 'ID',
         key: 'id',
-        width: 100,
+        width: 80,
         form: { disabled: true }
       },
       {
-        title: '标题',
+        title: 'Titre',
         key: 'title',
         search: {
           disabled: false
         },
         width: 200,
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '必填项'
+              message: 'Le titre est requis'
             }
           ],
-          component: { span: 24, placeholder: '请输入标题' }
+          component: { span: 24, placeholder: 'Entrez le titre du message' }
         }
       },
       {
-        title: '是否已读',
+        title: 'Statut de lecture',
         key: 'is_read',
         type: 'select',
-        width: 100,
+        width: 130,
         show () {
           return vm.tabActivted === 'receive'
         },
         dict: {
           data: [
-            { label: '已读', value: true, color: 'success' },
-            { label: '未读', value: false, color: 'danger' }
+            { label: 'Lu', value: true, color: 'success' },
+            { label: 'Non lu', value: false, color: 'danger' }
           ]
         },
         form: {
@@ -91,14 +91,14 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '目标类型',
+        title: 'Cible de diffusion',
         key: 'target_type',
         type: 'radio',
-        width: 120,
+        width: 140,
         show () {
           return vm.tabActivted === 'send'
         },
-        dict: { data: [{ value: 0, label: '按用户' }, { value: 1, label: '按角色' }, { value: 2, label: '按部门' }, { value: 3, label: '通知公告' }] },
+        dict: { data: [{ value: 0, label: 'Utilisateurs' }, { value: 1, label: 'Rôles' }, { value: 2, label: 'Départements' }, { value: 3, label: 'Tous (Annonce)' }] },
         form: {
           component: {
             span: 24,
@@ -109,26 +109,26 @@ export const crudOptions = (vm) => {
           rules: [
             {
               required: true,
-              message: '必选项',
+              message: 'Veuillez sélectionner la cible',
               trigger: ['blur', 'change']
             }
           ]
         }
       },
       {
-        title: '目标用户',
+        title: 'Destinataires (Utilisateurs)',
         key: 'target_user',
         search: {
           disabled: true
         },
-        width: 130,
+        width: 160,
         type: 'table-selector',
         disabled: true,
         dict: {
           cache: false,
           url: '/api/system/user/',
-          value: 'id', // 数据字典中value字段的属性名
-          label: 'name', // 数据字典中label字段的属性名
+          value: 'id',
+          label: 'name',
           getData: (url, dict, {
             form,
             component
@@ -148,10 +148,10 @@ export const crudOptions = (vm) => {
           }
         },
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '必填项'
+              message: 'Ce champ est requis'
             }
           ],
           itemProps: {
@@ -168,11 +168,11 @@ export const crudOptions = (vm) => {
               columns: [
                 {
                   field: 'name',
-                  title: '用户名称'
+                  title: 'Nom'
                 },
                 {
                   field: 'phone',
-                  title: '用户电话'
+                  title: 'Téléphone'
                 }
               ]
             }
@@ -185,19 +185,19 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '目标角色',
+        title: 'Destinataires (Rôles)',
         key: 'target_role',
         search: {
           disabled: true
         },
         disabled: true,
-        width: 130,
+        width: 160,
         type: 'table-selector',
         dict: {
           cache: false,
           url: '/api/system/role/',
-          value: 'id', // 数据字典中value字段的属性名
-          label: 'name', // 数据字典中label字段的属性名
+          value: 'id',
+          label: 'name',
           getData: (url, dict, {
             form,
             component
@@ -217,10 +217,10 @@ export const crudOptions = (vm) => {
           }
         },
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '必填项'
+              message: 'Ce champ est requis'
             }
           ],
           itemProps: {
@@ -237,11 +237,11 @@ export const crudOptions = (vm) => {
               columns: [
                 {
                   field: 'name',
-                  title: '角色名称'
+                  title: 'Nom du rôle'
                 },
                 {
                   field: 'key',
-                  title: '权限标识'
+                  title: 'Clé du rôle'
                 }
               ]
             }
@@ -254,20 +254,20 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '目标部门',
+        title: 'Destinataires (Départements)',
         key: 'target_dept',
         search: {
           disabled: true
         },
-        width: 130,
+        width: 160,
         type: 'table-selector',
         dict: {
           cache: false,
           url: '/api/system/dept/all_dept/',
           isTree: true,
-          value: 'id', // 数据字典中value字段的属性名
-          label: 'name', // 数据字典中label字段的属性名
-          children: 'children', // 数据字典中children字段的属性名
+          value: 'id',
+          label: 'name',
+          children: 'children',
           getData: (url, dict, {
             form,
             component
@@ -281,10 +281,10 @@ export const crudOptions = (vm) => {
         },
         disabled: true,
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '必填项'
+              message: 'Ce champ est requis'
             }
           ],
           itemProps: {
@@ -307,16 +307,16 @@ export const crudOptions = (vm) => {
                 columns: [
                   {
                     field: 'name',
-                    title: '部门名称',
+                    title: 'Département',
                     treeNode: true
                   },
                   {
                     field: 'status_label',
-                    title: '状态'
+                    title: 'Statut'
                   },
                   {
                     field: 'parent_name',
-                    title: '父级部门'
+                    title: 'Parent'
                   }
                 ]
               }
@@ -330,15 +330,15 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '内容',
+        title: 'Contenu',
         key: 'content',
         minWidth: 300,
-        type: 'editor-quill', // 富文本图片上传依赖file-uploader，请先配置好file-uploader
+        type: 'editor-quill',
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '必填项'
+              message: 'Le contenu est requis'
             }
           ],
           component: {
@@ -347,12 +347,11 @@ export const crudOptions = (vm) => {
             },
             props: {
               uploader: {
-                type: 'form' // 上传后端类型【cos,aliyun,oss,form】
+                type: 'form'
               }
             },
             events: {
               'text-change': (event) => {
-                console.log('text-change:', event)
               }
             }
           }

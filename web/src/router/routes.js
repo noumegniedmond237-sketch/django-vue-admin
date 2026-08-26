@@ -11,11 +11,12 @@ const frameIn = [{
   redirect: { name: 'index' },
   component: layoutHeaderAside,
   children: [
-    // 控制台
+    // Tableau de bord
     {
       path: 'index',
       name: 'index',
       meta: {
+        title: 'Tableau de bord',
         auth: true
       },
       component: _import('dashboard/workbench/index')
@@ -32,7 +33,7 @@ const frameIn = [{
       path: 'userInfo',
       name: 'userInfo',
       meta: {
-        title: '个人信息',
+        title: 'Mon Profil',
         auth: true
       },
       component: () => import('@/layout/header-aside/components/header-user/userinfo')
@@ -42,7 +43,7 @@ const frameIn = [{
       path: 'workbench',
       name: 'workbench',
       meta: {
-        title: '工作台',
+        title: 'Tableau de bord',
         auth: true
       },
       component: _import('dashboard/workbench')

@@ -1,15 +1,12 @@
 import { request } from '@/api/service'
 
 export const crudOptions = (vm) => {
-  // util.filterParams(vm, ['dept_name', 'role_info{name}', 'dept_name_all'])
   return {
     pageOptions: {
       compact: true
     },
     options: {
       height: '100%',
-      // tableType: 'vxe-table',
-      // rowKey: true,
       rowId: 'id'
     },
     selectionRow: {
@@ -43,7 +40,7 @@ export const crudOptions = (vm) => {
       custom: [
         {
           thin: true,
-          text: '密码重置',
+          text: 'Réinitialiser mot de passe',
           size: 'small',
           type: 'warning',
           icon: 'el-icon-refresh-left',
@@ -58,16 +55,16 @@ export const crudOptions = (vm) => {
       componentType: 'form'
     },
     formOptions: {
-      defaultSpan: 12 // 默认的表单 span
+      defaultSpan: 12
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
+    indexRow: {
+      title: 'N°',
       align: 'center',
       width: 60
     },
     columns: [
       {
-        title: '关键词',
+        title: 'Recherche',
         key: 'search',
         show: false,
         disabled: true,
@@ -77,7 +74,7 @@ export const crudOptions = (vm) => {
         form: {
           disabled: true,
           component: {
-            placeholder: '请输入关键词'
+            placeholder: 'Rechercher par mot-clé'
           }
         },
         view: {
@@ -93,9 +90,9 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '部门名称',
+        title: 'Département',
         key: 'dept__name',
-        treeNode: true, // 设置为树形列
+        treeNode: true,
         search: {
           disabled: false,
           component: {
@@ -110,22 +107,22 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '账号',
+        title: "Nom d'utilisateur",
         key: 'username',
         search: {
           disabled: false
         },
-        minWidth: 100,
+        minWidth: 120,
         type: 'input',
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '账号必填项'
+              message: "Le nom d'utilisateur est requis"
             }
           ],
           component: {
-            placeholder: '请输入账号'
+            placeholder: "Entrez le nom d'utilisateur"
           },
           itemProps: {
             class: { yxtInput: true }
@@ -133,21 +130,21 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '密码',
+        title: 'Mot de passe',
         key: 'password',
-        minWidth: 90,
+        minWidth: 100,
         type: 'input',
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '密码必填项'
+              message: 'Le mot de passe est requis'
             }
           ],
           component: {
             span: 12,
             showPassword: true,
-            placeholder: '请输入密码'
+            placeholder: 'Entrez le mot de passe'
           },
           value: vm.systemConfig('base.default_password'),
           editDisabled: true,
@@ -163,24 +160,24 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '姓名',
+        title: 'Nom complet',
         key: 'name',
         sortable: 'custom',
-        minWidth: 90,
+        minWidth: 120,
         search: {
           disabled: false
         },
         type: 'input',
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '姓名必填项'
+              message: 'Le nom complet est requis'
             }
           ],
           component: {
             span: 12,
-            placeholder: '请输入姓名'
+            placeholder: 'Entrez le nom complet'
           },
           itemProps: {
             class: { yxtInput: true }
@@ -188,7 +185,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '部门',
+        title: 'Département',
         key: 'dept',
         search: {
           disabled: false
@@ -199,14 +196,14 @@ export const crudOptions = (vm) => {
           cache: true,
           isTree: true,
           url: '/api/system/dept/all_dept/',
-          value: 'id', // 数据字典中value字段的属性名
-          label: 'name' // 数据字典中label字段的属性名
+          value: 'id',
+          label: 'name'
         },
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '必填项'
+              message: 'Ce champ est requis'
             }
           ],
           itemProps: {
@@ -224,7 +221,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '角色',
+        title: 'Rôles',
         key: 'role',
         search: {
           disabled: true
@@ -234,8 +231,8 @@ export const crudOptions = (vm) => {
         dict: {
           cache: false,
           url: '/api/system/role/',
-          value: 'id', // 数据字典中value字段的属性名
-          label: 'name', // 数据字典中label字段的属性名
+          value: 'id',
+          label: 'name',
           getData: (url, dict, {
             form,
             component
@@ -255,10 +252,10 @@ export const crudOptions = (vm) => {
           }
         },
         form: {
-          rules: [ // 表单校验规则
+          rules: [
             {
               required: true,
-              message: '必填项'
+              message: 'Ce champ est requis'
             }
           ],
           itemProps: {
@@ -272,11 +269,11 @@ export const crudOptions = (vm) => {
               columns: [
                 {
                   field: 'name',
-                  title: '角色名称'
+                  title: 'Nom du rôle'
                 },
                 {
                   field: 'key',
-                  title: '权限标识'
+                  title: 'Code du rôle'
                 }
               ]
             }
@@ -289,54 +286,50 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '手机号码',
+        title: 'Téléphone',
         key: 'mobile',
         search: {
           disabled: false
         },
-        minWidth: 110,
+        minWidth: 120,
         type: 'input',
         form: {
           rules: [
             {
               max: 20,
-              message: '请输入正确的手机号码',
+              message: 'Numéro de téléphone invalide',
               trigger: 'blur'
-            },
-            {
-              pattern: /^1[3-9]\d{9}$/,
-              message: '请输入正确的手机号码'
             }
           ],
           itemProps: {
             class: { yxtInput: true }
           },
           component: {
-            placeholder: '请输入手机号码'
+            placeholder: 'Entrez le numéro de téléphone'
           }
         }
       }, {
-        title: '邮箱',
+        title: 'E-mail',
         key: 'email',
         minWidth: 180,
         form: {
           rules: [
             {
               type: 'email',
-              message: '请输入正确的邮箱地址',
+              message: 'Adresse email invalide',
               trigger: ['blur', 'change']
             }
           ],
           component: {
-            placeholder: '请输入邮箱'
+            placeholder: 'Entrez votre adresse email'
           }
         }
       },
       {
-        title: '性别',
+        title: 'Genre',
         key: 'gender',
         type: 'radio',
-        width: 70,
+        width: 80,
         dict: {
           data: vm.dictionary('gender')
         },
@@ -346,9 +339,9 @@ export const crudOptions = (vm) => {
             span: 12
           }
         },
-        component: { props: { color: 'auto' } } // 自动染色
+        component: { props: { color: 'auto' } }
       }, {
-        title: '用户类型',
+        title: "Type d'utilisateur",
         key: 'user_type',
         search: {
           disabled: false
@@ -366,12 +359,12 @@ export const crudOptions = (vm) => {
           }
         }
       }, {
-        title: '状态',
+        title: 'Statut',
         key: 'is_active',
         search: {
           disabled: false
         },
-        width: 70,
+        width: 90,
         type: 'radio',
         dict: {
           data: vm.dictionary('button_status_bool')
@@ -384,23 +377,23 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '头像',
+        title: 'Avatar',
         key: 'avatar',
         type: 'avatar-cropper',
-        width: 60,
+        width: 70,
         align: 'left',
         form: {
           component: {
             props: {
-              elProps: { // 与el-uploader 配置一致
+              elProps: {
                 multiple: false,
-                limit: 1 // 限制5个文件
+                limit: 1
               },
-              sizeLimit: 500 * 1024 // 不能超过限制
+              sizeLimit: 500 * 1024
             },
             span: 24
           },
-          helper: '限制文件大小不能超过500k'
+          helper: 'Taille maximale : 500 Ko'
         }
       }
     ].concat(vm.commonEndColumns({

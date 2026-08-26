@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-form :model="formObj" ref="association">
-      <el-form-item label="关联表" prop="table" :rules="[
-      { required: true, message: '必填项', trigger: 'blur' }
+      <el-form-item label="Table liée" prop="table" :rules="[
+      { required: true, message: 'Champ obligatoire', trigger: 'blur' }
     ]">
-        <el-select v-model="formObj.table" filterable clearable placeholder="请选择" @change="handleChange">
+        <el-select v-model="formObj.table" filterable clearable placeholder="Sélectionner une table" @change="handleChange">
           <el-option
             v-for="item in tableOptions"
             :key="item.table"
@@ -15,10 +15,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="显示字段" prop="field" :rules="[
-      { required: true, message: '必填项', trigger: 'blur' }
+      <el-form-item label="Champ affiché" prop="field" :rules="[
+      { required: true, message: 'Champ obligatoire', trigger: 'blur' }
     ]">
-        <el-select v-model="formObj.field" filterable clearable placeholder="请选择">
+        <el-select v-model="formObj.field" filterable clearable placeholder="Sélectionner un champ">
           <el-option
             v-for="item in labelOptions"
             :key="item.table"
@@ -29,10 +29,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="储存字段" prop="primarykey" :rules="[
-      { required: true, message: '必填项', trigger: 'blur' }
+      <el-form-item label="Clé primaire / stockage" prop="primarykey" :rules="[
+      { required: true, message: 'Champ obligatoire', trigger: 'blur' }
     ]">
-        <el-select v-model="formObj.primarykey" filterable clearable placeholder="请选择">
+        <el-select v-model="formObj.primarykey" filterable clearable placeholder="Sélectionner la clé">
           <el-option
             v-for="(item,index) in labelOptions"
             :key="index"
@@ -43,10 +43,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="过滤条件" prop="oldSearchField" :rules="[
-      { required: true, message: '必填项', trigger: 'blur' }
+      <el-form-item label="Champs de recherche" prop="oldSearchField" :rules="[
+      { required: true, message: 'Champ obligatoire', trigger: 'blur' }
     ]">
-        <el-select v-model="formObj.oldSearchField" multiple filterable clearable placeholder="请选择"
+        <el-select v-model="formObj.oldSearchField" multiple filterable clearable placeholder="Sélectionner les champs"
                    @change="handleSearch">
           <el-option
             v-for="(item,index) in labelOptions"
@@ -91,19 +91,16 @@ export default {
     }
   },
   methods: {
-    // 初始化数据
     init () {
       api.GetAssociationTable().then(res => {
         const { data } = res
         this.tableOptions = data
-        // 设置默认选中
         this.formObj.table = data[0].table
         this.labelOptions = data[0].tableFields
         this.formObj.primarykey = 'id'
         this.formObj.field = 'id'
       })
     },
-    // 选中事件
     handleChange (val) {
       const that = this
       const { tableFields } = that.tableOptions.find(item => {
@@ -111,7 +108,6 @@ export default {
       })
       that.labelOptions = tableFields
     },
-    // 过滤条件选中
     handleSearch (val) {
       const that = this
       const fields = that.labelOptions.filter(item => {
@@ -119,11 +115,9 @@ export default {
       })
       that.formObj.searchField = fields
     },
-    // 更新数据
     handleUpdate () {
       this.$emit('updateVal', this.formObj)
     },
-    // 数据验证
     onSubmit () {
       let res = false
       this.$refs.association.validate((valid) => {

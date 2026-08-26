@@ -12,25 +12,25 @@ import dayjs from 'dayjs'
 
 export default {
   sort: 12,
-  title: '时钟',
+  title: 'Horloge',
   name: 'myTime',
   icon: 'el-icon-alarm-clock',
-  description: '演示部件效果',
+  description: "Affichage de l'heure et de la date en direct",
   height: 14,
   width: 16,
   isResizable: true,
   config: {
     color: {
-      label: '背景颜色',
+      label: "Couleur d'arrière-plan",
       type: 'color',
       value: '',
-      placeholder: '颜色为空则随机变换颜色'
+      placeholder: 'Laissez vide pour couleur aléatoire'
     },
     fontColor: {
-      label: '字体颜色',
+      label: 'Couleur du texte',
       type: 'color',
       value: '',
-      placeholder: '请选择字体颜色'
+      placeholder: 'Sélectionnez la couleur du texte'
     }
   },
   props: {
@@ -54,9 +54,8 @@ export default {
   methods: {
     showTime () {
       this.time = dayjs().format('HH:mm:ss')
-      this.day = dayjs().format('YYYY年MM月DD日')
+      this.day = dayjs().format('DD/MM/YYYY')
     },
-    // 生成一个颜色
     randomColor () {
       if (this.config?.color?.value) {
         return this.config.color.value
