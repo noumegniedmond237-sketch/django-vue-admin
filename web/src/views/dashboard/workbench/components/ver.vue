@@ -66,8 +66,8 @@ export default {
   },
   methods: {
     async getVer () {
-      this.ver = `v${process.env.VUE_APP_VERSION}` || 'v2.0.0'
-      this.title = this.siteName || process.env.VUE_APP_TITLE || 'Django Vue Admin'
+      const rawTitle = this.siteName || process.env.VUE_APP_TITLE || 'Django Vue Admin'
+      this.title = (rawTitle === '企业级后台管理系统') ? 'Django Vue Admin' : rawTitle
     },
     randomColor () {
       if (this.config?.color?.value) {

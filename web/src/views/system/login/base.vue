@@ -16,7 +16,7 @@ export default {
   },
   data () {
     return {
-      processTitle: process.env.VUE_APP_TITLE || 'D2Admin',
+      processTitle: (process.env.VUE_APP_TITLE === '企业级后台管理系统' ? 'Django Vue Admin' : process.env.VUE_APP_TITLE) || 'Django Vue Admin',
       backgroundImage: 'url(' + this.loginBackground + ')',
       // 表单
       formLogin: {

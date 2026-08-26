@@ -15,8 +15,11 @@ const util = {
  * @param {String} titleText 标题
  */
 util.title = function (titleText) {
-  const processTitle = process.env.VUE_APP_TITLE || 'D2Admin'
-  window.document.title = `${processTitle}${titleText ? ` | ${titleText}` : ''}`
+  let processTitle = process.env.VUE_APP_TITLE || 'Django Vue Admin'
+  if (processTitle === '企业级后台管理系统') processTitle = 'Django Vue Admin'
+  let displayTitle = titleText
+  if (displayTitle === '控制台') displayTitle = 'Tableau de bord'
+  window.document.title = `${processTitle}${displayTitle ? ` | ${displayTitle}` : ''}`
 }
 
 /**
