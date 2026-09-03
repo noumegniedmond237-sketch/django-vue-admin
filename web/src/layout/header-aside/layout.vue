@@ -56,7 +56,7 @@
           ref="aside"
           :class="{
             'd2-theme-container-aside': true,
-            'd2-theme-container-transition': asideTransition,
+            'd2-theme-container-transition': asideTransition && !resizing,
           }"
           :style="{
             width: asideCollapse ? asideWidthCollapse : asideWidth,
@@ -64,6 +64,13 @@
           }"
         >
           <d2-menu-side />
+          <!-- Poignée de redimensionnement de la barre latérale -->
+          <div
+            v-if="!asideCollapse"
+            class="d2-aside-resizer"
+            title="Étirer pour ajuster la largeur"
+            @mousedown="onAsideResizeStart"
+          />
         </div>
         <!-- Zone principale -->
         <div class="d2-theme-container-main" flex-box="1" flex>
@@ -139,10 +146,17 @@ export default {
   },
   data () {
     return {
-      // [Largeur de la barre latérale] état normal
-      asideWidth: '200px',
+      // [Largeur de la barre latérale] état normal (persistée en localStorage)
+      asideWidth: this.readAsideWidth(),
       // [Largeur de la barre latérale] état replié
       asideWidthCollapse: '65px',
+      // Largeurs min/max autorisées lors du redimensionnement manuel
+      asideWidthMin: 160,
+      asideWidthMax: 480,
+      // Vrai pendant un glisser-déposer de la poignée (coupe la transition CSS)
+      resizing: false,
+      resizeStartX: 0,
+      resizeStartWidth: 0,
       showView: true // Pour actualiser la page au clic sur sa route
     }
   },
@@ -193,6 +207,62 @@ export default {
       this.$nextTick(() => {
         this.showView = true // Puis rajouter le nœud router-view via v-if après mise à jour du DOM
       })
+    },
+    /**
+     * @description Lit la largeur persistée de la barre latérale
+     */
+    readAsideWidth () {
+      // Bornes dupliquées ici car data() n'a pas encore accès à this
+      const min = 160
+      const max = 480
+      try {
+        const saved = parseInt(window.localStorage.getItem('d2-aside-width'), 10)
+        if (saved >= min && saved <= max) {
+          return saved + 'px'
+        }
+      } catch (e) {
+        // localStorage indisponible : largeur par défaut
+      }
+      return '200px'
+    },
+    /**
+     * @description Début du redimensionnement manuel de la barre latérale
+     */
+    onAsideResizeStart (e) {
+      if (this.asideCollapse) return
+      e.preventDefault()
+      this.resizing = true
+      this.resizeStartX = e.clientX
+      this.resizeStartWidth = parseInt(this.asideWidth, 10) || 200
+      document.body.style.cursor = 'ew-resize'
+      document.body.style.userSelect = 'none'
+      window.addEventListener('mousemove', this.onAsideResizing)
+      window.addEventListener('mouseup', this.onAsideResizeEnd)
+    },
+    /**
+     * @description Redimensionnement en cours (largeur bornée)
+     */
+    onAsideResizing (e) {
+      const width = Math.min(
+        this.asideWidthMax,
+        Math.max(this.asideWidthMin, this.resizeStartWidth + e.clientX - this.resizeStartX)
+      )
+      this.asideWidth = width + 'px'
+    },
+    /**
+     * @description Fin du redimensionnement : persiste la largeur
+     */
+    onAsideResizeEnd () {
+      this.resizing = false
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+      window.removeEventListener('mousemove', this.onAsideResizing)
+      window.removeEventListener('mouseup', this.onAsideResizeEnd)
+      try {
+        window.localStorage.setItem('d2-aside-width', parseInt(this.asideWidth, 10))
+      } catch (e) {
+        // stockage indisponible : on garde la largeur en mémoire
+      }
     }
   },
   mounted () {
@@ -208,6 +278,25 @@ export default {
 <style lang="scss">
 // Enregistrer le thème
 @import "~@/assets/style/theme/register.scss";
+
+// Poignée de redimensionnement de la barre latérale
+.d2-theme-container-aside {
+  position: relative;
+}
+.d2-aside-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -3px;
+  width: 7px;
+  cursor: ew-resize;
+  z-index: 10;
+  background: transparent;
+  transition: background-color 0.2s;
+  &:hover, &:active {
+    background: rgba(64, 158, 255, 0.55);
+  }
+}
 
 @-webkit-keyframes bgp {
   0% {background-position: 0 0; }

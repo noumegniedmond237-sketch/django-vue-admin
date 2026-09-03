@@ -101,8 +101,9 @@ REM 5. Lancement des serveurs
 echo.
 echo [5/5] Lancement des serveurs Backend et Frontend...
 
-echo   -- Lancement du serveur Django [http://127.0.0.1:8000]...
-start "Django Vue Admin - Backend" /D "%ROOT_DIR%backend" cmd /k "set PYTHONUTF8=1& set PYTHONIOENCODING=utf-8& \"%VENV_PY%\" manage.py runserver 127.0.0.1:8000"
+echo   -- Lancement du serveur Django ASGI [http://127.0.0.1:8000]...
+REM Uvicorn (ASGI) requis pour le WebSocket temps reel ; runserver (WSGI) ne gere pas ws://
+start "Django Vue Admin - Backend" /D "%ROOT_DIR%backend" cmd /k "set PYTHONUTF8=1& set PYTHONIOENCODING=utf-8& \"%VENV_PY%\" -m uvicorn application.asgi:application --host 127.0.0.1 --port 8000 --reload"
 
 echo   -- Lancement du serveur Vue [http://localhost:8080]...
 start "Django Vue Admin - Frontend" /D "%ROOT_DIR%web" cmd /k "set NODE_OPTIONS=--openssl-legacy-provider& npm run dev"
@@ -113,7 +114,7 @@ echo                 APPLICATION DEMARREE AVEC SUCCES !
 echo ==============================================================================
 echo.
 echo   * URL Application Frontend : http://localhost:8080/
-echo   * API Backend / Swagger    : http://127.0.0.1:8000/api/
+echo   * API Backend / Swagger    : http://127.0.0.1:8000/
 echo   * Identifiants par defaut  : superadmin / admin123456
 echo.
 echo   Ouverture automatique du navigateur dans 5 secondes...
