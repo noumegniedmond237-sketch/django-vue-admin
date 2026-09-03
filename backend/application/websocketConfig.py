@@ -7,7 +7,6 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer, AsyncWebsocke
 import json
 
 from channels.layers import get_channel_layer
-from jwt import InvalidSignatureError
 from rest_framework.request import Request
 
 from application import settings
@@ -79,18 +78,23 @@ class DvadminWebSocket(AsyncJsonWebsocketConsumer):
                     await self.send_json(
                         set_message('system', 'SYSTEM', "请查看您的未读消息~",
                                     refresh_unread=True))
-        except InvalidSignatureError:
-            await self.disconnect(None)
+            else:
+                await self.close(code=4401)
+        except jwt.InvalidTokenError:
+            # Token expiré / signature invalide / malformé : refuser proprement
+            await self.close(code=4401)
+        except Exception:
+            await self.close(code=1011)
 
     async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(self.room_name, self.channel_name)
-        await self.channel_layer.group_discard("dvadmin", self.channel_name)
+        # Leave room group (room_name peut ne pas exister si connect a échoué)
+        for group in (getattr(self, "room_name", None), "dvadmin"):
+            if group:
+                try:
+                    await self.channel_layer.group_discard(group, self.channel_name)
+                except Exception:
+                    pass
         print("连接关闭")
-        try:
-            await self.close(close_code)
-        except Exception:
-            pass
 
 
 class MegCenter(DvadminWebSocket):
