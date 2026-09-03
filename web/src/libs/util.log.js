@@ -1,8 +1,8 @@
 const log = {}
 
 /**
- * @description 返回这个样式的颜色值
- * @param {String} type 样式名称 [ primary | success | warning | danger | text ]
+ * @description Retourner la valeur de couleur de ce style
+ * @param {String} type nom du style [ primary | success | warning | danger | text ]
  */
 function typeColor (type = 'default') {
   let color = ''
@@ -18,7 +18,7 @@ function typeColor (type = 'default') {
 }
 
 /**
- * @description 打印一个 [ title | text ] 样式的信息
+ * @description Afficher une information avec le style [ title | text ]
  * @param {String} title title text
  * @param {String} info info text
  * @param {String} type style
@@ -33,7 +33,7 @@ log.capsule = function (title, info, type = 'primary') {
 }
 
 /**
- * @description 打印彩色文字
+ * @description Afficher du texte en couleur
  */
 log.colorful = function (textArr) {
   console.log(
@@ -43,35 +43,35 @@ log.colorful = function (textArr) {
 }
 
 /**
- * @description 打印 default 样式的文字
+ * @description Afficher dans la console default avec ce style
  */
 log.default = function (text) {
   log.colorful([{ text }])
 }
 
 /**
- * @description 打印 primary 样式的文字
+ * @description Afficher dans la console primary avec ce style
  */
 log.primary = function (text) {
   log.colorful([{ text, type: 'primary' }])
 }
 
 /**
- * @description 打印 success 样式的文字
+ * @description Afficher dans la console success avec ce style
  */
 log.success = function (text) {
   log.colorful([{ text, type: 'success' }])
 }
 
 /**
- * @description 打印 warning 样式的文字
+ * @description Afficher dans la console warning avec ce style
  */
 log.warning = function (text) {
   log.colorful([{ text, type: 'warning' }])
 }
 
 /**
- * @description 打印 danger 样式的文字
+ * @description Afficher dans la console danger avec ce style
  */
 log.danger = function (text) {
   log.colorful([{ text, type: 'danger' }])

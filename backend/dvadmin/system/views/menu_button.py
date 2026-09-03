@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/6/3 003 0:30
-@Remark: 菜单按钮管理
+@Remark: Gestion des boutons de menu
 """
 from django.db.models import F, CharField, Value, ExpressionWrapper
 from django.db.models.functions import Cast, Concat
@@ -18,7 +18,7 @@ from dvadmin.utils.viewset import CustomModelViewSet
 
 class MenuButtonSerializer(CustomModelSerializer):
     """
-    菜单按钮-序列化器
+    Sérialiseur des boutons de menu
     """
 
     class Meta:
@@ -29,7 +29,7 @@ class MenuButtonSerializer(CustomModelSerializer):
 
 class MenuButtonInitSerializer(CustomModelSerializer):
     """
-    初始化菜单按钮-序列化器
+    Sérialiseur d'initialisation des boutons de menu
     """
 
     class Meta:
@@ -40,7 +40,7 @@ class MenuButtonInitSerializer(CustomModelSerializer):
 
 class MenuButtonCreateUpdateSerializer(CustomModelSerializer):
     """
-    初始化菜单按钮-序列化器
+    Sérialiseur d'initialisation des boutons de menu
     """
 
     class Meta:
@@ -51,12 +51,12 @@ class MenuButtonCreateUpdateSerializer(CustomModelSerializer):
 
 class MenuButtonViewSet(CustomModelViewSet):
     """
-    菜单按钮接口
-    list:查询
-    create:新增
-    update:修改
-    retrieve:单例
-    destroy:删除
+    Interface des boutons de menu
+    list:Rechercher
+    create:Créer
+    update:Modifier
+    retrieve:Détail
+    destroy:Supprimer
     """
 
     queryset = MenuButton.objects.all()
@@ -68,7 +68,7 @@ class MenuButtonViewSet(CustomModelViewSet):
     @action(methods=["GET"], detail=False, permission_classes=[])
     def get_btn_permission(self, request):
         """
-        获取当前用户的按钮权限
+        Récupérer les autorisations de boutons de l'utilisateur actuel
         """
         user = request.user
         if not user.is_superuser:

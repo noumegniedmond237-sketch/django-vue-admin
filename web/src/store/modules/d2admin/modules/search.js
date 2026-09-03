@@ -3,26 +3,26 @@ import setting from '@/setting.js'
 export default {
   namespaced: true,
   state: {
-    // 搜索面板激活状态
+    // État d'activation du panneau de recherche
     active: false,
-    // 快捷键
+    // Raccourcis clavier
     hotkey: {
       open: setting.hotkey.search.open,
       close: setting.hotkey.search.close
     },
-    // 所有可以搜索的页面
+    // Toutes les pages interrogeables
     pool: []
   },
   mutations: {
     /**
-     * @description 切换激活状态
+     * @description Basculer l'état actif
      * @param {Object} state state
      */
     toggle (state) {
       state.active = !state.active
     },
     /**
-     * @description 设置激活模式
+     * @description Définir le mode actif
      * @param {Object} state state
      * @param {Boolean} active active
      */
@@ -30,7 +30,7 @@ export default {
       state.active = active
     },
     /**
-     * @description 初始化
+     * @description Initialisation
      * @param {Object} state state
      * @param {Array} menu menu
      */

@@ -4,12 +4,12 @@ import util from '@/libs/util'
 export default {
   namespaced: true,
   state: {
-    // 用户信息
+    // Informations utilisateur
     data: undefined
   },
   actions: {
     /**
-     * @description 初始化部门数据
+     * @description Initialiser les données des départements
      * @param {Object} context
      * @param {*} info info
      */
@@ -27,7 +27,7 @@ export default {
       return nameDict
     },
     async load ({ state, dispatch }, info) {
-      // 持久化
+      // Persistance
       const ret = await request({
         url: '/api/system/dept/all_dept/'
       })

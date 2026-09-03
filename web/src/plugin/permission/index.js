@@ -12,9 +12,9 @@ function isInited () {
 }
 
 const isEnabled = process.env.VUE_APP_PM_ENABLED === 'true'
-// 开启权限模块
+// Activer le module de permissions
 if (isEnabled) {
-  // 注册v-permission指令, 用于控制按钮权限
+  // Enregistrer la directive v-permission (contrôle des permissions des boutons)v-permission,
   Vue.use(permissionDirective)
 }
 

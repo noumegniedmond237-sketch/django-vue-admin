@@ -43,7 +43,7 @@ export default {
     ])
   },
   watch: {
-    // 折叠和展开菜单的时候销毁 better scroll
+    // Détruire better scroll au repli / dépliage du menu better scroll
     asideCollapse (val) {
       this.scrollDestroy()
       setTimeout(() => {
@@ -62,7 +62,7 @@ export default {
       this.BS = new BScroll(this.$el, {
         mouseWheel: true,
         click: true
-        // 如果你愿意可以打开显示滚动条
+        // Activer l'affichage de la barre de défilement si souhaité
         // scrollbar: {
         //   fade: true,
         //   interactive: false

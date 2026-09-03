@@ -1,11 +1,11 @@
-<!-- 多对多卡片选项 -->
+<!-- Options de cartes plusieurs-à-plusieurs -->
 <template>
   <div class="cardSelectForm">
     <div class="menu" v-for="(data, title) in tableData" :key="title">
       <div class="title" v-if="showGroupTitle">
         {{title}}
         <span class="content">
-          添加{{title}}
+          Ajouter{{title}}
         </span>
       </div>
       <el-row>
@@ -20,7 +20,7 @@
               <div class="nr">{{ item[fields.name] }}</div>
               <div class="content">{{ item[fields.content] }}</div>
             </div>
-            <span class="is-required" v-if="item[fields.required]"> 必选 </span>
+            <span class="is-required" v-if="item[fields.required]"> Obligatoire </span>
           </div>
         </el-col>
       </el-row>
@@ -41,18 +41,18 @@ export default {
   },
   mixins: [d2CrudPlus.input, d2CrudPlus.inputDict],
   props: {
-    // 值
+    // Valeur
     value: {
       type: Array,
       required: false,
       default: Array
     },
-    // 数据字典配置
+    // Configuration du dictionnaire de données
     dict: {
       type: Object,
       require: false
     },
-    // 其他配置
+    // Autres configurations
     elProps: {
       type: Object,
       require: false,
@@ -69,15 +69,15 @@ export default {
       type: Object,
       default () {
         return {
-          name: 'name', // 名称
-          content: 'description', // 内容描述字段
-          required: 'is_required', // 必选字段
-          icon: 'icon', // 图标字段
-          group: 'category' // 分组字段
+          name: 'name', // Nom
+          content: 'description', // Champ de description du contenu
+          required: 'is_required', // Champ obligatoire
+          icon: 'icon', // Champ d'icône
+          group: 'category' // Champ de regroupement
         }
       }
     },
-    // 你可以定义一些参数，通过component.props传进来
+    // On peut définir des paramètres transmis via component.props
     disabled: {
       type: Boolean,
       default: false
@@ -90,10 +90,10 @@ export default {
       type: Boolean,
       default: true
     },
-    // 在不分组的情况下会有个默认组名，可以为空
+    // Sans groupement, un nom de groupe par défaut est utilisé (peut être vide),
     defaultGroupTitle: {
       type: String,
-      default: '基础'
+      default: 'Base'
     }
   },
   data () {
@@ -109,7 +109,7 @@ export default {
     }
   },
   computed: {
-    // 你也可以通过computed来监听value的变化，跟watch作用类似，根据实际情况选用
+    // On peut aussi surveiller les changements de value via computed (similaire à watch, à choisir selon le cas)computedsurveiller les changements de value,watch,
     _elProps () {
       return this.elProps
     }
@@ -123,15 +123,15 @@ export default {
   mounted () {
   },
   methods: {
-    // 初始化value
+    // Initialisationvalue
     initValue () {
-      // 如果默认值为空，则把所有必选赋值给value
+      // Si la valeur par défaut est vide, assigner toutes les valeurs obligatoires à value,value
       if (this.value.length === 0) {
         this.$emit('change', this.requiredIds)
         this.$emit('input', this.requiredIds)
       }
     },
-    // 获取数据
+    // Récupérer les données
     getDict () {
       const that = this
       let url
@@ -195,7 +195,7 @@ export default {
       }
     },
     /**
-     * 选择
+     * Sélection
      * @param val:Object
      */
     handleValueChange (val, isRequired) {

@@ -14,7 +14,7 @@ from application import settings
 send_dict = {}
 
 
-# 发送消息结构体
+# Structure du message à envoyer
 def set_message(sender, msg_type, msg, refresh_unread=False):
     text = {
         'sender': sender,
@@ -25,7 +25,7 @@ def set_message(sender, msg_type, msg, refresh_unread=False):
     return text
 
 
-# 异步获取消息中心的目标用户
+# Récupérer de manière asynchrone les utilisateurs cibles du centre de messages
 @database_sync_to_async
 def _get_message_center_instance(message_id):
     from dvadmin.system.models import MessageCenter
@@ -38,7 +38,7 @@ def _get_message_center_instance(message_id):
 
 @database_sync_to_async
 def _get_message_unread(user_id):
-    """获取用户的未读消息数量"""
+    """Obtenir le nombre de messages non lus de l'utilisateur"""
     from dvadmin.system.models import MessageCenterTargetUser
     count = MessageCenterTargetUser.objects.filter(users=user_id, is_read=False).count()
     return count or 0
@@ -59,7 +59,7 @@ class DvadminWebSocket(AsyncJsonWebsocketConsumer):
             if decoded_result:
                 self.user_id = decoded_result.get('user_id')
                 self.room_name = "user_" + str(self.user_id)
-                # 收到连接时候处理，
+                # Lors de la réception d'une connexion, traitement à effectuer
                 await self.channel_layer.group_add(
                     "dvadmin",
                     self.channel_name
@@ -69,14 +69,14 @@ class DvadminWebSocket(AsyncJsonWebsocketConsumer):
                     self.channel_name
                 )
                 await self.accept()
-                # 主动推送消息
+                # Pousser activement un message
                 unread_count = await _get_message_unread(self.user_id)
                 if unread_count == 0:
-                    # 发送连接成功
-                    await self.send_json(set_message('system', 'SYSTEM', '连接成功'))
+                    # Envoyer le succès de connexion
+                    await self.send_json(set_message('system', 'SYSTEM', 'Connexion réussie'))
                 else:
                     await self.send_json(
-                        set_message('system', 'SYSTEM', "请查看您的未读消息~",
+                        set_message('system', 'SYSTEM', "Veuillez consulter vos messages non lus~",
                                     refresh_unread=True))
             else:
                 await self.close(code=4401)
@@ -87,23 +87,23 @@ class DvadminWebSocket(AsyncJsonWebsocketConsumer):
             await self.close(code=1011)
 
     async def disconnect(self, close_code):
-        # Leave room group (room_name peut ne pas exister si connect a échoué)
+        # Quitter le groupe de discussion (room_name peut ne pas exister si connect a échoué)
         for group in (getattr(self, "room_name", None), "dvadmin"):
             if group:
                 try:
                     await self.channel_layer.group_discard(group, self.channel_name)
                 except Exception:
                     pass
-        print("连接关闭")
+        print("Connexion fermée")
 
 
 class MegCenter(DvadminWebSocket):
     """
-    消息中心
+    Centre de messages
     """
 
     async def receive(self, text_data):
-        # 接受客户端的信息，你处理的函数
+        # Recevoir les informations du client, la fonction que vous traitez
         text_data_json = json.loads(text_data)
         # message_id = text_data_json.get('message_id', None)
         # user_list = await _get_message_center_instance(message_id)
@@ -114,7 +114,7 @@ class MegCenter(DvadminWebSocket):
         #     )
 
     async def push_message(self, event):
-        """消息发送"""
+        """Envoi du message"""
         message = event['json']
         await self.send(text_data=json.dumps(message))
 
@@ -122,9 +122,9 @@ class MegCenter(DvadminWebSocket):
 
 def websocket_push(room_name,message):
     """
-    主动推送
-    @param room_name: 群组名称
-    @param message: 消息内容
+    Envoi actif
+    @param room_name: Nom du groupe
+    @param message: Contenu du message
     """
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2022/1/1 001 9:34
 @Remark:
@@ -13,7 +13,7 @@ from dvadmin.utils.viewset import CustomModelViewSet
 
 class ApiWhiteListSerializer(CustomModelSerializer):
     """
-    接口白名单-序列化器
+    Interface de liste blanche d'API - sérialiseur
     """
 
     class Meta:
@@ -24,7 +24,7 @@ class ApiWhiteListSerializer(CustomModelSerializer):
 
 class ApiWhiteListInitSerializer(CustomModelSerializer):
     """
-    初始化获取数信息(用于生成初始化json文件)
+    Informations d'initialisation (pour générer le fichier JSON d'initialisation)
     """
 
     class Meta:
@@ -39,12 +39,12 @@ class ApiWhiteListInitSerializer(CustomModelSerializer):
 
 class ApiWhiteListViewSet(CustomModelViewSet):
     """
-    接口白名单
-    list:查询
-    create:新增
-    update:修改
-    retrieve:单例
-    destroy:删除
+    Liste blanche des interfaces API
+    list:Rechercher
+    create:Créer
+    update:Modifier
+    retrieve:Détail
+    destroy:Supprimer
     """
     queryset = ApiWhiteList.objects.all()
     serializer_class = ApiWhiteListSerializer

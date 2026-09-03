@@ -5,8 +5,8 @@
   </div>
 </template>
 <script>
-// 行展示组件进阶版
-// 本示例演示要对传入的值做一些改变，然后再展示
+// Version avancée du composant d'affichage en ligne
+// Cet exemple montre comment modifier la valeur entrante avant de l'afficher,
 export default {
   name: 'foreign-key',
   props: {
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     setValue (value) {
-      // 在这里对 传入的value值做处理
+      // Traiter ici la valeur value entrante
       this.currentValue = value
     }
   }

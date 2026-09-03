@@ -1,6 +1,6 @@
 <template>
   <d2-container :class="{ 'page-compact': crud.pageOptions.compact }">
-    <template slot="header">测试页面1</template>
+    <template slot="header">Page de test1</template>
     <d2-crud-x ref="d2Crud" v-bind="_crudProps" v-on="_crudListeners">
       <div slot="header">
         <crud-search
@@ -10,7 +10,7 @@
         />
         <el-button-group>
           <el-button size="small" type="primary" @click="addRow"
-            ><i class="el-icon-plus" /> 新增</el-button
+            ><i class="el-icon-plus" /> Ajouter</el-button
           >
         </el-button-group>
         <crud-toolbar

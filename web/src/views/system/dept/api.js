@@ -2,7 +2,7 @@ import { request } from '@/api/service'
 import XEUtils from 'xe-utils'
 export const urlPrefix = '/api/system/dept/'
 /**
- * 列表查询
+ * Recherche dans la liste
  */
 export function GetList (query) {
   // query.limit = 999;
@@ -22,7 +22,7 @@ export function GetListAll (query) {
 }
 
 /**
- * 新增
+ * Ajouter
  */
 export function createObj (obj) {
   return request({
@@ -33,7 +33,7 @@ export function createObj (obj) {
 }
 
 /**
- * 修改
+ * Modifier
  */
 export function UpdateObj (obj) {
   return request({
@@ -44,7 +44,7 @@ export function UpdateObj (obj) {
 }
 
 /**
- * 删除
+ * Supprimer
  */
 export function DelObj (id) {
   return request({
@@ -55,7 +55,7 @@ export function DelObj (id) {
 }
 
 /**
- * 部门懒加载
+ * Chargement différé des départements
  */
 export function DeptLazy (query) {
   return request({

@@ -5,7 +5,7 @@ function initWebSocket (e) {
   const token = util.cookies.get('token')
   if (token) {
     const wsUri = util.wsBaseURL() + 'ws/' + token + '/'
-    this.socket = new WebSocket(wsUri)// 这里面的this都指向vue
+    this.socket = new WebSocket(wsUri)// Ici, this désigne vuethis
     this.socket.onerror = webSocketOnError
     this.socket.onmessage = webSocketOnMessage
     this.socket.onclose = closeWebsocket
@@ -15,7 +15,7 @@ function initWebSocket (e) {
 function webSocketOnError (e) {
   ElementUI.Notification({
     title: '',
-    message: 'WebSocket连接发生错误' + JSON.stringify(e),
+    message: 'WebSocketErreur de connexion WebSocket' + JSON.stringify(e),
     type: 'error',
     position: 'bottom-right',
     duration: 3000
@@ -23,7 +23,7 @@ function webSocketOnError (e) {
 }
 
 /**
- * 接收消息
+ * Recevoir un message
  * @param e
  * @returns {any}
  */
@@ -31,16 +31,16 @@ function webSocketOnMessage (e) {
   const data = JSON.parse(e.data)
   const { refreshUnread, systemConfig } = data
   if (refreshUnread) {
-    // 更新消息通知条数
+    // Mettre à jour le nombre de notifications
     store.dispatch('d2admin/messagecenter/setUnread')
   }
   if (systemConfig) {
-    // 更新系统配置
+    // Mettre à jour la configuration système
     this.$store.dispatch('d2admin/settings/load')
   }
   if (data.contentType === 'SYSTEM') {
     ElementUI.Notification({
-      title: '系统消息',
+      title: 'Message système',
       message: data.content,
       type: 'success',
       position: 'bottom-right',
@@ -56,7 +56,7 @@ function webSocketOnMessage (e) {
     })
   } else if (data.contentType === 'INFO') {
     ElementUI.Notification({
-      title: '温馨提示',
+      title: 'Rappel amical',
       message: data.content,
       type: 'success',
       position: 'bottom-right',
@@ -64,7 +64,7 @@ function webSocketOnMessage (e) {
     })
   } else {
     ElementUI.Notification({
-      title: '温馨提示',
+      title: 'Rappel amical',
       message: data.content,
       type: 'info',
       position: 'bottom-right',
@@ -72,12 +72,12 @@ function webSocketOnMessage (e) {
     })
   }
 }
-// 关闭websiocket
+// Fermer websocketwebsiocket
 function closeWebsocket () {
-  console.log('连接已关闭...')
+  console.log('Connexion fermée...')
   ElementUI.Notification({
     title: 'websocket',
-    message: '连接已关闭...',
+    message: 'Connexion fermée...',
     type: 'danger',
     position: 'bottom-right',
     duration: 3000
@@ -85,7 +85,7 @@ function closeWebsocket () {
 }
 
 /**
- * 发送消息
+ * Envoyer un message
  * @param message
  */
 function webSocketSend (message) {

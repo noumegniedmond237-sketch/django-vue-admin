@@ -20,7 +20,7 @@
           <el-tab-pane
             v-for="page in opened"
             :key="page.fullPath"
-            :label="(page.meta && (page.meta.title === '控制台' ? 'Tableau de bord' : page.meta.title)) || (page.fullPath === '/index' ? 'Tableau de bord' : 'Sans titre')"
+            :label="(page.meta && page.meta.title) || (page.fullPath === '/index' ? 'Tableau de bord' : 'Sans titre')"
             :name="page.fullPath"
             :closable="isTabClosable(page)"/>
         </el-tabs>

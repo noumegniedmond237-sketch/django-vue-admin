@@ -1,10 +1,10 @@
 /*
- * @创建文件时间: 2021-06-01 22:41:21
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-08-13 00:06:07
- * 联系Qq:1638245306
- * @文件介绍: 登录和登出
+ * @date-de-creation: 2021-06-01 22:41:21
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-08-13 00:06:07
+ * Contact QQ : 1638245306
+ * @description-fichier: connexion et déconnexion
  */
 import { Message, MessageBox } from 'element-ui'
 import util from '@/libs/util.js'
@@ -17,11 +17,11 @@ export default {
   namespaced: true,
   actions: {
     /**
-     * @description 登录
+     * @description Connexion
      * @param {Object} context
-     * @param {Object} payload username {String} 用户账号
-     * @param {Object} payload password {String} 密码
-     * @param {Object} payload route {Object} 登录成功后定向的路由对象 任何 vue-router 支持的格式
+     * @param {Object} payload username {String} compte utilisateur
+     * @param {Object} payload password {String} mot de passe
+     * @param {Object} payload route {Object} objet de route de redirection après une connexion réussie tout format supporté par vue-router
      */
     async login ({ dispatch }, {
       username = '',
@@ -35,16 +35,16 @@ export default {
         captcha,
         captchaKey
       })
-      // 设置 cookie 一定要存 uuid 和 token 两个 cookie
-      // 整个系统依赖这两个数据进行校验和存储
-      // uuid 是用户身份唯一标识 用户注册的时候确定 并且不可改变 不可重复
-      // token 代表用户当前登录状态 建议在网络请求中携带 token
-      // 如有必要 token 需要定时更新，默认保存一天
+      // Pour les cookies, toujours stocker uuid et token
+      // Tout le système dépend de ces deux données pour la validation et le stockage
+      // uuid est l'identifiant unique de l'utilisateur (défini à l'inscription, immuable et unique)
+      // token représente l'état de connexion courant ; il est recommandé de joindre le token aux requêtes réseau  token
+      // Si nécessaire, le token doit être rafraîchi périodiquement (conservé un jour par défaut) token ,
       res = res.data
       util.cookies.set('uuid', res.userId)
       util.cookies.set('token', res.access)
       util.cookies.set('refresh', res.refresh)
-      // 设置 vuex 用户信息
+      // Définir les informations utilisateur de vuex vuex Informations utilisateur
       // await dispatch('d2admin/user/set', {
       //   name: res.name,
       //   user_id: res.userId,
@@ -58,40 +58,40 @@ export default {
         params: {}
       })
       await store.dispatch('d2admin/user/set', userInfoRes.data, { root: true })
-      // 用户登录后从持久化数据加载一系列的设置
+      // Après la connexion, charger une série de paramètres depuis les données persistées
       await dispatch('load')
     },
     /**
-     * @description 注销用户并返回登录页面
+     * @description Déconnecter l'utilisateur et revenir à la page de connexion
      * @param {Object} context
-     * @param {Object} payload confirm {Boolean} 是否需要确认
+     * @param {Object} payload confirm {Boolean} indique si une confirmation est requise
      */
     logout ({ commit, dispatch }, { confirm = false, refresh = true } = {}) {
       /**
-       * @description 注销
+       * @description Déconnexion
        */
       async function logout () {
         await SYS_USER_LOGOUT({ refresh: util.cookies.get('refresh') }).then(() => {
-          // 删除cookie
+          // Supprimercookie
           util.cookies.remove('token')
           util.cookies.remove('uuid')
           util.cookies.remove('refresh')
         })
-        // 清空 vuex 用户信息
+        // Vider les informations utilisateur de vuex vuex Informations utilisateur
         await dispatch('d2admin/user/set', {}, { root: true })
-        store.commit('d2admin/menu/asideSet', []) // 设置侧边栏菜单
-        store.commit('d2admin/search/init', []) // 设置搜索
+        store.commit('d2admin/menu/asideSet', []) // Définir le menu latéral
+        store.commit('d2admin/search/init', []) // Définir les informations utilisateur de vuexRecherche
         sessionStorage.removeItem('menuData')
 
         store.dispatch('d2admin/db/databaseClear')
 
-        // 跳转路由
+        // Naviguer vers la route
         router.push({ name: 'login' })
         if (refresh) {
           router.go(0)
         }
       }
-      // 判断是否需要确认
+      // Déterminer si une confirmation est nécessaire
       if (confirm) {
         commit('d2admin/gray/set', true, { root: true })
         MessageBox.confirm('Êtes-vous sûr de vouloir vous déconnecter ?', 'Déconnexion', {
@@ -112,23 +112,23 @@ export default {
       }
     },
     /**
-         * @description 用户登录后从持久化数据加载一系列的设置
+         * @description Après la connexion, charger une série de paramètres depuis les données persistées
          * @param {Object} context
          */
     async load ({ dispatch }) {
-      // 加载用户名
+      // Charger le nom d'utilisateur
       await dispatch('d2admin/user/load', null, { root: true })
-      // 加载主题
+      // Charger le thème
       await dispatch('d2admin/theme/load', null, { root: true })
-      // 加载页面过渡效果设置
+      // Charger les paramètres d'effet de transition des pages
       await dispatch('d2admin/transition/load', null, { root: true })
-      // 持久化数据加载上次退出时的多页列表
+      // Charger la liste multi-pages de la dernière session depuis les données persistées
       await dispatch('d2admin/page/openedLoad', null, { root: true })
-      // 持久化数据加载侧边栏配置
+      // Charger la config de la barre latérale depuis les données persistées
       await dispatch('d2admin/menu/asideLoad', null, { root: true })
-      // 持久化数据加载全局尺寸
+      // Charger la taille globale depuis les données persistées
       await dispatch('d2admin/size/load', null, { root: true })
-      // 持久化数据加载颜色设置
+      // Charger les paramètres de couleur depuis les données persistées
       await dispatch('d2admin/color/load', null, { root: true })
     }
   }

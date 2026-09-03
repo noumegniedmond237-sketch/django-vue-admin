@@ -103,21 +103,21 @@
 import lodash from 'lodash'
 import { d2CrudPlus } from 'd2-crud-plus'
 import { request } from '@/api/service'
-// 表格选择组件
+// Composant de sélection dans un tableau
 export default {
   name: 'table-selector-input',
   mixins: [d2CrudPlus.input, d2CrudPlus.inputDict],
   props: {
-    // 值
+    // Valeur
     value: {
       type: [Number, String, Boolean, Array, Object]
     },
-    // 过滤，value中的nodes过滤方法 参数为nodes
+    // Filtrage : méthode de filtrage des nodes dans value paramètre : nodes
     filter: {
       type: Function,
       require: false
     },
-    // 过滤的placeholder
+    // Placeholder du filtre
     filterPlaceholder: {
       type: String,
       default: 'Filtrer par mot-clé'
@@ -138,49 +138,49 @@ export default {
       type: String,
       default: 'Confirmer'
     },
-    // 树形组件节点过滤，可以配置elProps.filterNodeMethod ，覆盖默认的过滤方法
+    // Filtrage des nœuds du composant arborescent (configurer elProps.filterNodeMethod pour remplacer le filtre par défaut),elProps.filterNodeMethod ,
     treeFilter: {
       type: Boolean,
       require: false,
       default: true
     },
-    // 是否多选，传入false为单选
+    // Indique si sélection multiple,transmettre false pour une sélection unique
     multiple: {
       type: Boolean,
       default: false
     },
-    // 是否忽略选中节点的子节点
+    // Indique s'il faut ignorer les enfants des nœuds sélectionnés
     ignoreFullCheckedChildren: {
       type: Boolean,
       default: true
     },
-    // 是否只返回叶子节点
+    // Indique s'il faut ne retourner que les nœuds feuilles
     leafOnly: {
       type: Boolean,
       default: false
     },
-    // 是否包含半选节点
+    // Indique s'il faut inclure les nœuds à moitié sélectionnés
     includeHalfChecked: {
       type: Boolean,
       default: false
     },
-    // el-tree的属性配置
+    // el-treeConfiguration des propriétés de el-tree
     elProps: {
       type: Object
     },
     /**
-     * 是否可以清除
+     * Indique si effaçable
      */
     clearable: {
       type: Boolean,
       default: true
     },
-    // 数据字典配置
+    // Configuration du dictionnaire de données
     dict: {
       type: Object,
       require: false
     },
-    // 是否开启分页
+    // Indique si la pagination est activée
     pagination: {
       type: Boolean,
       default: false
@@ -224,7 +224,7 @@ export default {
         if (this.dict.children != null) {
           defaultElProps.props.children = this.dict.children
         }
-        // 加上树形的配置
+        // Ajouter la configuration arborescente
         if (this.dict.isTree) {
           defaultElProps.treeConfig = this.elProps.treeConfig
         }
@@ -352,7 +352,7 @@ export default {
       }
       node.expanded = true
     },
-    // 处理value,是否为原生value还是自定义value
+    // Traiter children (natif ou personnalisé)value,valuevalue
     getValueKey (item) {
       if (this._elProps.props.value != null) {
         return item[this._elProps.props.value]
@@ -360,7 +360,7 @@ export default {
         return item.value
       }
     },
-    // 处理label,是否为原生label还是自定义label
+    // Traiter children (natif ou personnalisé)label,labellabel
     getValueLabel (item) {
       if (this._elProps.props.label != null) {
         return item[this._elProps.props.label]
@@ -368,7 +368,7 @@ export default {
         return item.label
       }
     },
-    // 处理children,是否为原生children还是自定义children
+    // Traiter children (natif ou personnalisé)children,childrenchildren
     getValueChildren (item) {
       let children = 'children'
       if (this._elProps.props.children != null) {
@@ -376,13 +376,13 @@ export default {
       }
       return item[children]
     },
-    // 确定按钮事件
+    // Événement du bouton de confirmation
     selectSubmit () {
       const nodes = this.refreshSelected()
       this.dialogVisible = false
       this.doValueInputChanged(nodes)
     },
-    // 将值传出去
+    // Transmettre la valeur vers l'extérieur
     doValueInputChanged (nodes) {
       let values = this.formatValue(nodes)
       this.resetInputHeight()
@@ -401,7 +401,7 @@ export default {
       this.$set(this, 'selected', newNodes)
       this.doValueInputChanged(newNodes)
     },
-    // 获取选中的行数据
+    // Obtenir les lignes sélectionnées
     refreshSelected () {
       let nodes = null
       if (this.multiple) {
@@ -451,7 +451,7 @@ export default {
         }
       })
     },
-    // 过滤叶子节点
+    // Filtrer les nœuds feuilles
     filterFullCheckedChildren (nodes) {
       const ignored = new Set()
       for (const item of nodes) {
@@ -489,7 +489,7 @@ export default {
         this.dispatch('ElFormItem', 'el.form.blur')
       }
     },
-    // 分页事件
+    // Événement de pagination
     handlePageChange ({
       currentPage,
       pageSize
@@ -499,7 +499,7 @@ export default {
       that._elProps.limit = pageSize
       that.searchTableData()
     },
-    // 获取数据事件
+    // Événement de récupération des données
     searchTableData () {
       const that = this
       let params
@@ -533,7 +533,7 @@ export default {
       })
     },
     /**
-     * 表格单选事件
+     * Événement de sélection unique du tableau
      */
     radioChange ({ checked, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event }) {
       this.$emit('radioChange', {
@@ -542,7 +542,7 @@ export default {
       })
     },
     /**
-     * 表格多选事件
+     * Événement de sélection multiple du tableau
      */
     checkboxChange ({ checked, row, rowIndex, $rowIndex, column, columnIndex, $columnIndex, $event }) {
       this.$emit('checkboxChange', {

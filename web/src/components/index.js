@@ -6,7 +6,7 @@ import cardSelect from '@/components/card-select/index'
 import selectorTable from '@/components/selector-table/index'
 import valuesPopover from '@/components/values-popover/index'
 import foreignKeyCrudForm from '@/components/foreign-key-crud-form/index'
-// 注意 有些组件使用异步加载会有影响
+// Attention : le chargement asynchrone de certains composants peut avoir un impact
 Vue.component('d2-container', d2Container)
 Vue.component('d2-icon', () => import('./d2-icon'))
 Vue.component('d2-icon-svg', () => import('./d2-icon-svg/index.vue'))

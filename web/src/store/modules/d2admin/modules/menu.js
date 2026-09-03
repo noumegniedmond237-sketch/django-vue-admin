@@ -1,28 +1,28 @@
-// 设置文件
+// Définir le fichier
 import setting from '@/setting.js'
 
 export default {
   namespaced: true,
   state: {
-    // 顶栏菜单
+    // Menu de la barre supérieure
     header: [],
-    // 侧栏菜单
+    // Menu latéral
     aside: [],
-    // 侧边栏收缩
+    // Réduire la barre latérale
     asideCollapse: setting.menu.asideCollapse,
-    // 侧边栏折叠动画
+    // Animation de repli de la barre latérale
     asideTransition: setting.menu.asideTransition
   },
   actions: {
     /**
-     * 设置侧边栏展开或者收缩
+     * Définir l'ouverture ou la fermeture de la barre latérale
      * @param {Object} context
      * @param {Boolean} collapse is collapse
      */
     async asideCollapseSet ({ state, dispatch }, collapse) {
-      // store 赋值
+      // store Assignation du store
       state.asideCollapse = collapse
-      // 持久化
+      // Persistance
       await dispatch('d2admin/db/set', {
         dbName: 'sys',
         path: 'menu.asideCollapse',
@@ -31,13 +31,13 @@ export default {
       }, { root: true })
     },
     /**
-     * 切换侧边栏展开和收缩
+     * Basculer l'ouverture / la fermeture de la barre latérale
      * @param {Object} context
      */
     async asideCollapseToggle ({ state, dispatch }) {
-      // store 赋值
+      // store Assignation du store
       state.asideCollapse = !state.asideCollapse
-      // 持久化
+      // Persistance
       await dispatch('d2admin/db/set', {
         dbName: 'sys',
         path: 'menu.asideCollapse',
@@ -46,14 +46,14 @@ export default {
       }, { root: true })
     },
     /**
-     * 设置侧边栏折叠动画
+     * Définir l'animation de repli de la barre latérale
      * @param {Object} context
      * @param {Boolean} transition is transition
      */
     async asideTransitionSet ({ state, dispatch }, transition) {
-      // store 赋值
+      // store Assignation du store
       state.asideTransition = transition
-      // 持久化
+      // Persistance
       await dispatch('d2admin/db/set', {
         dbName: 'sys',
         path: 'menu.asideTransition',
@@ -62,13 +62,13 @@ export default {
       }, { root: true })
     },
     /**
-     * 切换侧边栏折叠动画
+     * Basculer l'animation de repli de la barre latérale
      * @param {Object} context
      */
     async asideTransitionToggle ({ state, dispatch }) {
-      // store 赋值
+      // store Assignation du store
       state.asideTransition = !state.asideTransition
-      // 持久化
+      // Persistance
       await dispatch('d2admin/db/set', {
         dbName: 'sys',
         path: 'menu.asideTransition',
@@ -77,11 +77,11 @@ export default {
       }, { root: true })
     },
     /**
-     * 持久化数据加载侧边栏设置
+     * Charger les paramètres de la barre latérale depuis les données persistées
      * @param {Object} context
      */
     async asideLoad ({ state, dispatch }) {
-      // store 赋值
+      // store Assignation du store
       const menu = await dispatch('d2admin/db/get', {
         dbName: 'sys',
         path: 'menu',
@@ -94,21 +94,21 @@ export default {
   },
   mutations: {
     /**
-     * @description 设置顶栏菜单
+     * @description Définir le menu de la barre supérieure
      * @param {Object} state state
      * @param {Array} menu menu setting
      */
     headerSet (state, menu) {
-      // store 赋值
+      // store Assignation du store
       state.header = menu
     },
     /**
-     * @description 设置侧边栏菜单
+     * @description Définir le menu latéral
      * @param {Object} state state
      * @param {Array} menu menu setting
      */
     asideSet (state, menu) {
-      // store 赋值
+      // store Assignation du store
       state.aside = menu
     }
   }

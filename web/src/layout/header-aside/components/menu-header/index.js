@@ -79,10 +79,10 @@ export default {
   methods: {
     scroll (direction) {
       if (direction === 'left') {
-        // 向右滚动
+        // Défiler vers la droite
         this.currentTranslateX = 0
       } else {
-        // 向左滚动
+        // Défiler vers la gauche
         if (this.contentWidth * 2 - this.currentTranslateX <= this.scrollWidth) {
           this.currentTranslateX -= this.contentWidth
         } else {
@@ -94,27 +94,27 @@ export default {
       let contentWidth = this.$refs.content.clientWidth
       let scrollWidth = this.$refs.scroll.clientWidth
       if (this.isScroll) {
-        // 页面依旧允许滚动的情况，需要更新width
+        // Si la page peut encore défiler, mettre à jour width
         if (this.contentWidth - this.scrollWidth === this.currentTranslateX) {
-          // currentTranslateX 也需要相应变化【在右端到头的情况时】
+          // currentTranslateX doit aussi changer en conséquence [quand on arrive au bout à droite]
           this.currentTranslateX = contentWidth - scrollWidth
-          // 快速的滑动依旧存在判断和计算时对应的contentWidth变成正数，所以需要限制一下
+          // Le défilement rapide nécessite encore des contrôles (contentWidth peut devenir positif lors du calcul), à limiter
           if (this.currentTranslateX > 0) {
             this.currentTranslateX = 0
           }
         }
-        // 更新元素数据
+        // Mettre à jour les données de l'élément
         this.contentWidth = contentWidth
         this.scrollWidth = scrollWidth
-        // 判断何时滚动消失: 当scroll > content
+        // Déterminer quand la barre disparaît : quand scroll > content
         if (contentWidth > scrollWidth) {
           this.isScroll = false
         }
       }
-      // 判断何时滚动出现: 当scroll < content
+      // Déterminer quand la barre apparaît : quand scroll < content
       if (!this.isScroll && contentWidth < scrollWidth) {
         this.isScroll = true
-        // 注意，当isScroll变为true，对应的元素盒子大小会发生变化
+        // Attention : quand isScroll devient true, la taille du conteneur change
         this.$nextTick(() => {
           contentWidth = this.$refs.content.clientWidth
           scrollWidth = this.$refs.scroll.clientWidth
@@ -126,15 +126,15 @@ export default {
     }
   },
   mounted () {
-    // 初始化判断
-    // 默认判断父元素和子元素的大小，以确定初始情况是否显示滚动
+    // Initialiser le jugement
+    // Par défaut, comparer les tailles parent/enfant pour décider d'afficher le défilement initial,
     this.checkScroll()
-    // 全局窗口变化监听，判断父元素和子元素的大小，从而控制isScroll的开关
+    // Écoute globale des changements de fenêtre : comparer les tailles parent/enfant pour activer isScroll
     this.throttledCheckScroll = throttle(this.checkScroll, 300)
     window.addEventListener('resize', this.throttledCheckScroll)
   },
   beforeDestroy () {
-    // 取消监听
+    // Retirer l'écouteur
     window.removeEventListener('resize', this.throttledCheckScroll)
   }
 }

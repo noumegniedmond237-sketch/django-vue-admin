@@ -1,7 +1,7 @@
 export default {
-  // 字段类型配置，注册之后即可在crud.js中使用了
+  // Configuration des types de champs (utilisable dans crud.js après enregistrement),crud.js
   'foreign-key-crud-form': {
-    // 行组件配置
+    // Configuration du composant de ligne
     form: { component: { name: 'foreign-key-crud-form', props: { color: 'danger' } } },
     component: {
       name: 'values-popover',
@@ -12,8 +12,8 @@ export default {
         }
       }
     },
-    // 行展示时居中
+    // Centrer lors de l'affichage en ligne
     align: 'center'
-    // 您还可以写更多默认配置
+    // Vous pouvez écrire d'autres configurations par défaut
   }
 }

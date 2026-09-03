@@ -5,7 +5,7 @@
     :class="{ 'd2-source--active': isActive }"
     @click="handleClick"
   >
-    <d2-icon name="code" /> 本页源码
+    <d2-icon name="code" /> Code source de cette page
   </div>
 </template>
 
@@ -32,13 +32,13 @@ export default {
     }
   },
   mounted () {
-    // 一秒后显示按钮
+    // Afficher le bouton après une seconde
     setTimeout(() => {
       this.isActive = true
     }, 500)
   },
   methods: {
-    // 点击按钮的时候跳转到源代码
+    // Cliquer sur le bouton pour aller au code source
     handleClick () {
       this.$open(`${process.env.VUE_APP_REPO}/blob/master/${this.path}`)
     }

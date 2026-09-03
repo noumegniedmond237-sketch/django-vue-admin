@@ -7,12 +7,12 @@ export default {
     'd2-panel-search': () => import('../components/panel-search')
   },
   mounted () {
-    // 绑定搜索功能快捷键 [ 打开 ]
+    // Raccourci de la fonction de recherche [ Ouvrir ]
     hotkeys(this.searchHotkey.open, event => {
       event.preventDefault()
       this.searchPanelOpen()
     })
-    // 绑定搜索功能快捷键 [ 关闭 ]
+    // Raccourci de la fonction de recherche [ Fermer ]
     hotkeys(this.searchHotkey.close, event => {
       event.preventDefault()
       this.searchPanelClose()
@@ -34,7 +34,7 @@ export default {
       searchSet: 'd2admin/search/set'
     }),
     /**
-     * 接收点击搜索按钮
+     * Recevoir le clic sur le bouton de recherche
      */
     handleSearchClick () {
       this.searchToggle()
@@ -56,7 +56,7 @@ export default {
         }, 500)
       }
     },
-    // 关闭搜索面板
+    // Fermer le panneau de recherche
     searchPanelClose () {
       if (this.searchActive) {
         this.searchSet(false)

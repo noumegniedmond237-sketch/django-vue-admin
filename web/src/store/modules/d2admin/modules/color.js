@@ -5,48 +5,48 @@ import forElementUI from 'webpack-theme-color-replacer/forElementUI'
 export default {
   namespaced: true,
   state: {
-    // 颜色
+    // Couleur
     value: process.env.VUE_APP_ELEMENT_COLOR
   },
   actions: {
     /**
-     * @description 设置颜色
+     * @description Définir la couleur
      * @param {Object} context
-     * @param {String} color 尺寸
+     * @param {String} color taille
      */
     async set ({ state, dispatch, commit }, color) {
-      // 记录上个值
+      // Enregistrer la valeur précédente
       const old = state.value
-      // store 赋值
+      // store Assignation du store
       state.value = color || process.env.VUE_APP_ELEMENT_COLOR
-      // 持久化
+      // Persistance
       await dispatch('d2admin/db/set', {
         dbName: 'sys',
         path: 'color.value',
         value: state.value,
         user: true
       }, { root: true })
-      // 应用
+      // Appliquer
       commit('apply', {
         oldColor: old,
         newColor: state.value
       })
     },
     /**
-     * @description 从持久化数据读取颜色设置
+     * @description Lire les paramètres de couleur depuis les données persistées
      * @param {Object} context
      */
     async load ({ state, dispatch, commit }) {
-      // 记录上个值
+      // Enregistrer la valeur précédente
       const old = state.value
-      // store 赋值
+      // store Assignation du store
       state.value = await dispatch('d2admin/db/get', {
         dbName: 'sys',
         path: 'color.value',
         defaultValue: process.env.VUE_APP_ELEMENT_COLOR,
         user: true
       }, { root: true })
-      // 应用
+      // Appliquer
       commit('apply', {
         oldColor: old,
         newColor: state.value
@@ -55,10 +55,10 @@ export default {
   },
   mutations: {
     /**
-     * @description 将 vuex 中的主题颜色设置应用到系统中
+     * @description Assigner vuex les paramètres de couleur du thème de vuex au système
      * @param {Object} context
-     * @param {Object} payload oldColor {String} 旧的颜色
-     * @param {Object} payload newColor {String} 新颜色
+     * @param {Object} payload oldColor {String} ancienne couleur
+     * @param {Object} payload newColor {String} nouvelle couleur
      */
     apply (state, { oldColor, newColor }) {
       var options = {

@@ -1,10 +1,10 @@
 <!--
- * @创建文件时间: 2021-08-14 17:37:36
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-08-14 21:27:12
- * 联系Qq:1638245306
- * @文件介绍: 图片管理
+ * @date-de-creation: 2021-08-14 17:37:36
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-08-14 21:27:12
+ * Contact QQ : 1638245306
+ * @description-fichier: gestion des images
 -->
 <template>
   <d2-container :class="{ 'page-compact': crud.pageOptions.compact }">
@@ -26,7 +26,7 @@
             v-permission="'Create'"
             type="primary"
             @click="addRow"
-            ><i class="el-icon-plus" /> 新增</el-button
+            ><i class="el-icon-plus" /> Ajouter</el-button
           >
         </el-button-group> -->
         <crud-toolbar

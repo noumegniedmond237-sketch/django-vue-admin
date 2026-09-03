@@ -16,35 +16,35 @@ export const checkPlugins = function install (pluginName) {
   if (pluginsList && pluginsList.indexOf(pluginName) !== -1) {
     try {
       const Module = import('@/views/plugins/' + pluginName + '/src/index')
-      // 注册组件
+      // Enregistrer le composant
       if (Module.default) {
         Vue.use(Module.default)
       }
-      // 本地插件
+      // Plugin local
       return 'local'
     } catch (exception) {}
   }
   pluginsList = importAll(require.context('@great-dream/', true, /index\.js$/))
   if (pluginsList && pluginsList.indexOf(pluginName) !== -1) {
-    // node_modules 封装插件
+    // node_modules Plugins encapsulés dans node_modules
     try {
       const Module = import('@great-dream/' + pluginName + '/src/index')
-      // 注册组件
+      // Enregistrer le composant
       if (Module.default) {
         Vue.use(Module.default)
       }
-      // 本地插件
+      // Plugin local
       return 'plugins'
     } catch (exception) {}
   }
-  // 未找到插件
+  // Plugin introuvable
   return undefined
 }
 
 export const plugins = async function install (Vue, options) {
-  // 查找 src/views/plugins 目录所有插件，插件目录下需有 index.js 文件
-  // 再查找 node_modules/@great-dream/ 目录下所有插件
-  // 进行去重并vue注册导入
+  // Chercher tous les plugins sous src/views/plugins (chaque plugin doit avoir un index.js) src/views/plugins , index.js
+  // Chercher ensuite tous les plugins sous node_modules/@great-dream/ node_modules/@great-dream/
+  // Dédupliquer puis importer pour l'enregistrement vue
   if (window.pluginsAll) return
   let components = []
   components = components.concat(importAll(require.context('./', true, /index\.js$/)))
@@ -53,7 +53,7 @@ export const plugins = async function install (Vue, options) {
   components.filter(async (key, index) => {
     try {
       const Module = await import('@/views/plugins/' + key + '/src/index')
-      // 注册组件
+      // Enregistrer le composant
       if (Module.default) {
         Vue.use(Module.default)
         return true
@@ -62,25 +62,25 @@ export const plugins = async function install (Vue, options) {
     } catch (exception) {
       try {
         const Module = await import('@great-dream/' + key + '/src/index')
-        // 注册组件
+        // Enregistrer le composant
         if (Module.default) {
           Vue.use(Module.default)
           return true
         }
         return false
       } catch (exception) {
-        console.log(`[${key}]插件注册失败:`, exception)
+        console.log(`[${key}]échec d'enregistrement du plugin:`, exception)
         return false
       }
     }
   })
-  console.log('注册成功插件：', components)
+  console.log('Plugins enregistrés avec succès:', components)
   window.pluginsAll = components
   return components
 }
 
 export const getStoreModules = function (Vue, options) {
-  // 获取每个插件的Store文件并进行注册
+  // Enregistrer les fichiers Store de chaque plugin
   if (window.storeModules) return
   const storeModules = {}
   let components = []
@@ -90,20 +90,20 @@ export const getStoreModules = function (Vue, options) {
   components.filter(async (key, index) => {
     try {
       const Module = require('@/views/plugins/' + key + '/src/store/index.js')
-      // 注册组件
+      // Enregistrer le composant
       if (Module.default) {
         storeModules[Module.default.stateName || key] = Module.default
-        console.log(`[${key}]store注册成功`)
+        console.log(`[${key}]storeenregistré avec succès`)
         return true
       }
       return false
     } catch (exception) {
       try {
         const Module = require('@great-dream/' + key + '/src/store/index.js')
-        // 注册组件
+        // Enregistrer le composant
         if (Module.default) {
           storeModules[Module.default.stateName || key] = Module.default
-          console.log(`[${key}]store注册成功`)
+          console.log(`[${key}]storeenregistré avec succès`)
           return true
         }
         return false

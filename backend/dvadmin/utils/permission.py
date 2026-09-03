@@ -9,10 +9,10 @@ from dvadmin.system.models import ApiWhiteList
 
 def ValidationApi(reqApi, validApi):
     """
-    验证当前用户是否有接口权限
-    :param reqApi: 当前请求的接口
-    :param validApi: 用于验证的接口
-    :return: True或者False
+    Vérifier si l'utilisateur actuel possède l'autorisation d'interface
+    :param reqApi: interface de la requête actuelle
+    :param validApi: interface utilisée pour la vérification
+    :return: True ou False
     """
     if validApi is not None:
         valid_api = validApi.replace('{id}', '.*?')
@@ -27,7 +27,7 @@ def ValidationApi(reqApi, validApi):
 
 class AnonymousUserPermission(BasePermission):
     """
-    匿名用户权限
+    Autorisations des utilisateurs anonymes
     """
 
     def has_permission(self, request, view):
@@ -38,7 +38,7 @@ class AnonymousUserPermission(BasePermission):
 
 def ReUUID(api):
     """
-    将接口的uuid替换掉
+    Remplacer l'uuid de l'interface
     :param api:
     :return:
     """
@@ -52,20 +52,20 @@ def ReUUID(api):
 
 
 class CustomPermission(BasePermission):
-    """自定义权限"""
+    """Autorisations personnalisées"""
 
     def has_permission(self, request, view):
         if isinstance(request.user, AnonymousUser):
             return False
-        # 判断是否是超级管理员
+        # Vérifier s'il s'agit d'un super administrateur
         if request.user.is_superuser:
             return True
         else:
-            api = request.path  # 当前请求接口
-            method = request.method  # 当前请求方法
+            api = request.path  # Interface de la requête actuelle
+            method = request.method  # Méthode de la requête actuelle
             methodList = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
             method = methodList.index(method)
-            # ***接口白名单***
+            # ***Liste blanche d'interfaces***
             api_white_list = ApiWhiteList.objects.values(permission__api=F('url'), permission__method=F('method'))
             api_white_list = [
                 str(item.get('permission__api').replace('{id}', '([a-zA-Z0-9-]+)')) + ":" + str(
@@ -73,7 +73,7 @@ class CustomPermission(BasePermission):
             # ********#
             if not hasattr(request.user, "role"):
                 return False
-            userApiList = request.user.role.values('permission__api', 'permission__method')  # 获取当前用户的角色拥有的所有接口
+            userApiList = request.user.role.values('permission__api', 'permission__method')  # Récupérer toutes les interfaces détenues par les rôles de l'utilisateur actuel
             ApiList = [
                 str(item.get('permission__api').replace('{id}', '([a-zA-Z0-9-]+)')) + ":" + str(
                     item.get('permission__method')) + '$' for item in userApiList if item.get('permission__api')]
@@ -91,28 +91,28 @@ class CustomPermission(BasePermission):
 
 class SuperuserPermission(BasePermission):
     """
-    超级管理员权限类
+    Classe d'autorisation du super administrateur
     """
 
     def has_permission(self, request, view):
         if isinstance(request.user, AnonymousUser):
             return False
-        # 判断是否是超级管理员
+        # Vérifier s'il s'agit d'un super administrateur
         if request.user.is_superuser:
             return True
 
 
 class AdminPermission(BasePermission):
     """
-    普通管理员权限类
+    Classe d'autorisation de l'administrateur ordinaire
     """
 
     def has_permission(self, request, view):
         if isinstance(request.user, AnonymousUser):
             return False
-        # 判断是否是超级管理员
+        # Vérifier s'il s'agit d'un super administrateur
         is_superuser = request.user.is_superuser
-        # 判断是否是管理员角色
+        # Vérifier s'il s'agit d'un rôle administrateur
         is_admin = request.user.role.values_list('admin', flat=True)
         if is_superuser or True in is_admin:
             return True

@@ -5,24 +5,24 @@ import util from '@/libs/util.js'
 export default {
   namespaced: true,
   state: {
-    // 错误日志
-    // + 日志条目的属性
-    //   - message 必须 日志信息
-    //   - type 非必须 类型 success | warning | info(默认) | danger
-    //   - time 必须 日志记录时间
-    //   - meta 非必须 其它携带信息
+    // Journaux d'erreur
+    // + Propriétés d'une entrée de journal
+    //   - message obligatoire message du journal
+    //   - type facultatif type success | warning | info(Colonnes par défaut : showForm = afficher dans le formulaire, showTable = afficher dans le tableau) | danger
+    //   - time obligatoire heure d'enregistrement du journal
+    //   - meta facultatif autres informations jointes
     log: []
   },
   getters: {
     /**
-     * @description 返回现存 log (all) 的条数
+     * @description Retourner le nombre de journaux existants log (all)
      * @param {*} state vuex state
      */
     length (state) {
       return state.log.length
     },
     /**
-     * @description 返回现存 log (error) 的条数
+     * @description Retourner le nombre de journaux existants log (error)
      * @param {*} state vuex state
      */
     lengthError (state) {
@@ -31,11 +31,11 @@ export default {
   },
   actions: {
     /**
-     * @description 添加一个日志
+     * @description Ajouter une entrée de journal
      * @param {Object} context
-     * @param {String} param message {String} 信息
-     * @param {String} param type {String} 类型
-     * @param {Object} payload meta {Object} 附带的信息
+     * @param {String} param message {String} information
+     * @param {String} param type {String} type
+     * @param {Object} payload meta {Object} informations jointes
      */
     push ({ rootState, commit }, { message, type = 'info', meta }) {
       commit('push', {
@@ -43,15 +43,15 @@ export default {
         type,
         time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         meta: {
-          // 当前用户信息
+          // Informations de l'utilisateur courant
           user: rootState.d2admin.user.info,
-          // 当前用户的 uuid
+          // UUID de l'utilisateur courant
           uuid: util.cookies.get('uuid'),
-          // 当前的 token
+          // token courant
           token: util.cookies.get('token'),
-          // 当前地址
+          // Adresse courante
           url: get(window, 'location.href', ''),
-          // 用户设置
+          // Paramètres utilisateur
           ...meta
         }
       })
@@ -59,7 +59,7 @@ export default {
   },
   mutations: {
     /**
-     * @description 添加日志
+     * @description Ajouter un journal
      * @param {Object} state state
      * @param {Object} log data
      */
@@ -67,11 +67,11 @@ export default {
       state.log.push(log)
     },
     /**
-     * @description 清空日志
+     * @description Vider les journaux
      * @param {Object} state state
      */
     clean (state) {
-      // store 赋值
+      // store Assignation du store
       state.log = []
     }
   }

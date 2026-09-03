@@ -2,26 +2,26 @@ import { cloneDeep, uniq, get } from 'lodash'
 import router from '@/router'
 import setting from '@/setting.js'
 
-// 判定是否需要缓存
+// Déterminer si la mise en cache est nécessaire
 const isKeepAlive = data => get(data, 'meta.cache', false)
 
 export default {
   namespaced: true,
   state: {
-    // 可以在多页 tab 模式下显示的页面
+    // Pages affichables en mode multi-onglets tab
     pool: [],
-    // 当前显示的多页面列表
+    // Liste multi-pages affichée
     opened: get(setting, 'page.opened', []),
-    // 已经加载多标签页数据 https://github.com/d2-projects/d2-admin/issues/201
+    // Données multi-onglets déjà chargées https://github.com/d2-projects/d2-admin/issues/201
     openedLoaded: false,
-    // 当前页面
+    // Page courante
     current: '',
-    // 需要缓存的页面 name
+    // Noms des pages à mettre en cache name
     keepAlive: []
   },
   actions: {
     /**
-     * @description 确认已经加载多标签页数据 https://github.com/d2-projects/d2-admin/issues/201
+     * @description Confirmer le chargement des données multi-onglets https://github.com/d2-projects/d2-admin/issues/201
      * @param {Object} context
      */
     isLoaded ({ state }) {
@@ -34,54 +34,54 @@ export default {
     },
     /**
      * @class opened
-     * @description 从持久化数据载入标签页列表
+     * @description Charger la liste des onglets depuis les données persistées
      * @param {Object} context
      */
     async openedLoad ({ state, commit, dispatch }) {
-      // store 赋值
+      // store Assignation du store
       const value = await dispatch('d2admin/db/get', {
         dbName: 'sys',
         path: 'page.opened',
         defaultValue: setting.page.opened,
         user: true
       }, { root: true })
-      // 在处理函数中进行数据优化 过滤掉现在已经失效的页签或者已经改变了信息的页签
-      // 以 fullPath 字段为准
-      // 如果页面过多的话可能需要优化算法
-      // valid 有效列表 1, 1, 0, 1 => 有效, 有效, 失效, 有效
+      // Optimiser les données dans le gestionnaire (filtrer les onglets expirés ou modifiés)
+      // Se baser sur le champ fullPath fullPath
+      // S'il y a trop de pages, l'algorithme devra peut-être être optimisé
+      // valid liste valide : 1, 1, 0, 1 => valide, valide, invalide, valide 1, 1, 0, 1 => valide, valide, invalide, valide
       const valid = []
-      // 处理数据
+      // Traiter les données
       state.opened = value
         .map(opened => {
           // Tableau de bord
           if (opened.fullPath === '/index') {
             opened.meta = opened.meta || {}
-            if (!opened.meta.title || opened.meta.title === '控制台') {
+            if (!opened.meta.title) {
               opened.meta.title = 'Tableau de bord'
             }
             valid.push(1)
             return opened
           }
-          // 尝试在所有的支持多标签页的页面里找到 name 匹配的页面
+          // Chercher la page correspondant à name parmi toutes les pages multi-onglets name
           const find = state.pool.find(item => item.name === opened.name)
-          // 记录有效或无效信息
+          // Enregistrer les informations valides ou invalides
           valid.push(find ? 1 : 0)
-          // 返回合并后的数据 新的覆盖旧的
-          // 新的数据中一般不会携带 params 和 query, 所以旧的参数会留存
+          // Retourner les données fusionnées (les nouvelles écrasent les anciennes)
+          // Les nouvelles données ne contiennent généralement pas params et query, les anciens paramètres sont conservés params et query,
           return Object.assign({}, opened, find)
         })
         .filter((opened, index) => valid[index] === 1)
-      // 标记已经加载多标签页数据 https://github.com/d2-projects/d2-admin/issues/201
+      // Marquer les données multi-onglets comme chargées https://github.com/d2-projects/d2-admin/issues/201
       state.openedLoaded = true
-      // 根据 opened 数据生成缓存设置
+      // Générer les paramètres de cache depuis les données opened opened
       commit('keepAliveRefresh')
     },
     /**
-     * 将 opened 属性赋值并持久化 在这之前请先确保已经更新了 state.opened
+     * Assigner opened la propriété opened et persister (s'assurer d'avoir d'abord mis à jour state.opened) s'assurer d'avoir d'abord mis à jour state.opened
      * @param {Object} context
      */
     async opened2db ({ state, dispatch }) {
-      // 设置数据
+      // Définir les données
       dispatch('d2admin/db/set', {
         dbName: 'sys',
         path: 'page.opened',
@@ -91,63 +91,63 @@ export default {
     },
     /**
      * @class opened
-     * @description 更新页面列表上的某一项
+     * @description Mettre à jour un élément de la liste des pages
      * @param {Object} context
-     * @param {Object} payload { index, params, query, fullPath } 路由信息
+     * @param {Object} payload { index, params, query, fullPath } informations de route
      */
     async openedUpdate ({ state, commit, dispatch }, { index, params, query, fullPath }) {
-      // 更新页面列表某一项
+      // Mettre à jour un élément de la liste des pages
       const page = state.opened[index]
       page.params = params || page.params
       page.query = query || page.query
       page.fullPath = fullPath || page.fullPath
       state.opened.splice(index, 1, page)
-      // 持久化
+      // Persistance
       await dispatch('opened2db')
     },
     /**
      * @class opened
-     * @description 重排页面列表上的某一项
+     * @description Réordonner un élément de la liste des pages
      * @param {Object} context
-     * @param {Object} payload { oldIndex, newIndex } 位置信息
+     * @param {Object} payload { oldIndex, newIndex } informations de position
      */
     async openedSort ({ state, commit, dispatch }, { oldIndex, newIndex }) {
-      // 重排页面列表某一项
+      // Réordonner un élément de la liste des pages
       const page = state.opened[oldIndex]
       state.opened.splice(oldIndex, 1)
       state.opened.splice(newIndex, 0, page)
-      // 持久化
+      // Persistance
       await dispatch('opened2db')
     },
     /**
      * @class opened
-     * @description 新增一个 tag (打开一个页面)
+     * @description Ouvrir une page (ajouter un tag)
      * @param {Object} context
      * @param {Object} payload new tag info
      */
     async add ({ state, commit, dispatch }, { tag, params, query, fullPath }) {
-      // 设置新的 tag 在新打开一个以前没打开过的页面时使用
+      // Définir le nouveau tag (utilisé à l'ouverture d'une page jamais ouverte) tag
       const newTag = tag
       newTag.params = params || newTag.params
       newTag.query = query || newTag.query
       newTag.fullPath = fullPath || newTag.fullPath
-      // 添加进当前显示的页面数组
+      // Ajouter au tableau des pages affichées
       state.opened.push(newTag)
-      // 如果这个页面需要缓存 将其添加到缓存设置
+      // Si cette page doit être mise en cache, l'ajouter aux paramètres de cache
       if (isKeepAlive(newTag)) commit('keepAlivePush', tag.name)
-      // 持久化
+      // Persistance
       await dispatch('opened2db')
     },
     /**
      * @class current
-     * @description 打开一个新的页面
+     * @description Ouvrir une nouvelle page
      * @param {Object} context
-     * @param {Object} payload 从路由钩子的 to 对象上获取 { name, params, query, fullPath, meta } 路由信息
+     * @param {Object} payload Obtenu depuis l'objet to du garde de route { name, params, query, fullPath, meta } informations de route
      */
     async open ({ state, commit, dispatch }, { name, params, query, fullPath, meta }) {
-      // 已经打开的页面
+      // Pages déjà ouvertes
       const opened = state.opened
-      // 判断此页面是否已经打开 并且记录位置
+      // Déterminer si cette page est déjà ouverte et enregistrer sa position
       let pageOpendIndex = 0
       const pageOpend = opened.find((page, index) => {
         const same = page.fullPath === fullPath
@@ -155,7 +155,7 @@ export default {
         return same
       })
       if (pageOpend) {
-        // 页面以前打开过
+        // La page a déjà été ouverte
         await dispatch('openedUpdate', {
           index: pageOpendIndex,
           params,
@@ -163,9 +163,9 @@ export default {
           fullPath
         })
       } else {
-        // 页面以前没有打开过
+        // La page n'a jamais été ouverte
         const page = state.pool.find(t => t.name === name)
-        // 如果这里没有找到 page 代表这个路由虽然在框架内 但是不参与标签页显示
+        // Si page introuvable ici, la route est dans le cadre mais sans onglet page
         if (page) {
           await dispatch('add', {
             tag: Object.assign({}, page),
@@ -175,24 +175,24 @@ export default {
           })
         }
       }
-      // 如果这个页面需要缓存 将其添加到缓存设置
+      // Si cette page doit être mise en cache, l'ajouter aux paramètres de cache
       if (isKeepAlive({ meta })) commit('keepAlivePush', name)
-      // 设置当前的页面
+      // Définir la page courante
       commit('currentSet', fullPath)
     },
     /**
      * @class opened
-     * @description 关闭一个 tag (关闭一个页面)
+     * @description Fermer un tag (Fermer une page)
      * @param {Object} context
-     * @param {Object} payload { tagName: 要关闭的标签名字 }
+     * @param {Object} payload { tagName: nom de l'onglet à fermer }
      */
     async close ({ state, commit, dispatch }, { tagName }) {
-      // 预定下个新页面
+      // Réserver la prochaine nouvelle page
       let newPage = {}
       const isCurrent = state.current === tagName
-      // 如果关闭的页面就是当前显示的页面
+      // Si la page fermée est la page affichée
       if (isCurrent) {
-        // 去找一个新的页面
+        // Chercher une nouvelle page
         const len = state.opened.length
         for (let i = 0; i < len; i++) {
           if (state.opened[i].fullPath === tagName) {
@@ -201,17 +201,17 @@ export default {
           }
         }
       }
-      // 找到这个页面在已经打开的数据里是第几个
+      // Trouver l'index de cette page parmi les données ouvertes
       const index = state.opened.findIndex(page => page.fullPath === tagName)
       if (index >= 0) {
-        // 如果这个页面是缓存的页面 将其在缓存设置中删除
+        // Si cette page est en cache, la retirer des paramètres de cache
         commit('keepAliveRemove', state.opened[index].name)
-        // 更新数据 删除关闭的页面
+        // Mettre à jour les données (supprimer la page fermée)
         state.opened.splice(index, 1)
       }
-      // 持久化
+      // Persistance
       await dispatch('opened2db')
-      // 决定最后停留的页面
+      // Déterminer la page finale
       if (isCurrent) {
         const { name = 'index', params = {}, query = {} } = newPage
         const routerObj = { name, params, query }
@@ -220,9 +220,9 @@ export default {
     },
     /**
      * @class opened
-     * @description 关闭当前标签左边的标签
+     * @description Fermer les onglets à gauche de l'onglet courant
      * @param {Object} context
-     * @param {Object} payload { pageSelect: 当前选中的tagName }
+     * @param {Object} payload { pageSelect: actuellement sélectionnétagName }
      */
     async closeLeft ({ state, commit, dispatch }, { pageSelect } = {}) {
       const pageAim = pageSelect || state.current
@@ -231,7 +231,7 @@ export default {
         if (page.fullPath === pageAim) currentIndex = index
       })
       if (currentIndex > 0) {
-        // 删除打开的页面 并在缓存设置中删除
+        // Supprimer la page ouverte (et dans les paramètres de cache)
         for (let i = state.opened.length - 1; i >= 0; i--) {
           if (state.opened[i].name === 'index' || i >= currentIndex) {
             continue
@@ -241,17 +241,17 @@ export default {
           state.opened.splice(i, 1)
         }
       }
-      // 持久化
+      // Persistance
       await dispatch('opened2db')
-      // 设置当前的页面
+      // Définir la page courante
       state.current = pageAim
       if (router.app.$route.fullPath !== pageAim) await router.push(pageAim)
     },
     /**
      * @class opened
-     * @description 关闭当前标签右边的标签
+     * @description Fermer les onglets à droite de l'onglet courant
      * @param {Object} context
-     * @param {Object} payload { pageSelect: 当前选中的tagName }
+     * @param {Object} payload { pageSelect: actuellement sélectionnétagName }
      */
     async closeRight ({ state, commit, dispatch }, { pageSelect } = {}) {
       const pageAim = pageSelect || state.current
@@ -259,7 +259,7 @@ export default {
       state.opened.forEach((page, index) => {
         if (page.fullPath === pageAim) currentIndex = index
       })
-      // 删除打开的页面 并在缓存设置中删除
+      // Supprimer la page ouverte (et dans les paramètres de cache)
       for (let i = state.opened.length - 1; i >= 0; i--) {
         if (state.opened[i].name === 'index' || currentIndex >= i) {
           continue
@@ -268,17 +268,17 @@ export default {
         commit('keepAliveRemove', state.opened[i].name)
         state.opened.splice(i, 1)
       }
-      // 持久化
+      // Persistance
       await dispatch('opened2db')
-      // 设置当前的页面
+      // Définir la page courante
       state.current = pageAim
       if (router.app.$route.fullPath !== pageAim) await router.push(pageAim)
     },
     /**
      * @class opened
-     * @description 关闭当前激活之外的 tag
+     * @description Fermer tout sauf l'onglet actif tag
      * @param {Object} context
-     * @param {Object} payload { pageSelect: 当前选中的tagName }
+     * @param {Object} payload { pageSelect: actuellement sélectionnétagName }
      */
     async closeOther ({ state, commit, dispatch }, { pageSelect } = {}) {
       const pageAim = pageSelect || state.current
@@ -286,7 +286,7 @@ export default {
       state.opened.forEach((page, index) => {
         if (page.fullPath === pageAim) currentIndex = index
       })
-      // 删除打开的页面数据 并更新缓存设置
+      // Supprimer les données de la page fermée et mettre à jour le cache
       for (let i = state.opened.length - 1; i >= 0; i--) {
         if (state.opened[i].name === 'index' || currentIndex === i) {
           continue
@@ -295,19 +295,19 @@ export default {
         commit('keepAliveRemove', state.opened[i].name)
         state.opened.splice(i, 1)
       }
-      // 持久化
+      // Persistance
       await dispatch('opened2db')
-      // 设置新的页面
+      // Définir la nouvelle page
       state.current = pageAim
       if (router.app.$route.fullPath !== pageAim) await router.push(pageAim)
     },
     /**
      * @class opened
-     * @description 关闭所有 tag
+     * @description Tout fermer tag
      * @param {Object} context
      */
     async closeAll ({ state, commit, dispatch }) {
-      // 删除打开的页面 并在缓存设置中删除
+      // Supprimer la page ouverte (et dans les paramètres de cache)
       for (let i = state.opened.length - 1; i >= 0; i--) {
         if (state.opened[i].name === 'index') {
           continue
@@ -316,9 +316,9 @@ export default {
         commit('keepAliveRemove', state.opened[i].name)
         state.opened.splice(i, 1)
       }
-      // 持久化
+      // Persistance
       await dispatch('opened2db')
-      // 关闭所有的标签页后需要判断一次现在是不是在首页
+      // Après avoir fermé tous les onglets, vérifier si on est sur la page d'accueil
       if (router.app.$route.name !== 'index') {
         await router.push({ name: 'index' })
       }
@@ -327,14 +327,14 @@ export default {
   mutations: {
     /**
      * @class keepAlive
-     * @description 从已经打开的页面记录中更新需要缓存的页面记录
+     * @description Mettre à jour les pages à mettre en cache à partir des pages déjà ouvertes
      * @param {Object} state state
      */
     keepAliveRefresh (state) {
       state.keepAlive = state.opened.filter(item => isKeepAlive(item)).map(e => e.name)
     },
     /**
-     * @description 删除一个页面的缓存设置
+     * @description Supprimer le paramétrage de cache d'une page
      * @param {Object} state state
      * @param {String} name name
      */
@@ -347,7 +347,7 @@ export default {
       }
     },
     /**
-     * @description 增加一个页面的缓存设置
+     * @description Ajouter le paramétrage de cache d'une page
      * @param {Object} state state
      * @param {String} name name
      */
@@ -357,7 +357,7 @@ export default {
       state.keepAlive = uniq(keep)
     },
     /**
-     * @description 清空页面缓存设置
+     * @description Vider les paramètres de cache des pages
      * @param {Object} state state
      */
     keepAliveClean (state) {
@@ -365,7 +365,7 @@ export default {
     },
     /**
      * @class current
-     * @description 设置当前激活的页面 fullPath
+     * @description Définir la page actuellement active fullPath
      * @param {Object} state state
      * @param {String} fullPath new fullPath
      */
@@ -374,7 +374,7 @@ export default {
     },
     /**
      * @class pool
-     * @description 保存 pool (候选池)
+     * @description Enregistrer pool (réserve de candidats)
      * @param {Object} state state
      * @param {Array} routes routes
      */

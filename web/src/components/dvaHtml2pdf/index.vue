@@ -55,20 +55,20 @@ export default {
     VueHtml2pdf
   },
   props: {
-    filename: { // 导出pdf文件名称
+    filename: { // Nom du fichier PDF exporté
       type: String,
       require: true
     },
-    company: { // 企业名称
+    company: { // Nom de l'entreprise
       type: String,
       default: 'xxx '
     },
-    // 是否显示下载按钮
+    // Indique s'il faut afficher le bouton de téléchargement
     downloadButtonShow: {
       type: Boolean,
       default: true
     },
-    // 下载按钮样式
+    // Style du bouton de téléchargement
     downloadButtonStyle: {
       type: Object,
       default () {
@@ -77,17 +77,17 @@ export default {
         }
       }
     },
-    // 下载按钮标题
+    // Titre du bouton de téléchargement
     downloadButtonTitle: {
       type: String,
       default: 'Télécharger le rapport'
     },
-    // 是否显示预览按钮
+    // Indique s'il faut afficher le bouton d'aperçu
     previewButtonShow: {
       type: Boolean,
       default: true
     },
-    // 预览按钮样式
+    // Style du bouton d'aperçu
     previewButtonStyle: {
       type: Object,
       default () {
@@ -96,7 +96,7 @@ export default {
         }
       }
     },
-    // 预览按钮标题
+    // Titre du bouton d'aperçu
     previewButtonTitle: {
       type: String,
       default: 'Aperçu du rapport'

@@ -4,11 +4,11 @@
     :style="styleLayoutMainGroup"
     :class="{ grayMode: grayActive }"
   >
-    <!-- 半透明遮罩 -->
+    <!-- Masque semi-transparent -->
     <div class="d2-layout-header-aside-mask"></div>
-    <!-- 主体内容 -->
+    <!-- Contenu principal -->
     <div class="d2-layout-header-aside-content" flex="dir:top">
-      <!-- 顶栏 -->
+      <!-- Barre supérieure -->
       <div
         class="d2-theme-header"
         :style="{ opacity: this.searchActive ? 0.5 : 1 }"
@@ -34,9 +34,9 @@
           <d2-icon name="bars" />
         </div>
         <d2-menu-header flex-box="1" />
-        <!-- 顶栏右侧 -->
+        <!-- Côté droit de la barre supérieure -->
         <div class="d2-header-right" flex-box="0">
-          <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
+          <!-- Pour n'afficher ce bouton qu'en développement, ajouter v-if="$env === 'development'" -->
           <d2-header-search @click="handleSearchClick" />
           <d2-header-log />
           <d2-header-fullscreen />
@@ -48,9 +48,9 @@
           <d2-header-user />
         </div>
       </div>
-      <!-- 下面 主体 -->
+      <!-- Ci-dessous, zone principale Zone principale -->
       <div class="d2-theme-container" flex-box="1" flex>
-        <!-- 主体 侧边栏 -->
+        <!-- Zone principale + barre latérale -->
         <div
           flex-box="0"
           ref="aside"
@@ -65,15 +65,15 @@
         >
           <d2-menu-side />
         </div>
-        <!-- 主体 -->
+        <!-- Zone principale -->
         <div class="d2-theme-container-main" flex-box="1" flex>
-          <!-- 搜索 -->
+          <!-- Recherche -->
           <transition name="fade-scale">
             <div v-if="searchActive" class="d2-theme-container-main-layer" flex>
               <d2-panel-search ref="panelSearch" @close="searchPanelClose" />
             </div>
           </transition>
-          <!-- 内容 -->
+          <!-- Contenu -->
           <transition name="fade-scale">
             <div
               v-if="!searchActive"
@@ -84,7 +84,7 @@
               <div class="d2-theme-container-main-header" flex-box="0">
                 <d2-tabs />
               </div>
-              <!-- 页面 -->
+              <!-- Page -->
               <div class="d2-theme-container-main-body" flex-box="1">
                 <transition :name="transitionActive ? 'fade-transverse' : ''">
                   <keep-alive :include="keepAlive" v-if="showView">
@@ -139,11 +139,11 @@ export default {
   },
   data () {
     return {
-      // [侧边栏宽度] 正常状态
+      // [Largeur de la barre latérale] état normal
       asideWidth: '200px',
-      // [侧边栏宽度] 折叠状态
+      // [Largeur de la barre latérale] état replié
       asideWidthCollapse: '65px',
-      showView: true // 用于点击当前页的router时，刷新当前页
+      showView: true // Pour actualiser la page au clic sur sa route
     }
   },
   computed: {
@@ -158,16 +158,16 @@ export default {
       themeActiveSetting: 'theme/activeSetting'
     }),
     /**
-     * @description 用来实现带参路由的缓存
+     * @description Permettre la mise en cache des routes avec paramètres
      */
     routerViewKey () {
-      // 默认情况下 key 类似 __transition-n-/foo
-      // 这里的字符串操作是为了最终 key 的格式和原来相同 类似 __transition-n-__stamp-time-/foo
+      // Par défaut, la key ressemble à __transition-n-/foo key  __transition-n-/foo
+      // Cette manipulation garantit le même format final de key (ex. __transition-n-__stamp-time-/foo) key   __transition-n-__stamp-time-/foo
       const stamp = this.$route.meta[`__stamp-${this.$route.fullPath}`] || ''
       return `${stamp ? `__stamp-${stamp}-` : ''}${this.$route.fullPath}`
     },
     /**
-     * @description 最外层容器的背景图片样式
+     * @description Style d'image de fond du conteneur le plus externe
      */
     styleLayoutMainGroup () {
       return this.themeActiveSetting.backgroundImage
@@ -180,18 +180,18 @@ export default {
   methods: {
     ...mapActions('d2admin/menu', ['asideCollapseToggle']),
     /**
-     * 接收点击切换侧边栏的按钮
+     * Recevoir le clic sur le bouton de bascule de la barre latérale
      */
     handleToggleAside () {
       this.asideCollapseToggle()
     },
     /**
-     * 刷新页面
+     * Actualiser la page
      */
     refreshView () {
-      this.showView = false // 通过v-if移除router-view节点
+      this.showView = false // Retirer le nœud router-view via v-if
       this.$nextTick(() => {
-        this.showView = true // DOM更新后再通过v-if添加router-view节点
+        this.showView = true // Puis rajouter le nœud router-view via v-if après mise à jour du DOM
       })
     }
   },
@@ -199,14 +199,14 @@ export default {
     this.$websocket.initWebSocket()
   },
   destroyed () {
-    // 离开路由之后断开websocket连接
+    // Couper la connexion websocket en quittant la routewebsocket
     this.$websocket.closeWebsocket()
   }
 }
 </script>
 
 <style lang="scss">
-// 注册主题
+// Enregistrer le thème
 @import "~@/assets/style/theme/register.scss";
 
 @-webkit-keyframes bgp {

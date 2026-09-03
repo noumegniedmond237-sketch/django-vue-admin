@@ -8,16 +8,16 @@ export default {
       component: { props: { height: 100, width: 100 } }
     },
     align: 'center',
-    // 提交时,处理数据
+    // Au moment de la soumission, traiter les données
     valueResolve (row, col) {
       const value = row[col.key]
       if (value != null) {
         if (value.length >= 0) {
           if (value instanceof Array) {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.map(str => str.replace(util.baseURL(), '')).toString()
           } else {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.replace(util.baseURL(), '')
           }
         } else {
@@ -25,12 +25,12 @@ export default {
         }
       }
     },
-    // 接收时,处理数据
+    // Au moment de la réception, traiter les données
     valueBuilder (row, col) {
       const value = row[col.key]
       if (value != null && value) {
         row[col.key] = value.split(',')
-        // 进行组装地址，纠正地址
+        // Assembler et corriger l'adresse,
         row[col.key].map((val, index) => {
           if (val.startsWith('/api')) {
             row[col.key][index] = val
@@ -50,16 +50,16 @@ export default {
       component: { props: { height: 100, width: 100 } }
     },
     align: 'center',
-    // 提交时,处理数据
+    // Au moment de la soumission, traiter les données
     valueResolve (row, col) {
       const value = row[col.key]
       if (value != null) {
         if (value.length >= 0) {
           if (value instanceof Array) {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.map(str => str.replace(util.baseURL(), '')).toString()
           } else {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.replace(util.baseURL(), '')
           }
         } else {
@@ -67,12 +67,12 @@ export default {
         }
       }
     },
-    // 接收时,处理数据
+    // Au moment de la réception, traiter les données
     valueBuilder (row, col) {
       const value = row[col.key]
       if (value != null && value) {
         row[col.key] = value.split(',')
-        // 进行组装地址，纠正地址
+        // Assembler et corriger l'adresse,
         row[col.key].map((val, index) => {
           if (val.startsWith('/api')) {
             row[col.key][index] = val
@@ -92,16 +92,16 @@ export default {
       component: { props: { height: 100, width: 100 } }
     },
     align: 'center',
-    // 提交时,处理数据
+    // Au moment de la soumission, traiter les données
     valueResolve (row, col) {
       const value = row[col.key]
       if (value != null) {
         if (value.length >= 0) {
           if (value instanceof Array) {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.map(str => str.replace(util.baseURL(), '')).toString()
           } else {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.replace(util.baseURL(), '')
           }
         } else {
@@ -109,12 +109,12 @@ export default {
         }
       }
     },
-    // 接收时,处理数据
+    // Au moment de la réception, traiter les données
     valueBuilder (row, col) {
       const value = row[col.key]
       if (value != null && value) {
         row[col.key] = value.split(',')
-        // 进行组装地址，纠正地址
+        // Assembler et corriger l'adresse,
         row[col.key].map((val, index) => {
           if (val.startsWith('/api')) {
             row[col.key][index] = val
@@ -130,16 +130,16 @@ export default {
   'file-uploader': {
     form: { component: { name: 'd2p-file-uploader', props: { elProps: { listType: 'text' } } } },
     component: { name: 'd2p-files-format' },
-    // 提交时,处理数据
+    // Au moment de la soumission, traiter les données
     valueResolve (row, col) {
       const value = row[col.key]
       if (value != null) {
         if (value.length >= 0) {
           if (value instanceof Array) {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.map(str => str.replace(util.baseURL(), '')).toString()
           } else {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.replace(util.baseURL(), '')
           }
         } else {
@@ -147,12 +147,12 @@ export default {
         }
       }
     },
-    // 接收时,处理数据
+    // Au moment de la réception, traiter les données
     valueBuilder (row, col) {
       const value = row[col.key]
       if (value != null && value) {
         row[col.key] = value.split(',')
-        // 进行组装地址，纠正地址
+        // Assembler et corriger l'adresse,
         row[col.key].map((val, index) => {
           if (val.startsWith('/api')) {
             row[col.key][index] = val
@@ -172,16 +172,16 @@ export default {
     view: {
       component: { props: { height: 100, width: 100 } }
     },
-    // 提交时,处理数据
+    // Au moment de la soumission, traiter les données
     valueResolve (row, col) {
       const value = row[col.key]
       if (value != null) {
         if (value.length >= 0) {
           if (value instanceof Array) {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.map(str => str.replace(util.baseURL(), '')).toString()
           } else {
-            // 剔除前缀
+            // Retirer le préfixe
             row[col.key] = value.replace(util.baseURL(), '')
           }
         } else {
@@ -189,12 +189,12 @@ export default {
         }
       }
     },
-    // 接收时,处理数据
+    // Au moment de la réception, traiter les données
     valueBuilder (row, col) {
       const value = row[col.key]
       if (value != null && value) {
         row[col.key] = value.split(',')
-        // 进行组装地址，纠正地址
+        // Assembler et corriger l'adresse,
         row[col.key].map((val, index) => {
           if (val.startsWith('/api')) {
             row[col.key][index] = val
@@ -245,23 +245,25 @@ export default {
           config: {
             serverUrl: util.baseURL() + 'api/system/file/ueditor/',
             headers: { Authorization: 'JWT ' + util.cookies.get('token') },
+            // Pack de langue français (web/public/lib/UEditor/lang/fr/fr.js)
+            lang: 'fr',
             imageUrlPrefix: util.baseFileURL(),
-            // 涂鸦图片上传
+            // Téléversement d'image gribouillée
             scrawlUrlPrefix: util.baseFileURL(),
-            // 截图工具上传
+            // Téléversement via l'outil de capture
             snapscreenUrlPrefix: util.baseFileURL(),
-            // 抓取远程图片路径前缀
+            // Préfixe de chemin pour les images distantes
             catcherUrlPrefix: util.baseFileURL(),
-            // 视频访问路径前缀
+            // Préfixe du chemin d'accès aux vidéos
             videoUrlPrefix: util.baseFileURL(),
-            // 文件访问路径前缀
+            // Préfixe du chemin d'accès aux fichiers
             fileUrlPrefix: util.baseFileURL(),
-            // 列出指定目录下的图片
+            // Lister les images du répertoire indiqué
             imageManagerUrlPrefix: util.baseFileURL(),
-            // 列出指定目录下的文件
+            // Lister les fichiers du répertoire indiqué
             fileManagerUrlPrefix: util.baseFileURL()
-            // 传入ueditor的配置
-            // 文档参考： http://fex.baidu.com/ueditor/#start-config
+            // Transmettre la configuration à ueditor
+            // Référence de la documentation: http://fex.baidu.com/ueditor/#start-config
           }
         }
       }

@@ -10,7 +10,7 @@ from dvadmin.utils.viewset import CustomModelViewSet
 
 class AreaSerializer(CustomModelSerializer):
     """
-    地区-序列化器
+    Sérialiseur de région
     """
     pcode_count = serializers.SerializerMethodField(read_only=True)
 
@@ -25,7 +25,7 @@ class AreaSerializer(CustomModelSerializer):
 
 class AreaCreateUpdateSerializer(CustomModelSerializer):
     """
-    地区管理 创建/更新时的列化器
+    Sérialiseur de création / mise à jour de la gestion des régions
     """
 
     class Meta:
@@ -35,12 +35,12 @@ class AreaCreateUpdateSerializer(CustomModelSerializer):
 
 class AreaViewSet(CustomModelViewSet):
     """
-    地区管理接口
-    list:查询
-    create:新增
-    update:修改
-    retrieve:单例
-    destroy:删除
+    Interface de gestion des régions
+    list:Rechercher
+    create:Créer
+    update:Modifier
+    retrieve:Détail
+    destroy:Supprimer
     """
     queryset = Area.objects.all()
     serializer_class = AreaSerializer

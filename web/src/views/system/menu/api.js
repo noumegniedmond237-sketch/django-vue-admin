@@ -1,17 +1,17 @@
 /*
- * @创建文件时间: 2021-06-01 22:41:21
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-07-29 19:23:33
- * 联系Qq:1638245306
- * @文件介绍: 菜单管理接口
+ * @date-de-creation: 2021-06-01 22:41:21
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-07-29 19:23:33
+ * Contact QQ : 1638245306
+ * @description-fichier: API de gestion des menus
  */
 import { request } from '@/api/service'
 
 export const urlPrefix = '/api/system/menu/'
 
 /**
- * 列表查询
+ * Recherche dans la liste
  */
 export function GetList (query) {
   return request({
@@ -19,13 +19,13 @@ export function GetList (query) {
     method: 'get',
     params: { ...query }
   }).then(res => {
-    // 将列表数据转换为树形数据
+    // Convertir la liste en données arborescentes
     return res
   })
 }
 
 /**
- * 新增
+ * Ajouter
  */
 export function createObj (obj) {
   return request({
@@ -36,7 +36,7 @@ export function createObj (obj) {
 }
 
 /**
- * 修改
+ * Modifier
  */
 export function UpdateObj (obj) {
   return request({
@@ -47,7 +47,7 @@ export function UpdateObj (obj) {
 }
 
 /**
- * 删除
+ * Supprimer
  */
 export function DelObj (id) {
   return request({

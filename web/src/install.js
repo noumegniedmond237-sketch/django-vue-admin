@@ -8,9 +8,9 @@ import {
   D2pFullEditor,
   D2pIconSelector,
   D2pUploader
-} from 'd2p-extends' // 源码方式引入，上传组件支持懒加载
+} from 'd2p-extends' // Import via le code source (le composant de téléversement supporte le chargement différé),
 import D2pFileUploader from '@/components/file-uploader'
-// http请求
+// Requête HTTP
 import { request } from '@/api/service'
 import util from '@/libs/util'
 import XEUtils from 'xe-utils'
@@ -26,24 +26,24 @@ import { checkPlugins, plugins } from '@/views/plugins'
  Vue.use(VXETable)
  **/
 
-// 按如下重命名引入可与官方版共存，index.vue中标签用<d2-crud-x />使用加强版
-// 不传name，则d2CrudX的标签仍为<d2-crud>,不可与官方版共存
+// Renommer comme suit pour coexister avec la version officielle (utiliser <d2-crud-x /> dans index.vue),index.vue<d2-crud-x />
+// Sans accessKeySecret : mode signature temporaire (ce paramètre est alors obligatoire ; sûr, recommandé en production)name,alorsd2CrudX<d2-crud>,
 Vue.use(d2CrudX, { name: 'd2-crud-x' })
-// 注册dvadmin插件
+// Enregistrer le plugin dvadmin
 Vue.use(plugins)
-// // 官方版【此处为演示与官方版共存而引入，全新项目中可以用d2-crud-x完全替代官方版】
+// // version officielle[introduit ici pour démontrer la coexistence avec la version officielle,dans un nouveau projet, on peut remplacer entièrement la version officielle pard2-crud-x]
 // Vue.use(d2Crud)
 /**
- * @description 校验插件是否安装
- * @param {String} pluginName 插件名称
+ * @description Vérifier si le plugin est installé
+ * @param {String} pluginName nom du plugin
  */
 Vue.prototype.checkPlugins = checkPlugins
-// 引入d2CrudPlus
+// Importer d2CrudPlusd2CrudPlus
 Vue.use(d2CrudPlus, {
   starTip: false,
   getRemoteDictFunc (url, dict) {
-    // 此处配置你的字典http请求方法
-    // 实际使用请改成request
+    // Configurer ici la méthode de requête HTTP du dictionnairehttp
+    // En utilisation réelle, remplacer par requestrequest
     return request({
       url: url,
       params: dict.body,
@@ -56,10 +56,10 @@ Vue.use(d2CrudPlus, {
       }
     })
   },
-  commonOption () { // 公共配置
+  commonOption () { // Configuration commune
     return {
       format: {
-        page: { // page接口返回的数据结构配置，
+        page: { // pageConfiguration de la structure des données retournées par l'API page,
           request: {
             current: 'page',
             size: 'limit',
@@ -73,11 +73,11 @@ Vue.use(d2CrudPlus, {
             }
           },
           response: {
-            current: 'page', // 当前页码 ret.data.current
-            size: 'limit', // 当前页码 ret.data.current
-            // size: (data) => { return data.size }, // 每页条数，ret.data.size, 你也可以配置一个方法，自定义返回
-            total: 'total', // 总记录数 ret.data.total
-            records: 'data' // 列表数组 ret.data.records
+            current: 'page', // Numéro de page courant ret.data.current
+            size: 'limit', // Numéro de page courant ret.data.current
+            // size: (data) => { return data.size }, // nombre d'éléments par page (ret.data.size ; on peut aussi configurer une méthode qui retourne la valeur),ret.data.size, ,
+            total: 'total', // Nombre total d'enregistrements ret.data.total
+            records: 'data' // Tableau de la liste ret.data.records
           }
         }
       },
@@ -88,15 +88,15 @@ Vue.use(d2CrudPlus, {
         size: 'small'
       },
       formOptions: {
-        nullToBlankStr: true, // 提交修改表单时，将undefinded的数据修改为空字符串''，可以解决无法清空字段的问题
-        defaultSpan: 12, // 默认的表单 span
+        nullToBlankStr: true, // À la soumission, convertir les données undefined en chaîne vide (permet de vider un champ),'',
+        defaultSpan: 12, // Span de formulaire par défaut span
         saveRemind: true,
         labelWidth: '110px',
         appendToBody: true
       },
       viewOptions: {
         disabled: false,
-        componentType: 'form' // 【form,row】 表单组件 或 行组件展示
+        componentType: 'form' // [form,row] : affichage par composant de formulaire ou de ligne
       },
       rowHandle: {
         width: 260,
@@ -108,7 +108,7 @@ Vue.use(d2CrudPlus, {
   }
 })
 
-// 安装扩展插件
+// Installer le plugin d'extension
 // Vue.use(D2pTreeSelector)
 Vue.use(D2pAreaSelector)
 Vue.use(D2pIconSelector)
@@ -122,18 +122,18 @@ Vue.use(D2pUploader, {
     bucket: 'd2p-demo-1251260344',
     region: 'ap-guangzhou',
     secretId: '', //
-    secretKey: '', // 传了secretKey 和secretId 代表使用本地签名模式（不安全，生产环境不推荐）
-    getAuthorization (custom) { // 不传secretKey代表使用临时签名模式,此时此参数必传（安全，生产环境推荐）
+    secretKey: '', // Avec secretKey et secretId : mode signature locale (non sûr, déconseillé en production)
+    getAuthorization (custom) { // Sans secretKey : mode signature temporaire (ce paramètre est alors obligatoire)(,)
       return request({
         url: '/upload/cos/getAuthorization',
         method: 'get'
       }).then(ret => {
-        // 返回结构如下
+        // Structure retournée ci-dessous
         // ret.data:{
         //   TmpSecretId,
         //   TmpSecretKey,
         //   XCosSecurityToken,
-        //   ExpiredTime, // SDK 在 ExpiredTime 时间前，不会再次调用 getAuthorization
+        //   ExpiredTime, // SDK Dans ExpiredTime avant ce délai, getAuthorization ne sera plus rappelé, getAuthorization
         // }
         return ret.data
       })
@@ -145,7 +145,7 @@ Vue.use(D2pUploader, {
     region: 'oss-cn-shenzhen',
     accessKeyId: '',
     accessKeySecret: '',
-    getAuthorization (custom, context) { // 不传accessKeySecret代表使用临时签名模式,此时此参数必传（安全，生产环境推荐）
+    getAuthorization (custom, context) { // Sans accessKeySecret : mode signature temporaire (ce paramètre est alors obligatoire)(,)
       return request({
         url: '/upload/alioss/getAuthorization',
         method: 'get'
@@ -153,8 +153,8 @@ Vue.use(D2pUploader, {
         return ret.data
       })
     },
-    sdkOpts: { // sdk配置
-      secure: true // 默认为非https上传,为了安全，设置为true
+    sdkOpts: { // sdkConfiguration du SDK
+      secure: true // Par défaut sans https ; pour la sécurité, mettre à true
     }
   },
   qiniu: {
@@ -172,7 +172,7 @@ Vue.use(D2pUploader, {
   form: {
     action: util.baseURL() + 'api/system/file/',
     name: 'file',
-    data: {}, // 上传附加参数
+    data: {}, // Paramètres supplémentaires de téléversement
     headers () {
       return {
         Authorization: 'JWT ' + util.cookies.get('token')
@@ -185,18 +185,18 @@ Vue.use(D2pUploader, {
       }
       return { url: ret.data.url, key: option.data.key, id: ret.data.id }
     },
-    withCredentials: false // 是否带cookie
+    withCredentials: false // Indique s'il faut joindre les cookies
   }
 })
 d2CrudPlus.util.columnResolve.addTypes(types)
-// 修改官方字段类型
+// Modifier le type de champ officiel
 const selectType = d2CrudPlus.util.columnResolve.getType('select')
-selectType.component.props.color = 'auto' // 修改官方的字段类型，设置为支持自动染色
-// 获取字典配置
+selectType.component.props.color = 'auto' // Modifier le type de champ officiel (coloration automatique),
+// Obtenir la configuration du dictionnaire
 Vue.prototype.dictionary = function (name) {
   return store.state.d2admin.dictionary.data[name]
 }
-// 获取字典label值
+// Obtenir la valeur de libellé du dictionnaire
 Vue.prototype.getDictionaryLabel = function (name, value) {
   const data = store.state.d2admin.dictionary.data[name]
   if (data && data instanceof Array) {
@@ -209,11 +209,11 @@ Vue.prototype.getDictionaryLabel = function (name, value) {
   }
   return store.state.d2admin.dictionary.data[name]
 }
-// 获取系统配置
+// Obtenir la configuration système
 Vue.prototype.systemConfig = function (name) {
   return store.state.d2admin.settings.data[name]
 }
-// 默认Columns 结尾 showForm：显示在form中，showTable：显示在table中
+// Colonnes par défaut : showForm = afficher dans le formulaire, showTable = afficher dans le tableauColumns  showForm:,showTable:
 Vue.prototype.commonEndColumns = function (param = {}) {
   /**
    * @param {Object} {

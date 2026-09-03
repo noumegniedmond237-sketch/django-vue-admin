@@ -22,7 +22,7 @@ application = ProtocolTypeRouter({
     "http":http_application,
     'websocket': AuthMiddlewareStack(
         URLRouter(
-            websocket_urlpatterns #指明路由文件是devops/routing.py
+            websocket_urlpatterns #indique que le fichier de routage est devops/routing.py
         )
     ),
 })

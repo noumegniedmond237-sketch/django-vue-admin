@@ -77,71 +77,71 @@ import lodash from 'lodash'
 import { d2CrudPlus } from 'd2-crud-plus'
 import log from 'd2p-extends/src/utils/util.log'
 import util from '@/libs/util'
-// 文件上传组件,依赖D2pUploader
+// Composant de téléversement de fichiers (dépend de D2pUploader),dépend deD2pUploader
 export default {
   name: 'd2p-file-uploader',
   mixins: [d2CrudPlus.inputBase],
   props: {
-    // 选择文件按钮的大小
+    // Taille du bouton de sélection de fichier
     btnSize: { default: 'small' },
-    // 选择文件按钮的名称
+    // Nom du bouton de sélection de fichier
     btnName: { default: 'Choisir un fichier' },
-    // 可选哪些类型的文件
+    // Types de fichiers autorisés
     accept: {},
-    // 上传后端类型，[cos,qiniu,alioss,form]
+    // Type de backend de téléversement,[cos,qiniu,alioss,form]
     type: {
       type: String,
-      default: undefined // 上传类型：form cos qiniu  alioss
+      default: undefined // Type de téléversement : form, cos, qiniu, alioss:form cos qiniu  alioss
     },
-    // 值：url<br/>
-    // 或 [url1,url2]<br/>
-    // 或 {url:'url',md5:'',size:number}<br/>
-    // 或 [{url:'url',md5:'',size:number}]<br/>
+    // Valeur:url<br/>
+    // ou [url1,url2]<br/>
+    // ou {url:'url',md5:'',size:number}<br/>
+    // ou [{url:'url',md5:'',size:number}]<br/>
     // <br/>
-    // limit=1 时 input事件返回 {url:'url',md5:'',size:number}<br/>
-    // limit>1 时 input事件返回 数组<br/>
+    // Avec limit=1, l'événement input retourne {url:'url',md5:'',size:number}<br/>
+    // Avec limit>1, l'événement input retourne un tableau<br/>
     value: {
       type: [String, Array, Object]
     },
-    // 样式后缀 追加到url的后面，进行图片处理，需要到对象存储平台配置样式
+    // Suffixe de style ajouté à l'URL pour le traitement d'image (à configurer sur la plateforme de stockage)
     suffix: {
       type: String,
       required: false
     },
-    // 返回类型: url=仅返回链接, object=包含md5和size , key=仅返回文件key
+    // Type de retour : url = lien seul, object = avec md5 et size, key = clé du fichier seule: url = lien seul, object = avec md5 et size, key = clé du fichier seule
     returnType: {
       type: String,
       default: 'url'
     },
-    // 自定义参数
+    // Paramètres personnalisés
     custom: {
       type: Object
     },
-    // 内部封装[el-upload](https://element.eleme.cn/#/zh-CN/component/upload)组件的属性参数<br/>
-    // 注意，form方式上传的action、name、headers等参数不在此设置
+    // Encapsule en interne les paramètres du composant[el-upload](https://element.eleme.cn/#/zh-CN/component/upload)<br/>
+    // Attention : les paramètres action, name, headers du téléversement par formulaire ne se configurent pas ici
     elProps: {
       type: Object
     },
-    // 预览对话框的配置
+    // Configuration de la boîte de dialogue d'aperçu
     preview: {
       type: Object
     },
-    // 文件大小限制 <br/>
-    // 如果传入{limit,tip(fileSize,limit){vm.$message('可以自定义提示')}}
+    // Limite de taille de fichier <br/>
+    // Si on transmet{limit,tip(fileSize,limit){vm.$message('message personnalisable')}}
     sizeLimit: {
       type: Number, Object
     },
-    // 构建下载url方法
+    // Méthode de construction de l'URL de téléchargementurl
     buildUrl: {
       type: Function,
       default: function (value, item) { return (typeof value === 'object') ? item.url : value }
     },
-    // 上传组件参数，会临时覆盖全局上传配置参数[d2p-uploader](/guide/extends/uploader.html)
+    // Paramètres du composant de téléversement (remplacent temporairement la config globale),[d2p-uploader](/guide/extends/uploader.html)
     uploader: {
       type: Object,
       default () { return {} }
     },
-    // 与el-upload一致
+    // Identique à el-upload
     beforeUpload: {
       type: Function
     }
@@ -250,7 +250,7 @@ export default {
             showMessage = this.sizeLimit.tip
           }
           if (file.size > limit) {
-            log.debug('文件大小超过限制：', file.size)
+            log.debug('Taille du fichier supérieure à la limite:', file.size)
             showMessage(file.size, limit)
             return false
           }
@@ -335,7 +335,7 @@ export default {
       const list = []
       for (const item of fileList) {
         // if (item.status === 'uploading') {
-        //   log.debug('当前文件上传完成，等待剩下的文件全部上传成功后再更新value')
+        //   log.debug('Téléversement du fichier courant terminé (attendre que tous les fichiers soient téléversés avant de mettre à jour value)')
         //   return
         // }
         if (item.url.indexOf('http') !== 0 && item.url.indexOf('https') !== 0 && item.url.indexOf(this.baseURL) !== 0) {
@@ -379,7 +379,7 @@ export default {
     removeAvatar ($event) {
       $event.stopPropagation()
       this.resetFileList([])
-      this.emit() // 返回undefined，相当于清空已有的值
+      this.emit() // Retourne undefined (équivaut à vider la valeur),
     },
     emit (res, list) {
       if (this._elProps.limit === 1) {
@@ -413,7 +413,7 @@ export default {
         this.doUpload(option),
         this.computeMd5(option.file)
       ]).then((ret) => {
-        // 得到组合结果， size，md5
+        // Obtenir le résultat combiné (size, md5), size,md5
         const result = ret[0]
         result.md5 = ret[1]
         option.onSuccess(result)
@@ -457,7 +457,7 @@ export default {
       })
     },
     onExceed (files, fileList) {
-      log.debug('文件数量超出限制')
+      log.debug('Nombre de fichiers supérieur à la limite')
       if (this._elProps.limit === 1) {
         this.clearFiles()
         this.$refs.fileUploader.handleStart(files[0])

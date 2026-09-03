@@ -1,4 +1,4 @@
-// 组件
+// Composant
 import d2ContainerFull from './components/d2-container-full.vue'
 import d2ContainerFullBs from './components/d2-container-full-bs.vue'
 import d2ContainerGhost from './components/d2-container-ghost.vue'
@@ -10,13 +10,13 @@ import d2Source from './components/d2-source.vue'
 export default {
   name: 'd2-container',
   props: {
-    // 容器样式
+    // Style du conteneur
     type: {
       type: String,
       required: false,
       default: 'full'
     },
-    // 滚动优化
+    // optimisation du défilement
     betterScroll: {
       type: Boolean,
       required: false,
@@ -24,7 +24,7 @@ export default {
     }
   },
   computed: {
-    // 始终返回渲染组件
+    // Toujours retourner le composant de rendu
     component () {
       if (this.type === 'card' && !this.betterScroll) return d2ContainerCard
       if (this.type === 'card' && this.betterScroll) return d2ContainerCardBs
@@ -56,46 +56,46 @@ export default {
     </div>
   },
   methods: {
-    // 返回顶部
+    // Retour en haut
     scrollToTop () {
       this.$refs.component.scrollToTop()
-      // 如果开启了 better scroll 还需要手动触发一遍 scroll 事件
+      // Si better scroll est activé, déclencher manuellement l'événement scroll better scroll  scroll événement
       const bs = this.$refs.component.BS
       if (bs) this.$refs.component.scroll()
     },
-    // 用法同原生方法 scrollBy
+    // Usage identique aux méthodes natives scrollBy / scrollTo / scrollTop scrollBy
     scrollBy (x = 0, y = 0, time = 300) {
       if (this.betterScroll) {
         const bs = this.$refs.component.BS
         if (bs) {
           bs.scrollBy(-x, -y, time)
-          // 手动触发一遍 scroll 事件
+          // Déclencher manuellement l'événement scroll scroll événement
           this.$refs.component.scroll()
         }
       } else {
         this.$refs.component.$refs.body.scrollBy(x, y)
       }
     },
-    // 用法同原生方法 scrollTo
+    // Usage identique aux méthodes natives scrollBy / scrollTo / scrollTop scrollTo
     scrollTo (x = 0, y = 0, time = 300) {
       if (this.betterScroll) {
         const bs = this.$refs.component.BS
         if (bs) {
           bs.scrollTo(-x, -y, time)
-          // 手动触发一遍 scroll 事件
+          // Déclencher manuellement l'événement scroll scroll événement
           this.$refs.component.scroll()
         }
       } else {
         this.$refs.component.$refs.body.scrollTo(x, y)
       }
     },
-    // 用法同原生方法 scrollTop
+    // Usage identique aux méthodes natives scrollBy / scrollTo / scrollTop scrollTop
     scrollTop (top = 0, time = 300) {
       if (this.betterScroll) {
         const bs = this.$refs.component.BS
         if (bs) {
           bs.scrollTo(bs.x, -top, time)
-          // 手动触发一遍 scroll 事件
+          // Déclencher manuellement l'événement scroll scroll événement
           this.$refs.component.scroll()
         }
       } else {

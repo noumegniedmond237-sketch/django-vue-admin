@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/8/21 021 9:48
 @Remark:
@@ -18,7 +18,7 @@ CHAR_SET = ("2", "3", "4", "5",
 
 def random_str(number=16):
     """
-    返回特定长度的随机字符串(非进制)
+    Renvoyer une chaîne aléatoire d'une longueur donnée (non base)
     :return:
     """
     result = ""
@@ -30,14 +30,14 @@ def random_str(number=16):
 
 def has_md5(str, salt='123456'):
     """
-    md5 加密
+    Chiffrement md5
     :param str:
     :param salt:
     :return:
     """
-    # satl是盐值，默认是123456
+    # satl est la valeur de sel, 123456 par défaut
     str = str + salt
-    md = hashlib.md5()  # 构造一个md5对象
+    md = hashlib.md5()  # Construire un objet md5
     md.update(str.encode())
     res = md.hexdigest()
     return res
@@ -45,7 +45,7 @@ def has_md5(str, salt='123456'):
 
 def format_bytes(size, decimals=2):
     """
-    格式化字节大小
+    Formater la taille en octets
     :param size:
     :param decimals:
     :return:

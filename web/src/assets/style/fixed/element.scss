@@ -1,4 +1,4 @@
-// element 样式补丁
+// element Correctif de style
 .el-card {
   &.is-always-shadow {
     box-shadow: 0 0 8px 0 rgba(232,237,250,.6), 0 2px 4px 0 rgba(232,237,250,.5);
@@ -18,13 +18,13 @@
   box-shadow: none !important;
 }
 
-// 修复IE宽度不能撑满
+// Corriger (la largeur ne remplit pas sous IE)IE
 .el-table__body,
 .el-table__header {
   width: 100% !important;
 }
 
-// Chrome下表格头部错位修复
+// Correction du décalage de l'en-tête du tableau sous Chrome
 .el-table th.gutter,
 .el-table colgroup.gutter {
   display: table-cell !important;

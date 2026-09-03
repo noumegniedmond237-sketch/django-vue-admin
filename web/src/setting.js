@@ -1,18 +1,18 @@
 export default {
-  // 快捷键
-  // 支持快捷键 例如 ctrl+shift+s
+  // Raccourcis clavier
+  // Prise en charge des raccourcis ex. ctrl+shift+s
   hotkey: {
     search: {
       open: 's',
       close: 'esc'
     }
   },
-  // 侧边栏默认配置
+  // Configuration par défaut de la barre latérale
   menu: {
     asideCollapse: false,
     asideTransition: true
   },
-  // 在读取持久化数据失败时默认页面
+  // Page par défaut en cas d'échec de lecture des données persistées
   page: {
     opened: [
       {
@@ -25,11 +25,11 @@ export default {
       }
     ]
   },
-  // 菜单搜索
+  // Recherche dans le menu
   search: {
     enable: true
   },
-  // 注册的主题
+  // Thèmes enregistrés
   theme: {
     list: [
       {
@@ -71,7 +71,7 @@ export default {
       }
     ]
   },
-  // 是否默认开启页面切换动画
+  // Indique si l'animation de changement de page est activée par défaut
   transition: {
     active: true
   }

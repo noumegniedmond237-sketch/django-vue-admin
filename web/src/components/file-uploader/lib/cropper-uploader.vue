@@ -44,7 +44,7 @@ import D2pUploader from 'd2p-extends/src/uploader'
 import { d2CrudPlus } from 'd2-crud-plus'
 import log from 'd2p-extends/src/utils/util.log'
 /**
- * 图片裁剪上传组件,封装了d2p-cropper, d2p-cropper内部封装了cropperjs
+ * Composant de rognage et téléversement d'image,encapsuled2p-cropper, d2p-cropperencapsule en internecropperjs
  */
 
 export default {
@@ -54,53 +54,53 @@ export default {
     D2pCropper
   },
   props: {
-    // 初始图片url
+    // Image initialeurl
     value: {
       type: [String, Array]
     },
-    // 上传后端类型，[form, cos, qiniu , alioss]
+    // Type de backend de téléversement,[form, cos, qiniu , alioss]
     type: {
       type: String
     },
-    // 上传提示
+    // Astuce de téléversement
     uploadTip: {
       type: String
     },
-    // 对话框标题
+    // Titre de la boîte de dialogue
     title: String,
-    // cropper的高度，默认为浏览器可视窗口高度的40%，最小270
+    // cropperHauteur (40 % de la hauteur visible par défaut),40%,minimum270
     cropperHeight: {
       type: [String, Number]
     },
-    // 对话框宽度，默认50%
+    // Largeur de la boîte de dialogue,Colonnes par défaut : showForm = afficher dans le formulaire, showTable = afficher dans le tableau50%
     dialogWidth: {
       type: [String, Number],
       default: '50%'
     },
-    // 图片大小限制，单位MB
+    // Limite de taille d'image,en MoMB
     maxSize: {
       type: Number,
       default: 5
     },
-    // 图片数量限制,0为不限制
+    // Limite du nombre d'images,0(0 = illimité)
     limit: {
       type: Number,
       default: 1
     },
-    // 可接收的文件后缀
+    // Suffixes de fichiers acceptés
     accept: {
       type: String,
       default: '.jpg, .jpeg, .png, .gif, .webp'
     },
-    // [cropperjs的参数](https://github.com/fengyuanchen/cropperjs)
+    // [cropperjsParamètres](https://github.com/fengyuanchen/cropperjs)
     cropper: {
       type: Object
     },
-    // 上传参数，会临时覆盖全局上传配置参数[d2p-uploader](/guide/extends/uploader.html)
+    // Paramètres de téléversement (remplacent temporairement la config globale [d2p-uploader]),[d2p-uploader](/guide/extends/uploader.html)
     uploader: {
       type: Object
     },
-    // 构建下载url方法,不影响提交的value
+    // Méthode de construction de l'URL de téléchargementurl,sans affecter la valeur soumisevalue
     buildUrl: {
       type: Function,
       default: function (value, item) { return (typeof value === 'object') ? item.url : value }
@@ -180,7 +180,7 @@ export default {
       const blob = ret.blob
       const dataUrl = ret.dataUrl
       const file = ret.file
-      // 开始上传
+      // Démarrer le téléversement
       const item = {
         url: undefined,
         dataUrl: dataUrl,
@@ -231,7 +231,7 @@ export default {
       const list = []
       for (const item of this.list) {
         if (item.status != null && item.status !== 'done') {
-          // 全部上传完再发通知
+          // Notifier une fois tous les téléversements terminés
           return
         }
         if (typeof (item) === 'string') {

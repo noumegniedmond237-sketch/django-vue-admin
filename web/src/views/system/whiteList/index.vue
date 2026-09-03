@@ -62,7 +62,7 @@ export default {
     delRequest (row) {
       return api.DelObj(row.id)
     },
-    // 跳转到添加按钮界面
+    // Aller à l'écran d'ajout de bouton
     onLinkBtn () {
       this.$router.push({ path: '/button' })
     }

@@ -1,10 +1,10 @@
 /*
- * @创建文件时间: 2021-08-14 17:37:36
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-08-14 21:20:16
- * 联系Qq:1638245306
- * @文件介绍: 文件管理
+ * @date-de-creation: 2021-08-14 17:37:36
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-08-14 21:20:16
+ * Contact QQ : 1638245306
+ * @description-fichier: gestion des fichiers
  */
 
 import { request } from '@/api/service'

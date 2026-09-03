@@ -1,6 +1,6 @@
 <template>
   <d2-container :class="{ 'page-compact': crud.pageOptions.compact }">
-    <!--    <template slot="header">测试页面1</template>-->
+    <!--    <template slot="header">Page de test1</template>-->
     <d2-crud-x ref="d2Crud" v-bind="_crudProps" v-on="_crudListeners">
       <div slot="header">
         <crud-search
@@ -67,7 +67,7 @@ export default {
       this.$store.dispatch('d2admin/dept/load')
       return api.DelObj(row.id)
     },
-    // 授权
+    // Autorisation
     createPermission (scope) {
       this.$router.push({
         name: 'menuButton',

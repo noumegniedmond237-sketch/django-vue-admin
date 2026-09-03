@@ -1,20 +1,20 @@
 /*
- * @创建文件时间: 2021-08-02 23:55:30
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-08-08 12:27:45
- * 联系Qq:1638245306
- * @文件介绍:
+ * @date-de-creation: 2021-08-02 23:55:30
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-08-08 12:27:45
+ * Contact QQ : 1638245306
+ * @description-fichier:
  */
 export default {
-  // 字段类型配置，注册之后即可在crud.js中使用了
+  // Configuration des types de champs (utilisable dans crud.js après enregistrement),crud.js
   'selector-table': {
-    // 表单组件配置
+    // Configuration du composant de formulaire
     form: { component: { name: 'selector-table-input', props: { color: 'danger' } } },
-    // 行组件配置
+    // Configuration du composant de ligne
     component: { name: 'values-format', props: {} },
-    // 行展示时居中
+    // Centrer lors de l'affichage en ligne
     align: 'center'
-    // 您还可以写更多默认配置
+    // Vous pouvez écrire d'autres configurations par défaut
   }
 }

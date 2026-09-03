@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 class PrivacyView(APIView):
     """
-    后台隐私政策
+    Politique de confidentialité du back-office
     """
     permission_classes = []
 
@@ -15,7 +15,7 @@ class PrivacyView(APIView):
 
 class TermsServiceView(APIView):
     """
-    后台服务条款
+    Conditions d'utilisation du back-office
     """
     permission_classes = []
 

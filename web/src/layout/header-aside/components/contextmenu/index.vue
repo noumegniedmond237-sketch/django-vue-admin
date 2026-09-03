@@ -25,7 +25,7 @@ export default {
     flag: {
       get () {
         if (this.visible) {
-          // 注册全局监听事件 [ 目前只考虑鼠标解除触发 ]
+          // Enregistrer l'écouteur global (actuellement seul le relâchement de la souris est géré) [  ]
           window.addEventListener('mousedown', this.watchContextmenu)
         }
         return this.visible
@@ -49,7 +49,7 @@ export default {
     }
   },
   mounted () {
-    // 将菜单放置到body下
+    // Placer le menu sous body
     document.querySelector('body').appendChild(this.$el)
   }
 }

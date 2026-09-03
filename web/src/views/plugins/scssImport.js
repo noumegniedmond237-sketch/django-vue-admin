@@ -2,10 +2,10 @@ const fs = require('fs')
 const path = require('path')
 
 module.exports = () => {
-  // 获取每个插件的scss文件并进行注册
+  // Enregistrer les fichiers scss de chaque plugin
   const pluginsScssPath = []
   let components = []
-  // 遍历 @great-dream/ 目录下的文件
+  // Parcourir les fichiers sous @great-dream/ @great-dream/
   const greatDreamDir = path.resolve('./node_modules/@great-dream')
   if (fs.existsSync(greatDreamDir)) {
     const greatDreamFiles = fs.readdirSync(greatDreamDir)
@@ -17,7 +17,7 @@ module.exports = () => {
     })
   }
 
-  // 遍历 ./src/views/plugins 目录下的文件
+  // Parcourir les fichiers sous ./src/views/plugins
   const pluginsDir = path.resolve('./src/views/plugins')
   if (fs.existsSync(pluginsDir)) {
     const pluginFiles = fs.readdirSync(pluginsDir)
@@ -36,7 +36,7 @@ module.exports = () => {
       const scssPath = directory + key + '/src/index.scss'
       if (fs.existsSync(scssPath)) {
         pluginsScssPath.push('"' + scssPath.replace('./src/views/plugins/', '~@/views/plugins/').replace('./node_modules/@great-dream/', '~@great-dream/') + '"')
-        console.log(`[${key}] scss注册成功`)
+        console.log(`[${key}] scssenregistré avec succès`)
         return true
       }
       return false

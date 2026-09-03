@@ -3,7 +3,7 @@ import group from './group'
 function install (Vue) {
   Vue.component('table-progress', () => import('./lib/table-progress'))
   if (d2CrudPlus != null) {
-    // 注册字段类型`demo-extend`
+    // Enregistrer le type de champ `demo-extend`
     d2CrudPlus.util.columnResolve.addTypes(group)
   }
 }

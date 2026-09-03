@@ -6,11 +6,11 @@ export const BUTTON_VALUE_TO_COLOR_MAPPING = {
   true: 'success',
   0: 'danger',
   false: 'danger',
-  Search: 'warning', // 查询
-  Update: 'primary', // 编辑
-  Create: 'success', // 新增
-  Retrieve: 'info', // 单例
-  Delete: 'danger' // 删除
+  Search: 'warning', // Rechercher
+  Update: 'primary', // Modifier
+  Create: 'success', // Ajouter
+  Retrieve: 'info', // Détail (singleton)
+  Delete: 'danger' // Supprimer
 }
 
 export function getButtonSettings (objectSettings) {
@@ -23,15 +23,15 @@ export function getButtonSettings (objectSettings) {
   })
 }
 
-// 系统配置
+// Configuration système
 export default {
   namespaced: true,
   state: {
-    data: {} // 字典值集合
+    data: {} // Collection des valeurs du dictionnaire
   },
   actions: {
     /**
-     * @description 本地加载配置
+     * @description Charger la configuration locale
      * @param {Object} context
      * @param {String} key
      */
@@ -42,7 +42,7 @@ export default {
         params: query,
         method: 'get'
       }).then(async res => {
-        // store 赋值
+        // store Assignation du store
         var newData = {}
         if (key === 'all') {
           res.data.data.map(data => {
@@ -65,16 +65,16 @@ export default {
       })
     }
     /**
-     * @description 获取配置
+     * @description Récupérer la configuration
      * @param {Object} state state
      * @param {Object} dispatch dispatch
-     * @param {String} key 字典值
-     * @param {String} isCache 是否缓存
+     * @param {String} key valeur du dictionnaire
+     * @param {String} isCache indique si mise en cache
      */
   },
   mutations: {
     /**
-     * @description 设置配置
+     * @description Définir la configuration
      * @param {Object} state state
      * @param {Boolean} key active
      * @param {Boolean} value active
@@ -83,7 +83,7 @@ export default {
       state.data[key] = value
     },
     /**
-     * @description 获取配置
+     * @description Récupérer la configuration
      * @param {Object} state state
      * @param {Boolean} key active
      */

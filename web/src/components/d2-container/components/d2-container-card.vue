@@ -22,11 +22,11 @@ export default {
     scroll
   ],
   mounted () {
-    // 增加滚动事件监听
+    // Ajouter l'écouteur de défilement
     this.addScrollListener()
   },
   beforeDestroy () {
-    // 移除滚动事件监听
+    // Retirer l'écouteur de défilement
     this.removeScrollListener()
   }
 }

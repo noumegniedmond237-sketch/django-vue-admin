@@ -1,6 +1,6 @@
-from django.conf import settings as gSettings  # 全局设置
+from django.conf import settings as gSettings  # Paramètres globaux
 
-# 工具栏样式，可以添加任意多的模式
+# Styles de barre d'outils, possibilité d'ajouter autant de modes que souhaité
 toolbars_settings = {
     "besttome": [
         ['source', 'undo', 'redo', 'bold', 'italic', 'underline', 'forecolor', 'backcolor', 'superscript', 'subscript',
@@ -18,74 +18,74 @@ toolbars_settings = {
                 'splittocols']]
 }
 
-# 默认的Ueditor设置，请参见ueditor.config.js
+# Paramètres Ueditor par défaut, voir ueditor.config.js
 ueditor_settings = {
     "toolbars": toolbars_settings["normal"],
     "autoFloatEnabled": False,
-    "defaultPathFormat": "%(basename)s_%(datetime)s_%(rnd)s.%(extname)s"  # 默认保存上传文件的命名方式
+    "defaultPathFormat": "%(basename)s_%(datetime)s_%(rnd)s.%(extname)s"  # Convention de nommage par défaut des fichiers téléversés
 }
-# 请参阅php文件夹里面的config.json进行配置
+# Voir config.json dans le dossier php pour la configuration
 ueditor_upload_settings = {
-    # 上传图片配置项
-    "imageActionName": "uploadimage",  # 执行上传图片的action名称
-    "imageMaxSize": 10485760,  # 上传大小限制，单位B,10M
-    "imageFieldName": "upfile",  # * 提交的图片表单名称 */
+    # Options de téléversement d'images
+    "imageActionName": "uploadimage",  # Nom de l'action d'exécution du téléversement d'images
+    "imageMaxSize": 10485760,  # Limite de taille de téléversement, en octets, 10 Mo
+    "imageFieldName": "upfile",  # * Nom du champ de formulaire de l'image soumise */
     "imagePathFormat": "",
     "imageInsertAlign": "none",
-    "imageAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],  # 上传图片格式显示
+    "imageAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],  # Formats d'images autorisés à l'affichage
 
-    # 涂鸦图片上传配置项 */
-    "scrawlActionName": "uploadscrawl",  # 执行上传涂鸦的action名称 */
-    "scrawlFieldName": "upfile",  # 提交的图片表单名称 */
-    "scrawlMaxSize": 10485760,  # 上传大小限制，单位B  10M
+    # Options de téléversement d'images de gribouillage */
+    "scrawlActionName": "uploadscrawl",  # Nom de l'action d'exécution du téléversement de gribouillage */
+    "scrawlFieldName": "upfile",  # Nom du champ de formulaire de l'image soumise */
+    "scrawlMaxSize": 10485760,  # Limite de taille de téléversement, en octets, 10 Mo
     "scrawlPathFormat": "",
     "scrawlInsertAlign": "none",
 
-    # 截图工具上传 */
-    "snapscreenActionName": "uploadimage",  # 执行上传截图的action名称 */
+    # Téléversement de l'outil de capture d'écran */
+    "snapscreenActionName": "uploadimage",  # Nom de l'action d'exécution du téléversement de capture */
     "snapscreenPathFormat": "",
-    "snapscreenInsertAlign": "none", # /* 插入的图片浮动方式 */
+    "snapscreenInsertAlign": "none", # /* Mode de flottement de l'image insérée */
 
-    # 抓取远程图片配置 */
+    # Configuration de récupération d'images distantes */
     "catcherLocalDomain": ["127.0.0.1", "localhost", "img.baidu.com"],
     "catcherPathFormat": "",
-    "catcherActionName": "catchimage",  # 执行抓取远程图片的action名称 */
-    "catcherFieldName": "source",  # 提交的图片列表表单名称 */
-    "catcherMaxSize": 10485760,  # 上传大小限制，单位B */
-    "catcherAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],  # 抓取图片格式显示 */
-    "catcherInsertAlign": "none", # /* 插入的图片浮动方式 */
-    # 上传视频配置 */
-    "videoActionName": "uploadvideo",  # 执行上传视频的action名称 */
+    "catcherActionName": "catchimage",  # Nom de l'action d'exécution de récupération d'images distantes */
+    "catcherFieldName": "source",  # Nom du champ de formulaire de la liste d'images soumise */
+    "catcherMaxSize": 10485760,  # Limite de taille de téléversement, en octets */
+    "catcherAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],  # Formats des images récupérées affichés */
+    "catcherInsertAlign": "none", # /* Mode de flottement de l'image insérée */
+    # Configuration de téléversement vidéo */
+    "videoActionName": "uploadvideo",  # Nom de l'action d'exécution du téléversement vidéo */
     "videoPathFormat": "",
-    "videoFieldName": "upfile",  # 提交的视频表单名称 */
-    "videoMaxSize": 102400000,  # 上传大小限制，单位B，默认100MB */
+    "videoFieldName": "upfile",  # Nom du champ de formulaire vidéo soumis */
+    "videoMaxSize": 102400000,  # Limite de taille de téléversement, en octets, 100 Mo par défaut */
     "videoAllowFiles": [
         ".flv", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
-        ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid"],  # 上传视频格式显示 */
+        ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid"],  # Formats vidéo autorisés à l'affichage */
 
-    # 上传文件配置 */
-    "fileActionName": "uploadfile",  # controller里,执行上传视频的action名称 */
+    # Configuration de téléversement de fichiers */
+    "fileActionName": "uploadfile",  # Dans le controller, nom de l'action d'exécution du téléversement vidéo */
     "filePathFormat": "",
-    "fileFieldName": "upfile",  # 提交的文件表单名称 */
-    "fileMaxSize": 204800000,  # 上传大小限制，单位B，200MB */
+    "fileFieldName": "upfile",  # Nom du champ de formulaire de fichier soumis */
+    "fileMaxSize": 204800000,  # Limite de taille de téléversement, en octets, 200 Mo */
     "fileAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",
         ".flv", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
         ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid",
         ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
         ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".xml"
-    ],  # 上传文件格式显示 */
+    ],  # Formats de fichiers autorisés à l'affichage */
 
-    # 列出指定目录下的图片 */
-    "imageManagerActionName": "listimage",  # 执行图片管理的action名称 */
+    # Lister les images du répertoire spécifié */
+    "imageManagerActionName": "listimage",  # Nom de l'action d'exécution de la gestion d'images */
     "imageManagerListPath": "",
-    "imageManagerListSize": 30,  # 每次列出文件数量 */
-    "imageManagerAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],  # 列出的文件类型 */
+    "imageManagerListSize": 30,  # Nombre de fichiers listés à chaque fois */
+    "imageManagerAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],  # Types de fichiers listés */
 
-    # 列出指定目录下的文件 */
-    "fileManagerActionName": "listfile",  # 执行文件管理的action名称 */
+    # Lister les fichiers du répertoire spécifié */
+    "fileManagerActionName": "listfile",  # Nom de l'action d'exécution de la gestion de fichiers */
     "fileManagerListPath": "",
-    "fileManagerListSize": 30,  # 每次列出文件数量 */
+    "fileManagerListSize": 30,  # Nombre de fichiers listés à chaque fois */
     "fileManagerAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tif", ".psd"
                                                          ".flv", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
@@ -93,11 +93,11 @@ ueditor_upload_settings = {
         ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid",
         ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
         ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".xml"
-    ]  # 列出的文件类型 */
+    ]  # Types de fichiers listés */
 }
 
 
-# 更新配置：从用户配置文件settings.py重新读入配置UEDITOR_SETTINGS,覆盖默认
+# Mise à jour de la configuration : relire UEDITOR_SETTINGS depuis settings.py et écraser les valeurs par défaut
 def update_user_settings():
     user_settings = getattr(gSettings, "UEDITOR_SETTINGS", {}).copy()
     if 'config' in user_settings:
@@ -106,10 +106,10 @@ def update_user_settings():
         ueditor_upload_settings.update(user_settings["upload"])
 
 
-# 读取用户Settings文件并覆盖默认配置
+# Lire le fichier Settings utilisateur et écraser la configuration par défaut
 update_user_settings()
 
 
-# 取得配置项参数
+# Récupérer les paramètres de configuration
 def get_ueditor_settings(key, default=None):
     return ueditor_settings.get(key, default)

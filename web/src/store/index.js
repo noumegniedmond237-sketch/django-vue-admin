@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import d2admin from './modules/d2admin'
 import { getStoreModules } from '@/views/plugins'
 Vue.use(Vuex)
-// 创建一个空的modules对象
+// Créer un objet modules vide
 const modules = { d2admin: d2admin }
 Object.assign(modules, getStoreModules())
 export default new Vuex.Store({

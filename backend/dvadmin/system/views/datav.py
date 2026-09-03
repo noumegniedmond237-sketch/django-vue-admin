@@ -44,27 +44,27 @@ class DataVViewSet(GenericViewSet):
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def users_login_total(self, request):
         """
-        用户登录总数数据
+        Données du nombre total de connexions des utilisateurs
         :param request:
         :return:
         """
         login_total = LoginLog.objects.all().count()
-        return DetailResponse(data={"login_total": login_total}, msg="获取成功")
+        return DetailResponse(data={"login_total": login_total}, msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def users_total(self, request):
         """
-        用户总数
+        Nombre total d'utilisateurs
         :param request:
         :return:
         """
         users_total = Users.objects.all().count()
-        return DetailResponse(data={"users_total": users_total, }, msg="获取成功")
+        return DetailResponse(data={"users_total": users_total, }, msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def attachment_total(self, request):
         """
-        附件统计数据
+        Données statistiques des pièces jointes
         :param request:
         :return:
         """
@@ -74,12 +74,12 @@ class DataVViewSet(GenericViewSet):
         else:
             data = {"sum_size": 0}
         return DetailResponse(data={"count": count, "occupy_space": format_bytes(data.get('sum_size') or 0)},
-                              msg="获取成功")
+                              msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def database_total(self, request):
         """
-        数据库统计数据
+        Données statistiques de la base de données
         :param request:
         :return:
         """
@@ -104,13 +104,13 @@ class DataVViewSet(GenericViewSet):
                     space = result[0]
                 except Exception as e:
                     print(e)
-                    space = '无权限'
-        return DetailResponse(data={"count": count, "space": format_bytes(space or 0)}, msg="获取成功")
+                    space = 'Sans autorisation'
+        return DetailResponse(data={"count": count, "space": format_bytes(space or 0)}, msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def registered_user(self, request):
         """
-        用户注册趋势
+        Tendance des inscriptions des utilisateurs
         :param request:
         :return:
         """
@@ -131,12 +131,12 @@ class DataVViewSet(GenericViewSet):
             result.append({'day': date, 'count': count})
 
         # users_last_month = Users.objects.filter(date_joined__gte=last_month).annotate(day=TruncDate('date_joined')).values('day').annotate(count=Count('id'))
-        return DetailResponse(data={"registered_user_list": result}, msg="获取成功")
+        return DetailResponse(data={"registered_user_list": result}, msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def registered_user(self, request):
         """
-        用户注册趋势
+        Tendance des inscriptions des utilisateurs
         :param request:
         :return:
         """
@@ -152,12 +152,12 @@ class DataVViewSet(GenericViewSet):
             date = (today - datetime.timedelta(days=i)).strftime('%Y-%m-%d')
             result.append({'day': date, 'count': data_dict[date] if date in data_dict else 0})
         result = sorted(result, key=lambda x: x['day'])
-        return DetailResponse(data={"registered_user_list": result}, msg="获取成功")
+        return DetailResponse(data={"registered_user_list": result}, msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def login_user(self, request):
         """
-        用户登录趋势
+        Tendance des connexions des utilisateurs
         :param request:
         :return:
         """
@@ -173,12 +173,12 @@ class DataVViewSet(GenericViewSet):
             date = (today - datetime.timedelta(days=i)).strftime('%Y-%m-%d')
             result.append({'day': date, 'count': data_dict[date] if date in data_dict else 0})
         result = sorted(result, key=lambda x: x['day'])
-        return DetailResponse(data={"login_user": result}, msg="获取成功")
+        return DetailResponse(data={"login_user": result}, msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def users_active(self, request):
         """
-        用户新增活跃数据统计
+        Statistiques des nouveaux utilisateurs et de l'activité
         :param request:
         :return:
         """
@@ -203,52 +203,52 @@ class DataVViewSet(GenericViewSet):
             'seven_days_active': seven_days_active,
             'monthly_active': monthly_active
         }
-        return DetailResponse(data=data, msg="获取成功")
+        return DetailResponse(data=data, msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def login_region(self, request):
         """
-        登录用户区域分布
+        Répartition géographique des utilisateurs connectés
         :param request:
         :return:
         """
         CHINA_PROVINCES = [
-            {'name': '北京', 'code': '110000'},
-            {'name': '天津', 'code': '120000'},
-            {'name': '河北省', 'code': '130000'},
-            {'name': '山西省', 'code': '140000'},
-            {'name': '内蒙古', 'code': '150000'},
-            {'name': '辽宁省', 'code': '210000'},
-            {'name': '吉林省', 'code': '220000'},
-            {'name': '黑龙江省', 'code': '230000'},
-            {'name': '上海', 'code': '310000'},
-            {'name': '江苏省', 'code': '320000'},
-            {'name': '浙江省', 'code': '330000'},
-            {'name': '安徽省', 'code': '340000'},
-            {'name': '福建省', 'code': '350000'},
-            {'name': '江西省', 'code': '360000'},
-            {'name': '山东省', 'code': '370000'},
-            {'name': '河南省', 'code': '410000'},
-            {'name': '湖北省', 'code': '420000'},
-            {'name': '湖南省', 'code': '430000'},
-            {'name': '广东省', 'code': '440000'},
-            {'name': '广西', 'code': '450000'},
-            {'name': '海南省', 'code': '460000'},
-            {'name': '重庆', 'code': '500000'},
-            {'name': '四川省', 'code': '510000'},
-            {'name': '贵州省', 'code': '520000'},
-            {'name': '云南省', 'code': '530000'},
-            {'name': '西藏', 'code': '540000'},
-            {'name': '陕西省', 'code': '610000'},
-            {'name': '甘肃省', 'code': '620000'},
-            {'name': '青海省', 'code': '630000'},
-            {'name': '宁夏', 'code': '640000'},
-            {'name': '新疆', 'code': '650000'},
-            {'name': '台湾', 'code': '710000'},
-            {'name': '香港', 'code': '810000'},
-            {'name': '澳门', 'code': '820000'},
-            {'name': '钓鱼岛', 'code': '900000'},
-            {'name': '未知区域', 'code': '000000'},
+            {'name': 'Beijing', 'code': '110000'},
+            {'name': 'Tianjin', 'code': '120000'},
+            {'name': 'Hebei', 'code': '130000'},
+            {'name': 'Shanxi', 'code': '140000'},
+            {'name': 'Inner Mongolia', 'code': '150000'},
+            {'name': 'Liaoning', 'code': '210000'},
+            {'name': 'Jilin', 'code': '220000'},
+            {'name': 'Heilongjiang', 'code': '230000'},
+            {'name': 'Shanghai', 'code': '310000'},
+            {'name': 'Jiangsu', 'code': '320000'},
+            {'name': 'Zhejiang', 'code': '330000'},
+            {'name': 'Anhui', 'code': '340000'},
+            {'name': 'Fujian', 'code': '350000'},
+            {'name': 'Jiangxi', 'code': '360000'},
+            {'name': 'Shandong', 'code': '370000'},
+            {'name': 'Henan', 'code': '410000'},
+            {'name': 'Hubei', 'code': '420000'},
+            {'name': 'Hunan', 'code': '430000'},
+            {'name': 'Guangdong', 'code': '440000'},
+            {'name': 'Guangxi', 'code': '450000'},
+            {'name': 'Hainan', 'code': '460000'},
+            {'name': 'Chongqing', 'code': '500000'},
+            {'name': 'Sichuan', 'code': '510000'},
+            {'name': 'Guizhou', 'code': '520000'},
+            {'name': 'Yunnan', 'code': '530000'},
+            {'name': 'Tibet', 'code': '540000'},
+            {'name': 'Shaanxi', 'code': '610000'},
+            {'name': 'Gansu', 'code': '620000'},
+            {'name': 'Qinghai', 'code': '630000'},
+            {'name': 'Ningxia', 'code': '640000'},
+            {'name': 'Xinjiang', 'code': '650000'},
+            {'name': 'Taiwan', 'code': '710000'},
+            {'name': 'Hong Kong', 'code': '810000'},
+            {'name': 'Macao', 'code': '820000'},
+            {'name': 'Diaoyu Islands', 'code': '900000'},
+            {'name': 'Unknown', 'code': '000000'},
         ]
         provinces = [x['name'] for x in CHINA_PROVINCES]
         day = 30
@@ -261,7 +261,7 @@ class DataVViewSet(GenericViewSet):
             if ele.get('province') in province_dict:
                 province_dict[ele.get('province')] += ele.get('count')
             else:
-                province_dict['未知区域'] += ele.get('count')
+                province_dict['Unknown'] += ele.get('count')
         data = [{'region': key, 'count': val} for key, val in province_dict.items()]
         data = sorted(data, key=lambda x: x['count'], reverse=True)
-        return DetailResponse(data=data, msg="获取成功")
+        return DetailResponse(data=data, msg="Récupéré avec succès")

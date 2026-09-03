@@ -67,7 +67,7 @@ export default {
   methods: {
     async getVer () {
       const rawTitle = this.siteName || process.env.VUE_APP_TITLE || 'Django Vue Admin'
-      this.title = (rawTitle === '企业级后台管理系统') ? 'Django Vue Admin' : rawTitle
+      this.title = (rawTitle === 'Django Vue Admin') ? 'Django Vue Admin' : rawTitle
     },
     randomColor () {
       if (this.config?.color?.value) {

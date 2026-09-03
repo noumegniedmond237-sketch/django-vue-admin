@@ -2,7 +2,7 @@ import { request } from '@/api/service'
 export default {
   namespaced: true,
   state: {
-    // 未读消息
+    // Messages non lus
     unread: 0
   },
   getters: {
@@ -12,11 +12,11 @@ export default {
   },
   actions: {
     /**
-     * @description 添加一个日志
+     * @description Ajouter une entrée de journal
      * @param {Object} context
-     * @param {String} param message {String} 信息
-     * @param {String} param type {String} 类型
-     * @param {Object} payload meta {Object} 附带的信息
+     * @param {String} param message {String} information
+     * @param {String} param type {String} type
+     * @param {Object} payload meta {Object} informations jointes
      */
     async setUnread ({
       state,
@@ -38,7 +38,7 @@ export default {
   },
   mutations: {
     /**
-     * 设置未读消息
+     * Définir les messages non lus
      * @param state
      * @param number
      */

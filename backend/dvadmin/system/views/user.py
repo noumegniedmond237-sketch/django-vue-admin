@@ -29,7 +29,7 @@ def recursion(instance, parent, result):
 
 class UserSerializer(CustomModelSerializer):
     """
-    用户管理-序列化器
+    Sérialiseur de gestion des utilisateurs
     """
     dept_name = serializers.CharField(source='dept.name', read_only=True)
     role_info = DynamicSerializerMethodField()
@@ -56,7 +56,7 @@ class UserSerializer(CustomModelSerializer):
 
 class UsersInitSerializer(CustomModelSerializer):
     """
-    初始化获取数信息(用于生成初始化json文件)
+    Informations d'initialisation (pour générer le fichier JSON d'initialisation)
     """
 
     def save(self, **kwargs):
@@ -84,7 +84,7 @@ class UsersInitSerializer(CustomModelSerializer):
 
 class UserCreateSerializer(CustomModelSerializer):
     """
-    用户新增-序列化器
+    Sérialiseur de création d'utilisateur
     """
 
     username = serializers.CharField(
@@ -172,7 +172,7 @@ class UserInfoUpdateSerializer(CustomModelSerializer):
 
 class ExportUserProfileSerializer(CustomModelSerializer):
     """
-    用户导出 序列化器
+    Sérialiseur d'export des utilisateurs
     """
 
     last_login = serializers.DateTimeField(
@@ -184,7 +184,7 @@ class ExportUserProfileSerializer(CustomModelSerializer):
     gender = serializers.CharField(source="get_gender_display", read_only=True)
 
     def get_is_active(self, instance):
-        return "启用" if instance.is_active else "停用"
+        return "Activé" if instance.is_active else "Désactivé"
 
     class Meta:
         model = Users
@@ -202,7 +202,7 @@ class ExportUserProfileSerializer(CustomModelSerializer):
 
 
 class UserProfileImportSerializer(CustomModelSerializer):
-    password = serializers.CharField(required=True, max_length=50, error_messages={"required": "登录密码不能为空"})
+    password = serializers.CharField(required=True, max_length=50, error_messages={"required": "Le mot de passe de connexion ne peut pas être vide"})
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
@@ -224,12 +224,12 @@ class UserProfileImportSerializer(CustomModelSerializer):
 
 class UserViewSet(CustomModelViewSet):
     """
-    用户接口
-    list:查询
-    create:新增
-    update:修改
-    retrieve:单例
-    destroy:删除
+    Interface des utilisateurs
+    list:Rechercher
+    create:Créer
+    update:Modifier
+    retrieve:Détail
+    destroy:Supprimer
     """
 
     queryset = Users.objects.exclude(is_superuser=1).all()
@@ -247,46 +247,46 @@ class UserViewSet(CustomModelViewSet):
     #     "dept__name": ["icontains"],
     # }
     search_fields = ["username", "name", "gender", "dept__name", "role__name"]
-    # 导出
+    # Export
     export_field_label = {
-        "username": "用户账号",
-        "name": "用户名称",
-        "email": "用户邮箱",
-        "mobile": "手机号码",
-        "gender": "用户性别",
-        "is_active": "帐号状态",
-        "last_login": "最后登录时间",
-        "dept_name": "部门名称",
-        "dept_owner": "部门负责人",
+        "username": "Compte utilisateur",
+        "name": "Nom de l'utilisateur",
+        "email": "E-mail de l'utilisateur",
+        "mobile": "Numéro de téléphone",
+        "gender": "Genre de l'utilisateur",
+        "is_active": "Statut du compte",
+        "last_login": "Dernière connexion",
+        "dept_name": "Nom du département",
+        "dept_owner": "Responsable du département",
     }
     export_serializer_class = ExportUserProfileSerializer
-    # 导入
+    # Import
     import_serializer_class = UserProfileImportSerializer
     import_field_dict = {
-        "username": "登录账号",
-        "name": "用户名称",
-        "email": "用户邮箱",
-        "mobile": "手机号码",
+        "username": "Compte de connexion",
+        "name": "Nom de l'utilisateur",
+        "email": "E-mail de l'utilisateur",
+        "mobile": "Numéro de téléphone",
         "gender": {
-            "title": "用户性别",
+            "title": "Genre de l'utilisateur",
             "choices": {
-                "data": {"未知": 2, "男": 1, "女": 0},
+                "data": {"Inconnu": 2, "Homme": 1, "Femme": 0},
             }
         },
         "is_active": {
-            "title": "帐号状态",
+            "title": "Statut du compte",
             "choices": {
-                "data": {"启用": True, "禁用": False},
+                "data": {"Activé": True, "Désactivé": False},
             }
         },
-        "password": "登录密码",
-        "dept": {"title": "部门", "choices": {"queryset": Dept.objects.filter(status=True), "values_name": "name"}},
-        "role": {"title": "角色", "choices": {"queryset": Role.objects.filter(status=True), "values_name": "name"}},
+        "password": "Mot de passe de connexion",
+        "dept": {"title": "Département", "choices": {"queryset": Dept.objects.filter(status=True), "values_name": "name"}},
+        "role": {"title": "Rôle", "choices": {"queryset": Role.objects.filter(status=True), "values_name": "name"}},
     }
 
     @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def user_info(self, request):
-        """获取当前用户信息"""
+        """Récupérer les informations de l'utilisateur actuel"""
         user = request.user
         result = {
             "id": user.id,

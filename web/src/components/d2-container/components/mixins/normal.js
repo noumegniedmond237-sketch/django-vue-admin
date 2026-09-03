@@ -1,9 +1,9 @@
-// 提供滚动方面的功能
-// 非滚动优化模式通用
+// Fournir les fonctions de défilement
+// Commun au mode sans optimisation du défilement
 
 import { throttle } from 'lodash'
 
-// 生成滚动事件的 handler
+// Générer le gestionnaire d'événement de défilement handler
 function handleMaker (wait) {
   return throttle(e => {
     this.$emit('scroll', {
@@ -15,7 +15,7 @@ function handleMaker (wait) {
 
 export default {
   props: {
-    // 滚动事件节流间隔
+    // Intervalle de limitation (throttle) de l'événement de défilement
     scrollDelay: {
       type: Number,
       required: false,
@@ -29,29 +29,29 @@ export default {
   },
   watch: {
     scrollDelay (val) {
-      // 移除旧的监听
+      // Retirer l'ancien écouteur
       this.removeScrollListener()
-      // 生成新的 handle 方法
+      // Générer la nouvelle méthode handle handle
       this.handleScroll = handleMaker.call(this, val)
-      // 添加新的监听
+      // Ajouter un nouvel écouteur
       this.addScrollListener()
     }
   },
   methods: {
-    // 增加滚动事件监听
+    // Ajouter l'écouteur de défilement
     addScrollListener () {
       if (typeof this.handleScroll !== 'function') {
-        // mounted 生命周期内调用这个方法的时候会进入这里的判断
+        // mounted Quand cette méthode est appelée dans le cycle de vie mounted, on entre dans cette condition
         this.handleScroll = handleMaker.call(this, this.scrollDelay)
       }
-      // 添加监听
+      // Ajouter un écouteur
       this.$refs.body.addEventListener('scroll', this.handleScroll)
     },
-    // 移除滚动事件监听
+    // Retirer l'écouteur de défilement
     removeScrollListener () {
       this.$refs.body.removeEventListener('scroll', this.handleScroll)
     },
-    // 外部调用的方法 返回顶部
+    // Méthode d'appel externe Retour en haut
     scrollToTop () {
       const smoothscroll = () => {
         const body = this.$refs.body

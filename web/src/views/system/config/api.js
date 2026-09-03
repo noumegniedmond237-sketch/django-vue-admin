@@ -43,7 +43,7 @@ export function DelObj (id) {
 }
 
 /*
-获取所有的model及字段信息
+Obtenir tous les modèles et leurs champs
  */
 export function GetAssociationTable () {
   return request({

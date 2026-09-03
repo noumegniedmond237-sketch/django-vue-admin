@@ -1,10 +1,10 @@
 <!--
- * @创建文件时间: 2021-06-08 10:40:32
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-06-09 10:37:37
- * 联系Qq:1638245306
- * @文件介绍: 操作日志
+ * @date-de-creation: 2021-06-08 10:40:32
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-06-09 10:37:37
+ * Contact QQ : 1638245306
+ * @description-fichier: journaux d'opérations
 -->
 <template>
   <d2-container :class="{ 'page-compact': crud.pageOptions.compact }">
@@ -22,7 +22,7 @@
         />
         <!-- <el-button-group>
           <el-button size="small" type="primary" @click="addRow"
-            ><i class="el-icon-plus" /> 新增</el-button
+            ><i class="el-icon-plus" /> Ajouter</el-button
           >
         </el-button-group> -->
         <crud-toolbar

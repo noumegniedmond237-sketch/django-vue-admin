@@ -4,14 +4,14 @@ import router from '@/router'
 export default {
   namespaced: true,
   state: {
-    // 尺寸
+    // taille
     value: '' // medium small mini
   },
   actions: {
     /**
-     * @description 将当前的设置应用到 element
+     * @description Appliquer les paramètres courants à element
      * @param {Object} context
-     * @param {Boolean} refresh 是否在设置之后刷新页面
+     * @param {Boolean} refresh indique s'il faut actualiser la page après le paramétrage
      */
     apply ({ state, commit }, refresh) {
       Vue.prototype.$ELEMENT.size = state.value
@@ -21,7 +21,7 @@ export default {
       }
     },
     /**
-     * @description 确认已经加载组件尺寸设置 https://github.com/d2-projects/d2-admin/issues/198
+     * @description Confirmer le chargement des paramètres de taille des composants https://github.com/d2-projects/d2-admin/issues/198
      * @param {Object} context
      */
     isLoaded ({ state }) {
@@ -33,16 +33,16 @@ export default {
       })
     },
     /**
-     * @description 设置尺寸
+     * @description Définir la taille
      * @param {Object} context
-     * @param {String} size 尺寸
+     * @param {String} size taille
      */
     async set ({ state, dispatch }, size) {
-      // store 赋值
+      // store Assignation du store
       state.value = size
-      // 应用
+      // Appliquer
       dispatch('apply', true)
-      // 持久化
+      // Persistance
       await dispatch('d2admin/db/set', {
         dbName: 'sys',
         path: 'size.value',
@@ -51,18 +51,18 @@ export default {
       }, { root: true })
     },
     /**
-     * @description 从持久化数据读取尺寸设置
+     * @description Lire les paramètres de taille depuis les données persistées
      * @param {Object} context
      */
     async load ({ state, dispatch }) {
-      // store 赋值
+      // store Assignation du store
       state.value = await dispatch('d2admin/db/get', {
         dbName: 'sys',
         path: 'size.value',
         defaultValue: 'default',
         user: true
       }, { root: true })
-      // 应用
+      // Appliquer
       dispatch('apply')
     }
   }

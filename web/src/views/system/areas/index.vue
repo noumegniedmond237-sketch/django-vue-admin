@@ -1,5 +1,5 @@
 <!--
- * @文件介绍: 地区管理
+ * @description-fichier: gestion des régions
 -->
 <template>
   <d2-container :class="{ 'page-compact': crud.pageOptions.compact }">
@@ -21,7 +21,7 @@
 <!--            v-permission="'Create'"-->
 <!--            type="primary"-->
 <!--            @click="addRow"-->
-<!--            ><i class="el-icon-plus" /> 新增</el-button-->
+<!--            ><i class="el-icon-plus" /> Ajouter</el-button-->
 <!--          >-->
 <!--        </el-button-group>-->
         <crud-toolbar

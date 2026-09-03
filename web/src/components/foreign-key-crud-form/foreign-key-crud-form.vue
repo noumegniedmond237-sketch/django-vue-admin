@@ -40,12 +40,12 @@
               <d2p-file-uploader v-model="field[key]"
                                  :elProps="elProps.fields[key].elProps || { listType: 'picture-card', accept: '.png,.jpeg,.jpg,.ico,.bmp,.gif', limit: 1 }"></d2p-file-uploader>
             </div>
-            <!--     富文本     -->
+            <!--     Texte riche     -->
             <span v-else-if="elProps.fields[key].type === 'ueditor'">
               <values-popover v-model="field[key]" :elProps="{ type: 'ueditor' }"
                               @previewClick="previewClick(index,key)"></values-popover>
             </span>
-            <!--     多对多     -->
+            <!--     Plusieurs-à-plusieurs     -->
             <span v-else-if="elProps.fields[key].type === 'many_to_many'">
               <values-popover
                 v-model="field[key]"
@@ -218,29 +218,31 @@ export default {
       ueditorConfig: {
         serverUrl: util.baseURL() + 'api/system/file/ueditor/',
         headers: { Authorization: 'JWT ' + util.cookies.get('token') },
+        // Pack de langue français (web/public/lib/UEditor/lang/fr/fr.js)
+        lang: 'fr',
         imageUrlPrefix: util.baseFileURL(),
-        // 涂鸦图片上传
+        // Téléversement d'image gribouillée
         scrawlUrlPrefix: util.baseFileURL(),
-        // 截图工具上传
+        // Téléversement via l'outil de capture
         snapscreenUrlPrefix: util.baseFileURL(),
-        // 抓取远程图片路径前缀
+        // Préfixe de chemin pour les images distantes
         catcherUrlPrefix: util.baseFileURL(),
-        // 视频访问路径前缀
+        // Préfixe du chemin d'accès aux vidéos
         videoUrlPrefix: util.baseFileURL(),
-        // 文件访问路径前缀
+        // Préfixe du chemin d'accès aux fichiers
         fileUrlPrefix: util.baseFileURL(),
-        // 列出指定目录下的图片
+        // Lister les images du répertoire indiqué
         imageManagerUrlPrefix: util.baseFileURL(),
-        // 列出指定目录下的文件
+        // Lister les fichiers du répertoire indiqué
         fileManagerUrlPrefix: util.baseFileURL()
-        // 传入ueditor的配置
-        // 文档参考： http://fex.baidu.com/ueditor/#start-config
+        // Transmettre la configuration à ueditor
+        // Référence de la documentation: http://fex.baidu.com/ueditor/#start-config
       },
-      // 富文本弹窗编辑框
+      // Zone d'édition en modale pour le texte riche
       previewVisible: false,
       ueditorIndex: 0,
       ueditorKey: null,
-      // 多对多弹窗
+      // Fenêtre modale plusieurs-à-plusieurs
       manyToManyIndex: 0,
       manyToManyKey: null,
       manyToManyVisible: false
@@ -289,32 +291,32 @@ export default {
   created () {
   },
   methods: {
-    // 数组元素互换位置，并且替换顺序
+    // Échanger les positions des éléments du tableau,
     swapArray (arr, index1, index2) {
       arr[index1] = arr.splice(index2, 1, arr[index1])[0]
       arr[index2].sort = index2 + 1
       arr[index1].sort = index1 + 1
       return arr
     },
-    // 删除
+    // Supprimer
     removeDomain (index) {
       this.currentForm.data.splice(index, 1)
       this.$emit('change', this.currentForm.data)
       this.$emit('input', this.currentForm.data)
     },
-    // 上移
+    // Monter
     topDomain (index) {
       this.swapArray(this.currentForm.data, index - 1, index)
       this.$emit('change', this.currentForm.data)
       this.$emit('input', this.currentForm.data)
     },
-    // 下移
+    // Descendre
     bottomDomain (index) {
       this.swapArray(this.currentForm.data, index, index + 1)
       this.$emit('change', this.currentForm.data)
       this.$emit('input', this.currentForm.data)
     },
-    // 新增
+    // Ajouter
     addDomain () {
       const fields = {
         _id: this.value?.length || 0
@@ -327,14 +329,14 @@ export default {
       this.$emit('change', this.currentForm.data)
       this.$emit('input', this.currentForm.data)
     },
-    // 富文本预览按钮点击事件
+    // Événement de clic sur le bouton d'aperçu du texte riche
     previewClick (index, key) {
       this.ueditorIndex = index
       this.ueditorKey = key
       this.previewVisible = true
       console.log('previewClick', index, key)
     },
-    // 多对多点击事件
+    // Événement de clic plusieurs-à-plusieurs
     manyToManyClick (index, key) {
       this.manyToManyIndex = index
       this.manyToManyKey = key

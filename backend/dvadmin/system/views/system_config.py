@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2022/1/21 003 0:30
-@Remark: 系统配置
+@Remark: Configuration système
 """
 import django_filters
 from django.db import connection
@@ -25,7 +25,7 @@ from dvadmin.utils.viewset import CustomModelViewSet
 
 class SystemConfigCreateSerializer(CustomModelSerializer):
     """
-    系统配置-新增时使用-序列化器
+    Sérialiseur d'utilisation à la création de la configuration système
     """
     form_item_type_label = serializers.CharField(source='get_form_item_type_display', read_only=True)
 
@@ -37,18 +37,18 @@ class SystemConfigCreateSerializer(CustomModelSerializer):
 
     def validate_key(self, value):
         """
-        验证key是否允许重复
-        parent为空时不允许重复,反之允许
+        Vérifier si la clé autorise les doublons
+        Lorsque le parent est vide, les doublons sont interdits, sinon ils sont autorisés
         """
         instance = SystemConfig.objects.filter(key=value, parent__isnull=True).exists()
         if instance:
-            raise CustomValidationError('已存在相同变量名')
+            raise CustomValidationError('Un nom de variable identique existe déjà')
         return value
 
 
 class SystemConfigInitSerializer(CustomModelSerializer):
     """
-    初始化获取数信息(用于生成初始化json文件)
+    Informations d'initialisation (pour générer le fichier JSON d'initialisation)
     """
     children = serializers.SerializerMethodField()
 
@@ -63,7 +63,7 @@ class SystemConfigInitSerializer(CustomModelSerializer):
     def save(self, **kwargs):
         instance = super().save(**kwargs)
         children = self.initial_data.get('children')
-        # 菜单表
+        # Table des menus
         if children:
             for data in children:
                 data['parent'] = instance.id
@@ -92,7 +92,7 @@ class SystemConfigInitSerializer(CustomModelSerializer):
 
 class SystemConfigSerializer(CustomModelSerializer):
     """
-    系统配置-序列化器
+    Sérialiseur de configuration système
     """
     form_item_type_label = serializers.CharField(source='get_form_item_type_display', read_only=True)
 
@@ -104,7 +104,7 @@ class SystemConfigSerializer(CustomModelSerializer):
 
 class SystemConfigChinldernSerializer(CustomModelSerializer):
     """
-    系统配置子级-序列化器
+    Sérialiseur enfant de la configuration système
     """
     chinldern = serializers.SerializerMethodField()
     form_item_type_label = serializers.CharField(source='get_form_item_type_display', read_only=True)
@@ -122,7 +122,7 @@ class SystemConfigChinldernSerializer(CustomModelSerializer):
 
 class SystemConfigListSerializer(CustomModelSerializer):
     """
-    系统配置下模块的保存-序列化器
+    Sérialiseur d'enregistrement du module de configuration système
     """
 
     def update(self, instance, validated_data):
@@ -149,7 +149,7 @@ class SystemConfigSaveSerializer(serializers.Serializer):
 
 class SystemConfigFilter(django_filters.rest_framework.FilterSet):
     """
-    过滤器
+    Filtre
     """
     parent__isnull = BooleanFilter(field_name='parent', lookup_expr="isnull")
 
@@ -160,7 +160,7 @@ class SystemConfigFilter(django_filters.rest_framework.FilterSet):
 
 class SystemConfigViewSet(CustomModelViewSet):
     """
-    系统配置接口
+    Interface de configuration système
     """
     queryset = SystemConfig.objects.order_by('sort', 'create_datetime')
     serializer_class = SystemConfigChinldernSerializer
@@ -182,29 +182,29 @@ class SystemConfigViewSet(CustomModelViewSet):
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
         websocket_push("dvadmin", message={"sender": 'system', "contentType": 'SYSTEM',
-                                           "content": '系统配置有变化~', "systemConfig": True})
-        return DetailResponse(msg="保存成功")
+                                           "content": 'La configuration système a changé', "systemConfig": True})
+        return DetailResponse(msg="Enregistré avec succès")
 
     def get_association_table(self, request):
         """
-        获取所有的model及字段信息
+        Récupérer les informations de tous les modèles et champs
         """
         res = [ele.get('table') for ele in get_all_models_objects().values()]
-        return DetailResponse(msg="获取成功", data=res)
+        return DetailResponse(msg="Récupéré avec succès", data=res)
 
     def get_table_data(self, request, pk):
         """
-        动态获取关联表的数据
+        Récupérer dynamiquement les données de la table associée
         """
         instance = SystemConfig.objects.filter(id=pk).first()
         if instance is None:
-            return ErrorResponse(msg="查询出错了~")
+            return ErrorResponse(msg="Erreur lors de la recherche")
         setting = instance.setting
         if setting is None:
-            return ErrorResponse(msg="查询出错了~")
-        table = setting.get('table')  # 获取model名
+            return ErrorResponse(msg="Erreur lors de la recherche")
+        table = setting.get('table')  # Obtenir le nom du modèle
         model = get_all_models_objects(table).get("object", {})
-        # 自己判断一下不存在
+        # Vérifier soi-même l'existence
         queryset = model.objects.values()
         body = request.query_params
         search_value = body.get('search', None)
@@ -219,43 +219,43 @@ class SystemConfigViewSet(CustomModelViewSet):
         page = self.paginate_queryset(queryset)
         if page is not None:
             return self.get_paginated_response(queryset)
-        return SuccessResponse(msg="获取成功", data=queryset, total=len(queryset))
+        return SuccessResponse(msg="Récupéré avec succès", data=queryset, total=len(queryset))
 
     def get_relation_info(self, request):
         """
-        查询关联的模板信息
+        Rechercher les informations du modèle associé
         """
         body = request.query_params
         var_name = body.get('varName', None)
         table = body.get('table', None)
         instance = SystemConfig.objects.filter(key=var_name, setting__table=table).first()
         if instance is None:
-            return ErrorResponse(msg="未获取到关联信息")
+            return ErrorResponse(msg="Informations associées introuvables")
         relation_id = body.get('relationIds', None)
         relationIds = []
         if relation_id is None:
-            return ErrorResponse(msg="未获取到关联信息")
+            return ErrorResponse(msg="Informations associées introuvables")
         if instance.form_item_type in [13]:
             relationIds = [relation_id]
         elif instance.form_item_type in [14]:
             relationIds = relation_id.split(',')
         queryset = SystemConfig.objects.filter(value__in=relationIds).first()
         if queryset is None:
-            return ErrorResponse(msg="未获取到关联信息")
+            return ErrorResponse(msg="Informations associées introuvables")
         serializer = SystemConfigChinldernSerializer(queryset.parent)
-        return DetailResponse(msg="查询成功", data=serializer.data)
+        return DetailResponse(msg="Recherche réussie", data=serializer.data)
 
 
 class InitSettingsViewSet(APIView):
     """
-    获取初始化配置
+    Récupérer la configuration d'initialisation
     """
     authentication_classes = []
     permission_classes = []
 
     def filter_system_config_values(self, data: dict):
         """
-        过滤系统初始化配置
+        Filtrer la configuration d'initialisation du système
         :param data:
         :return:
         """
@@ -272,7 +272,7 @@ class InitSettingsViewSet(APIView):
         if not data:
             dispatch.refresh_system_config()
             data = dispatch.get_system_config()
-        # 不返回后端专用配置
+        # Ne pas renvoyer la configuration réservée au back-end
         backend_config = [f"{ele.get('parent__key')}.{ele.get('key')}" for ele in
                           SystemConfig.objects.filter(status=False, parent_id__isnull=False).values('parent__key',
                                                                                                     'key')]

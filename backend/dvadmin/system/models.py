@@ -11,133 +11,133 @@ from application.settings import BASE_DIR
 from dvadmin.utils.models import CoreModel, table_prefix
 
 STATUS_CHOICES = (
-    (0, "禁用"),
-    (1, "启用"),
+    (0, "Désactivé"),
+    (1, "Activé"),
 )
 
 
 class Users(CoreModel, AbstractUser):
-    username = models.CharField(max_length=150, unique=True, db_index=True, verbose_name="用户账号",
-                                help_text="用户账号")
+    username = models.CharField(max_length=150, unique=True, db_index=True, verbose_name="Compte utilisateur",
+                                help_text="Compte utilisateur")
     employee_no = models.CharField(max_length=150, unique=True, db_index=True, null=True, blank=True,
-                                   verbose_name="工号", help_text="工号")
-    email = models.EmailField(max_length=255, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
-    mobile = models.CharField(max_length=255, verbose_name="电话", null=True, blank=True, help_text="电话")
-    avatar = models.CharField(max_length=255, verbose_name="头像", null=True, blank=True, help_text="头像")
-    name = models.CharField(max_length=40, verbose_name="姓名", help_text="姓名")
+                                   verbose_name="Matricule", help_text="Matricule")
+    email = models.EmailField(max_length=255, verbose_name="E-mail", null=True, blank=True, help_text="E-mail")
+    mobile = models.CharField(max_length=255, verbose_name="Téléphone", null=True, blank=True, help_text="Téléphone")
+    avatar = models.CharField(max_length=255, verbose_name="Avatar", null=True, blank=True, help_text="Avatar")
+    name = models.CharField(max_length=40, verbose_name="Nom", help_text="Nom")
     GENDER_CHOICES = (
-        (0, "未知"),
-        (1, "男"),
-        (2, "女"),
+        (0, "Inconnu"),
+        (1, "Homme"),
+        (2, "Femme"),
     )
     gender = models.IntegerField(
-        choices=GENDER_CHOICES, default=0, verbose_name="性别", null=True, blank=True, help_text="性别"
+        choices=GENDER_CHOICES, default=0, verbose_name="Genre", null=True, blank=True, help_text="Genre"
     )
     USER_TYPE = (
-        (0, "后台用户"),
-        (1, "前台用户"),
+        (0, "Utilisateur back-office"),
+        (1, "Utilisateur front-office"),
     )
     user_type = models.IntegerField(
-        choices=USER_TYPE, default=0, verbose_name="用户类型", null=True, blank=True, help_text="用户类型"
+        choices=USER_TYPE, default=0, verbose_name="Type d'utilisateur", null=True, blank=True, help_text="Type d'utilisateur"
     )
-    post = models.ManyToManyField(to="Post", blank=True, verbose_name="关联岗位", db_constraint=False,
-                                  help_text="关联岗位")
-    role = models.ManyToManyField(to="Role", blank=True, verbose_name="关联角色", db_constraint=False,
-                                  help_text="关联角色")
+    post = models.ManyToManyField(to="Post", blank=True, verbose_name="Postes associés", db_constraint=False,
+                                  help_text="Postes associés")
+    role = models.ManyToManyField(to="Role", blank=True, verbose_name="Rôles associés", db_constraint=False,
+                                  help_text="Rôles associés")
     dept = models.ForeignKey(
         to="Dept",
-        verbose_name="所属部门",
+        verbose_name="Département d'appartenance",
         on_delete=models.PROTECT,
         db_constraint=False,
         null=True,
         blank=True,
-        help_text="关联部门",
+        help_text="Département associé",
     )
-    last_token = models.CharField(max_length=255, null=True, blank=True, verbose_name="最后一次登录Token",
-                                   help_text="最后一次登录Token")
+    last_token = models.CharField(max_length=255, null=True, blank=True, verbose_name="Jeton de dernière connexion",
+                                   help_text="Jeton de dernière connexion")
 
     class Meta:
         db_table = table_prefix + "system_users"
-        verbose_name = "用户表"
+        verbose_name = "Table des utilisateurs"
         verbose_name_plural = verbose_name
         ordering = ("-create_datetime",)
 
 
 class Post(CoreModel):
-    name = models.CharField(null=False, max_length=64, verbose_name="岗位名称", help_text="岗位名称")
-    code = models.CharField(max_length=32, verbose_name="岗位编码", help_text="岗位编码")
-    sort = models.IntegerField(default=1, verbose_name="岗位顺序", help_text="岗位顺序")
+    name = models.CharField(null=False, max_length=64, verbose_name="Nom du poste", help_text="Nom du poste")
+    code = models.CharField(max_length=32, verbose_name="Code du poste", help_text="Code du poste")
+    sort = models.IntegerField(default=1, verbose_name="Ordre du poste", help_text="Ordre du poste")
     STATUS_CHOICES = (
-        (0, "离职"),
-        (1, "在职"),
+        (0, "Départ"),
+        (1, "En poste"),
     )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1, verbose_name="岗位状态", help_text="岗位状态")
+    status = models.IntegerField(choices=STATUS_CHOICES, default=1, verbose_name="Statut du poste", help_text="Statut du poste")
 
     class Meta:
         db_table = table_prefix + "system_post"
-        verbose_name = "岗位表"
+        verbose_name = "Table des postes"
         verbose_name_plural = verbose_name
         ordering = ("sort",)
 
 
 class Role(CoreModel):
-    name = models.CharField(max_length=64, verbose_name="角色名称", help_text="角色名称")
-    key = models.CharField(max_length=64, unique=True, verbose_name="权限字符", help_text="权限字符")
-    sort = models.IntegerField(default=1, verbose_name="角色顺序", help_text="角色顺序")
-    status = models.BooleanField(default=True, verbose_name="角色状态", help_text="角色状态")
-    admin = models.BooleanField(default=False, verbose_name="是否为admin", help_text="是否为admin")
+    name = models.CharField(max_length=64, verbose_name="Nom du rôle", help_text="Nom du rôle")
+    key = models.CharField(max_length=64, unique=True, verbose_name="Clé de permission", help_text="Clé de permission")
+    sort = models.IntegerField(default=1, verbose_name="Ordre du rôle", help_text="Ordre du rôle")
+    status = models.BooleanField(default=True, verbose_name="Statut du rôle", help_text="Statut du rôle")
+    admin = models.BooleanField(default=False, verbose_name="Est administrateur", help_text="Est administrateur")
     DATASCOPE_CHOICES = (
-        (0, "仅本人数据权限"),
-        (1, "本部门及以下数据权限"),
-        (2, "本部门数据权限"),
-        (3, "全部数据权限"),
-        (4, "自定数据权限"),
+        (0, "Données personnelles uniquement"),
+        (1, "Données du département et sous-départements"),
+        (2, "Données du département"),
+        (3, "Toutes les données"),
+        (4, "Données personnalisées"),
     )
-    data_range = models.IntegerField(default=0, choices=DATASCOPE_CHOICES, verbose_name="数据权限范围",
-                                     help_text="数据权限范围")
-    remark = models.TextField(verbose_name="备注", help_text="备注", null=True, blank=True)
-    dept = models.ManyToManyField(to="Dept", verbose_name="数据权限-关联部门", db_constraint=False,
-                                  help_text="数据权限-关联部门")
-    menu = models.ManyToManyField(to="Menu", verbose_name="关联菜单", db_constraint=False, help_text="关联菜单")
+    data_range = models.IntegerField(default=0, choices=DATASCOPE_CHOICES, verbose_name="Portée des permissions de données",
+                                     help_text="Portée des permissions de données")
+    remark = models.TextField(verbose_name="Remarque", help_text="Remarque", null=True, blank=True)
+    dept = models.ManyToManyField(to="Dept", verbose_name="Départements associés (permissions de données)", db_constraint=False,
+                                  help_text="Départements associés (permissions de données)")
+    menu = models.ManyToManyField(to="Menu", verbose_name="Menus associés", db_constraint=False, help_text="Menus associés")
     permission = models.ManyToManyField(
-        to="MenuButton", verbose_name="关联菜单的接口按钮", db_constraint=False, help_text="关联菜单的接口按钮"
+        to="MenuButton", verbose_name="Boutons d'API des menus associés", db_constraint=False, help_text="Boutons d'API des menus associés"
     )
 
     class Meta:
         db_table = table_prefix + "system_role"
-        verbose_name = "角色表"
+        verbose_name = "Table des rôles"
         verbose_name_plural = verbose_name
         ordering = ("sort",)
 
 
 class Dept(CoreModel):
-    name = models.CharField(max_length=64, verbose_name="部门名称", help_text="部门名称")
-    key = models.CharField(max_length=64, unique=True, null=True, blank=True, verbose_name="关联字符",
-                           help_text="关联字符")
-    sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
-    owner = models.CharField(max_length=32, verbose_name="负责人", null=True, blank=True, help_text="负责人")
-    phone = models.CharField(max_length=32, verbose_name="联系电话", null=True, blank=True, help_text="联系电话")
-    email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
-    status = models.BooleanField(default=True, verbose_name="部门状态", null=True, blank=True, help_text="部门状态")
+    name = models.CharField(max_length=64, verbose_name="Nom du département", help_text="Nom du département")
+    key = models.CharField(max_length=64, unique=True, null=True, blank=True, verbose_name="Clé associée",
+                           help_text="Clé associée")
+    sort = models.IntegerField(default=1, verbose_name="Ordre d'affichage", help_text="Ordre d'affichage")
+    owner = models.CharField(max_length=32, verbose_name="Responsable", null=True, blank=True, help_text="Responsable")
+    phone = models.CharField(max_length=32, verbose_name="Téléphone de contact", null=True, blank=True, help_text="Téléphone de contact")
+    email = models.EmailField(max_length=32, verbose_name="E-mail", null=True, blank=True, help_text="E-mail")
+    status = models.BooleanField(default=True, verbose_name="Statut du département", null=True, blank=True, help_text="Statut du département")
     parent = models.ForeignKey(
         to="Dept",
         on_delete=models.CASCADE,
         default=None,
-        verbose_name="上级部门",
+        verbose_name="Département supérieur",
         db_constraint=False,
         null=True,
         blank=True,
-        help_text="上级部门",
+        help_text="Département supérieur",
         db_index=True
     )
 
     @classmethod
     def recursion_dept_info(cls, dept_id: int, dept_all_list=None, dept_list=None):
         """
-        递归获取部门的所有下级部门
-        :param dept_id: 需要获取的id
-        :param dept_all_list: 所有列表
-        :param dept_list: 递归list
+        Récupérer récursivement tous les sous-départements d'un département
+        :param dept_id: id à récupérer
+        :param dept_all_list: liste complète
+        :param dept_list: liste récursive
         :return:
         """
         if not dept_all_list:
@@ -152,7 +152,7 @@ class Dept(CoreModel):
 
     class Meta:
         db_table = table_prefix + "system_dept"
-        verbose_name = "部门表"
+        verbose_name = "Table des départements"
         verbose_name_plural = verbose_name
         ordering = ("sort",)
 
@@ -161,34 +161,34 @@ class Menu(CoreModel):
     parent = models.ForeignKey(
         to="Menu",
         on_delete=models.CASCADE,
-        verbose_name="上级菜单",
+        verbose_name="Menu parent",
         null=True,
         blank=True,
         db_constraint=False,
-        help_text="上级菜单",
+        help_text="Menu parent",
     )
-    icon = models.CharField(max_length=64, verbose_name="菜单图标", null=True, blank=True, help_text="菜单图标")
-    name = models.CharField(max_length=64, verbose_name="菜单名称", help_text="菜单名称")
-    sort = models.IntegerField(default=1, verbose_name="显示排序", null=True, blank=True, help_text="显示排序")
+    icon = models.CharField(max_length=64, verbose_name="Icône du menu", null=True, blank=True, help_text="Icône du menu")
+    name = models.CharField(max_length=64, verbose_name="Nom du menu", help_text="Nom du menu")
+    sort = models.IntegerField(default=1, verbose_name="Ordre d'affichage", null=True, blank=True, help_text="Ordre d'affichage")
     ISLINK_CHOICES = (
-        (0, "否"),
-        (1, "是"),
+        (0, "Non"),
+        (1, "Oui"),
     )
-    is_link = models.BooleanField(default=False, verbose_name="是否外链", help_text="是否外链")
-    is_catalog = models.BooleanField(default=False, verbose_name="是否目录", help_text="是否目录")
-    web_path = models.CharField(max_length=128, verbose_name="路由地址", null=True, blank=True, help_text="路由地址")
-    component = models.CharField(max_length=128, verbose_name="组件地址", null=True, blank=True, help_text="组件地址")
-    component_name = models.CharField(max_length=50, verbose_name="组件名称", null=True, blank=True,
-                                      help_text="组件名称")
-    status = models.BooleanField(default=True, blank=True, verbose_name="菜单状态", help_text="菜单状态")
-    frame_out = models.BooleanField(default=False, blank=True, verbose_name="是否主框架外", help_text="是否主框架外")
-    cache = models.BooleanField(default=False, blank=True, verbose_name="是否页面缓存", help_text="是否页面缓存")
-    visible = models.BooleanField(default=True, blank=True, verbose_name="侧边栏中是否显示",
-                                  help_text="侧边栏中是否显示")
+    is_link = models.BooleanField(default=False, verbose_name="Est un lien externe", help_text="Est un lien externe")
+    is_catalog = models.BooleanField(default=False, verbose_name="Est un répertoire", help_text="Est un répertoire")
+    web_path = models.CharField(max_length=128, verbose_name="Adresse de routage", null=True, blank=True, help_text="Adresse de routage")
+    component = models.CharField(max_length=128, verbose_name="Adresse du composant", null=True, blank=True, help_text="Adresse du composant")
+    component_name = models.CharField(max_length=50, verbose_name="Nom du composant", null=True, blank=True,
+                                      help_text="Nom du composant")
+    status = models.BooleanField(default=True, blank=True, verbose_name="Statut du menu", help_text="Statut du menu")
+    frame_out = models.BooleanField(default=False, blank=True, verbose_name="Hors cadre principal", help_text="Hors cadre principal")
+    cache = models.BooleanField(default=False, blank=True, verbose_name="Mise en cache de la page", help_text="Mise en cache de la page")
+    visible = models.BooleanField(default=True, blank=True, verbose_name="Affiché dans la barre latérale",
+                                  help_text="Affiché dans la barre latérale")
 
     class Meta:
         db_table = table_prefix + "system_menu"
-        verbose_name = "菜单表"
+        verbose_name = "Table des menus"
         verbose_name_plural = verbose_name
         ordering = ("sort",)
 
@@ -199,24 +199,24 @@ class MenuButton(CoreModel):
         db_constraint=False,
         related_name="menuPermission",
         on_delete=models.PROTECT,
-        verbose_name="关联菜单",
-        help_text="关联菜单",
+        verbose_name="Menu associé",
+        help_text="Menu associé",
     )
-    name = models.CharField(max_length=64, verbose_name="名称", help_text="名称")
-    value = models.CharField(max_length=64, verbose_name="权限值", help_text="权限值")
-    api = models.CharField(max_length=200, verbose_name="接口地址", help_text="接口地址")
+    name = models.CharField(max_length=64, verbose_name="Nom", help_text="Nom")
+    value = models.CharField(max_length=64, verbose_name="Valeur de permission", help_text="Valeur de permission")
+    api = models.CharField(max_length=200, verbose_name="Adresse d'API", help_text="Adresse d'API")
     METHOD_CHOICES = (
         (0, "GET"),
         (1, "POST"),
         (2, "PUT"),
         (3, "DELETE"),
     )
-    method = models.IntegerField(default=0, verbose_name="接口请求方法", null=True, blank=True,
-                                 help_text="接口请求方法")
+    method = models.IntegerField(default=0, verbose_name="Méthode de requête d'API", null=True, blank=True,
+                                 help_text="Méthode de requête d'API")
 
     class Meta:
         db_table = table_prefix + "system_menu_button"
-        verbose_name = "菜单权限表"
+        verbose_name = "Table des permissions de menu"
         verbose_name_plural = verbose_name
         ordering = ("-name",)
 
@@ -232,9 +232,9 @@ class Dictionary(CoreModel):
         (6, "boolean"),
         (7, "images"),
     )
-    label = models.CharField(max_length=100, blank=True, null=True, verbose_name="字典名称", help_text="字典名称")
-    value = models.CharField(max_length=200, blank=True, null=True, verbose_name="字典编号",
-                             help_text="字典编号/实际值")
+    label = models.CharField(max_length=100, blank=True, null=True, verbose_name="Nom du dictionnaire", help_text="Nom du dictionnaire")
+    value = models.CharField(max_length=200, blank=True, null=True, verbose_name="Code du dictionnaire",
+                             help_text="Code du dictionnaire / valeur réelle")
     parent = models.ForeignKey(
         to="self",
         related_name="sublist",
@@ -242,26 +242,26 @@ class Dictionary(CoreModel):
         on_delete=models.PROTECT,
         blank=True,
         null=True,
-        verbose_name="父级",
-        help_text="父级",
+        verbose_name="Parent",
+        help_text="Parent",
     )
-    type = models.IntegerField(choices=TYPE_LIST, default=0, verbose_name="数据值类型", help_text="数据值类型")
-    color = models.CharField(max_length=20, blank=True, null=True, verbose_name="颜色", help_text="颜色")
-    is_value = models.BooleanField(default=False, verbose_name="是否为value值",
-                                   help_text="是否为value值,用来做具体值存放")
-    status = models.BooleanField(default=True, verbose_name="状态", help_text="状态")
-    sort = models.IntegerField(default=1, verbose_name="显示排序", null=True, blank=True, help_text="显示排序")
-    remark = models.CharField(max_length=2000, blank=True, null=True, verbose_name="备注", help_text="备注")
+    type = models.IntegerField(choices=TYPE_LIST, default=0, verbose_name="Type de valeur", help_text="Type de valeur")
+    color = models.CharField(max_length=20, blank=True, null=True, verbose_name="Couleur", help_text="Couleur")
+    is_value = models.BooleanField(default=False, verbose_name="Est une valeur",
+                                   help_text="Indique s'il s'agit d'une valeur, utilisée pour stocker la valeur concrète")
+    status = models.BooleanField(default=True, verbose_name="Statut", help_text="Statut")
+    sort = models.IntegerField(default=1, verbose_name="Ordre d'affichage", null=True, blank=True, help_text="Ordre d'affichage")
+    remark = models.CharField(max_length=2000, blank=True, null=True, verbose_name="Remarque", help_text="Remarque")
 
     class Meta:
         db_table = table_prefix + "system_dictionary"
-        verbose_name = "字典表"
+        verbose_name = "Table du dictionnaire"
         verbose_name_plural = verbose_name
         ordering = ("sort",)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        dispatch.refresh_dictionary()  # 有更新则刷新字典配置
+        dispatch.refresh_dictionary()  # En cas de mise à jour, actualiser la configuration du dictionnaire
 
     def delete(self, *args, **kwargs):
         res = super().delete(*args, **kwargs)
@@ -270,27 +270,27 @@ class Dictionary(CoreModel):
 
 
 class OperationLog(CoreModel):
-    request_modular = models.CharField(max_length=64, verbose_name="请求模块", null=True, blank=True,
-                                       help_text="请求模块")
-    request_path = models.CharField(max_length=400, verbose_name="请求地址", null=True, blank=True,
-                                    help_text="请求地址")
-    request_body = models.TextField(verbose_name="请求参数", null=True, blank=True, help_text="请求参数")
-    request_method = models.CharField(max_length=8, verbose_name="请求方式", null=True, blank=True,
-                                      help_text="请求方式")
-    request_msg = models.TextField(verbose_name="操作说明", null=True, blank=True, help_text="操作说明")
-    request_ip = models.CharField(max_length=32, verbose_name="请求ip地址", null=True, blank=True,
-                                  help_text="请求ip地址")
-    request_browser = models.CharField(max_length=64, verbose_name="请求浏览器", null=True, blank=True,
-                                       help_text="请求浏览器")
-    response_code = models.CharField(max_length=32, verbose_name="响应状态码", null=True, blank=True,
-                                     help_text="响应状态码")
-    request_os = models.CharField(max_length=64, verbose_name="操作系统", null=True, blank=True, help_text="操作系统")
-    json_result = models.TextField(verbose_name="返回信息", null=True, blank=True, help_text="返回信息")
-    status = models.BooleanField(default=False, verbose_name="响应状态", help_text="响应状态")
+    request_modular = models.CharField(max_length=64, verbose_name="Module de requête", null=True, blank=True,
+                                       help_text="Module de requête")
+    request_path = models.CharField(max_length=400, verbose_name="Adresse de requête", null=True, blank=True,
+                                    help_text="Adresse de requête")
+    request_body = models.TextField(verbose_name="Paramètres de requête", null=True, blank=True, help_text="Paramètres de requête")
+    request_method = models.CharField(max_length=8, verbose_name="Méthode de requête", null=True, blank=True,
+                                      help_text="Méthode de requête")
+    request_msg = models.TextField(verbose_name="Description de l'opération", null=True, blank=True, help_text="Description de l'opération")
+    request_ip = models.CharField(max_length=32, verbose_name="Adresse IP de requête", null=True, blank=True,
+                                  help_text="Adresse IP de requête")
+    request_browser = models.CharField(max_length=64, verbose_name="Navigateur de requête", null=True, blank=True,
+                                       help_text="Navigateur de requête")
+    response_code = models.CharField(max_length=32, verbose_name="Code de statut de réponse", null=True, blank=True,
+                                     help_text="Code de statut de réponse")
+    request_os = models.CharField(max_length=64, verbose_name="Système d'exploitation", null=True, blank=True, help_text="Système d'exploitation")
+    json_result = models.TextField(verbose_name="Informations de retour", null=True, blank=True, help_text="Informations de retour")
+    status = models.BooleanField(default=False, verbose_name="Statut de réponse", help_text="Statut de réponse")
 
     class Meta:
         db_table = table_prefix + "system_operation_log"
-        verbose_name = "操作日志"
+        verbose_name = "Journal des opérations"
         verbose_name_plural = verbose_name
         ordering = ("-create_datetime",)
 
@@ -302,17 +302,17 @@ def media_file_name(instance, filename):
 
 
 class FileList(CoreModel):
-    name = models.CharField(max_length=200, null=True, blank=True, verbose_name="名称", help_text="名称")
+    name = models.CharField(max_length=200, null=True, blank=True, verbose_name="Nom", help_text="Nom")
     url = models.FileField(upload_to=media_file_name, null=True, blank=True, )
-    file_url = models.CharField(max_length=255, blank=True, verbose_name="文件地址", help_text="文件地址")
-    engine = models.CharField(max_length=100, default='local', blank=True, verbose_name="引擎", help_text="引擎")
-    mime_type = models.CharField(max_length=100, blank=True, verbose_name="Mime类型", help_text="Mime类型")
-    size = models.BigIntegerField(default=0, blank=True, verbose_name="文件大小", help_text="文件大小")
-    md5sum = models.CharField(max_length=36, blank=True, verbose_name="文件md5", help_text="文件md5")
+    file_url = models.CharField(max_length=255, blank=True, verbose_name="Adresse du fichier", help_text="Adresse du fichier")
+    engine = models.CharField(max_length=100, default='local', blank=True, verbose_name="Moteur", help_text="Moteur")
+    mime_type = models.CharField(max_length=100, blank=True, verbose_name="Type MIME", help_text="Type MIME")
+    size = models.BigIntegerField(default=0, blank=True, verbose_name="Taille du fichier", help_text="Taille du fichier")
+    md5sum = models.CharField(max_length=36, blank=True, verbose_name="MD5 du fichier", help_text="MD5 du fichier")
 
     @classmethod
     def save_file(cls, request, file_path, file_name, mime_type):
-        # 保存到File model中
+        # Enregistrer dans le modèle File
         instance = FileList()
         instance.name = file_name
         instance.engine = dispatch.get_system_config_values("file_storage.file_engine") or 'local'
@@ -333,7 +333,7 @@ class FileList(CoreModel):
                 if file_path:
                     instance.file_url = file_path
                 else:
-                    raise ValueError("上传失败")
+                    raise ValueError("Échec du téléversement")
         elif file_engine == 'cos':
             from dvadmin_cloud_storage.views.tencent import tencent_cos_upload
             with open(os.path.join(BASE_DIR, file_path, file_name), 'rb') as file:
@@ -341,7 +341,7 @@ class FileList(CoreModel):
                 if file_path:
                     instance.file_url = file_path
                 else:
-                    raise ValueError("上传失败")
+                    raise ValueError("Échec du téléversement")
         else:
             instance.url = os.path.join(file_path.replace('media/', ''), file_name)
         instance.save()
@@ -362,33 +362,33 @@ class FileList(CoreModel):
 
     class Meta:
         db_table = table_prefix + "system_file_list"
-        verbose_name = "文件管理"
+        verbose_name = "Gestion des fichiers"
         verbose_name_plural = verbose_name
         ordering = ("-create_datetime",)
 
 
 class Area(CoreModel):
-    name = models.CharField(max_length=100, verbose_name="名称", help_text="名称")
-    code = models.CharField(max_length=20, verbose_name="地区编码", help_text="地区编码", unique=True, db_index=True)
-    level = models.BigIntegerField(verbose_name="地区层级(1省份 2城市 3区县 4乡级)",
-                                   help_text="地区层级(1省份 2城市 3区县 4乡级)")
-    pinyin = models.CharField(max_length=255, verbose_name="拼音", help_text="拼音")
-    initials = models.CharField(max_length=20, verbose_name="首字母", help_text="首字母")
-    enable = models.BooleanField(default=True, verbose_name="是否启用", help_text="是否启用")
+    name = models.CharField(max_length=100, verbose_name="Nom", help_text="Nom")
+    code = models.CharField(max_length=20, verbose_name="Code de région", help_text="Code de région", unique=True, db_index=True)
+    level = models.BigIntegerField(verbose_name="Niveau de région (1 province, 2 ville, 3 district, 4 commune)",
+                                   help_text="Niveau de région (1 province, 2 ville, 3 district, 4 commune)")
+    pinyin = models.CharField(max_length=255, verbose_name="Pinyin", help_text="Pinyin")
+    initials = models.CharField(max_length=20, verbose_name="Initiale", help_text="Initiale")
+    enable = models.BooleanField(default=True, verbose_name="Activé", help_text="Activé")
     pcode = models.ForeignKey(
         to="self",
-        verbose_name="父地区编码",
+        verbose_name="Code de région parente",
         to_field="code",
         on_delete=models.PROTECT,
         db_constraint=False,
         null=True,
         blank=True,
-        help_text="父地区编码",
+        help_text="Code de région parente",
     )
 
     class Meta:
         db_table = table_prefix + "system_area"
-        verbose_name = "地区表"
+        verbose_name = "Table des régions"
         verbose_name_plural = verbose_name
         ordering = ("code",)
 
@@ -397,21 +397,21 @@ class Area(CoreModel):
 
 
 class ApiWhiteList(CoreModel):
-    url = models.CharField(max_length=200, help_text="url地址", verbose_name="url")
+    url = models.CharField(max_length=200, help_text="Adresse URL", verbose_name="url")
     METHOD_CHOICES = (
         (0, "GET"),
         (1, "POST"),
         (2, "PUT"),
         (3, "DELETE"),
     )
-    method = models.IntegerField(default=0, verbose_name="接口请求方法", null=True, blank=True,
-                                 help_text="接口请求方法")
-    enable_datasource = models.BooleanField(default=True, verbose_name="激活数据权限", help_text="激活数据权限",
+    method = models.IntegerField(default=0, verbose_name="Méthode de requête d'API", null=True, blank=True,
+                                 help_text="Méthode de requête d'API")
+    enable_datasource = models.BooleanField(default=True, verbose_name="Activer les permissions de données", help_text="Activer les permissions de données",
                                             blank=True)
 
     class Meta:
         db_table = table_prefix + "api_white_list"
-        verbose_name = "接口白名单"
+        verbose_name = "Liste blanche d'API"
         verbose_name_plural = verbose_name
         ordering = ("-create_datetime",)
 
@@ -419,19 +419,19 @@ class ApiWhiteList(CoreModel):
 class SystemConfig(CoreModel):
     parent = models.ForeignKey(
         to="self",
-        verbose_name="父级",
+        verbose_name="Parent",
         on_delete=models.PROTECT,
         db_constraint=False,
         null=True,
         blank=True,
-        help_text="父级",
+        help_text="Parent",
     )
-    title = models.CharField(max_length=50, verbose_name="标题", help_text="标题")
-    key = models.CharField(max_length=200, verbose_name="键", help_text="键", db_index=True)
-    value = models.JSONField(max_length=500, verbose_name="值", help_text="值", null=True, blank=True)
-    sort = models.IntegerField(default=0, verbose_name="排序", help_text="排序", blank=True)
-    status = models.BooleanField(default=True, verbose_name="启用状态", help_text="启用状态")
-    data_options = models.JSONField(verbose_name="数据options", help_text="数据options", null=True, blank=True)
+    title = models.CharField(max_length=50, verbose_name="Titre", help_text="Titre")
+    key = models.CharField(max_length=200, verbose_name="Clé", help_text="Clé", db_index=True)
+    value = models.JSONField(max_length=500, verbose_name="Valeur", help_text="Valeur", null=True, blank=True)
+    sort = models.IntegerField(default=0, verbose_name="Tri", help_text="Tri", blank=True)
+    status = models.BooleanField(default=True, verbose_name="Statut d'activation", help_text="Statut d'activation")
+    data_options = models.JSONField(verbose_name="Options de données", help_text="Options de données", null=True, blank=True)
     FORM_ITEM_TYPE_LIST = (
         (0, "text"),
         (1, "datetime"),
@@ -451,15 +451,15 @@ class SystemConfig(CoreModel):
         (15, "time"),
     )
     form_item_type = models.IntegerField(
-        choices=FORM_ITEM_TYPE_LIST, verbose_name="表单类型", help_text="表单类型", default=0, blank=True
+        choices=FORM_ITEM_TYPE_LIST, verbose_name="Type de formulaire", help_text="Type de formulaire", default=0, blank=True
     )
-    rule = models.JSONField(null=True, blank=True, verbose_name="校验规则", help_text="校验规则")
-    placeholder = models.CharField(max_length=100, null=True, blank=True, verbose_name="提示信息", help_text="提示信息")
-    setting = models.JSONField(null=True, blank=True, verbose_name="配置", help_text="配置")
+    rule = models.JSONField(null=True, blank=True, verbose_name="Règles de validation", help_text="Règles de validation")
+    placeholder = models.CharField(max_length=100, null=True, blank=True, verbose_name="Message d'aide", help_text="Message d'aide")
+    setting = models.JSONField(null=True, blank=True, verbose_name="Configuration", help_text="Configuration")
 
     class Meta:
         db_table = table_prefix + "system_config"
-        verbose_name = "系统配置表"
+        verbose_name = "Table de configuration système"
         verbose_name_plural = verbose_name
         ordering = ("sort",)
         unique_together = (("key", "parent_id"),)
@@ -470,85 +470,85 @@ class SystemConfig(CoreModel):
     def save(self, *args, **kwargs):
         # from application.websocketConfig import websocket_push
         # websocket_push("dvadmin", message={"sender": 'system', "contentType": 'SYSTEM',
-        #                                    "content": '系统配置有变化~', "systemConfig": True})
+        #                                    "content": 'La configuration système a changé~', "systemConfig": True})
 
         super().save(*args, **kwargs)
-        dispatch.refresh_system_config()  # 有更新则刷新系统配置
+        dispatch.refresh_system_config()  # En cas de mise à jour, actualiser la configuration système
 
     def delete(self, *args, **kwargs):
         res = super().delete(*args, **kwargs)
         dispatch.refresh_system_config()
         from application.websocketConfig import websocket_push
         websocket_push("dvadmin", message={"sender": 'system', "contentType": 'SYSTEM',
-                                           "content": '系统配置有变化~', "systemConfig": True})
+                                           "content": 'La configuration système a changé~', "systemConfig": True})
 
         return res
 
 
 class LoginLog(CoreModel):
     LOGIN_TYPE_CHOICES = (
-        (1, "普通登录"),
-        (2, "普通扫码登录"),
-        (3, "微信扫码登录"),
-        (4, "飞书扫码登录"),
-        (5, "钉钉扫码登录"),
-        (6, "短信登录")
+        (1, "Connexion standard"),
+        (2, "Connexion standard par QR code"),
+        (3, "Connexion WeChat par QR code"),
+        (4, "Connexion Feishu par QR code"),
+        (5, "Connexion DingTalk par QR code"),
+        (6, "Connexion par SMS")
     )
-    username = models.CharField(max_length=150, verbose_name="登录用户名", null=True, blank=True,
-                                help_text="登录用户名")
-    ip = models.CharField(max_length=32, verbose_name="登录ip", null=True, blank=True, help_text="登录ip")
-    agent = models.TextField(verbose_name="agent信息", null=True, blank=True, help_text="agent信息")
-    browser = models.CharField(max_length=200, verbose_name="浏览器名", null=True, blank=True, help_text="浏览器名")
-    os = models.CharField(max_length=200, verbose_name="操作系统", null=True, blank=True, help_text="操作系统")
-    continent = models.CharField(max_length=50, verbose_name="州", null=True, blank=True, help_text="州")
-    country = models.CharField(max_length=50, verbose_name="国家", null=True, blank=True, help_text="国家")
-    province = models.CharField(max_length=50, verbose_name="省份", null=True, blank=True, help_text="省份")
-    city = models.CharField(max_length=50, verbose_name="城市", null=True, blank=True, help_text="城市")
-    district = models.CharField(max_length=50, verbose_name="县区", null=True, blank=True, help_text="县区")
-    isp = models.CharField(max_length=50, verbose_name="运营商", null=True, blank=True, help_text="运营商")
-    area_code = models.CharField(max_length=50, verbose_name="区域代码", null=True, blank=True, help_text="区域代码")
-    country_english = models.CharField(max_length=50, verbose_name="英文全称", null=True, blank=True,
-                                       help_text="英文全称")
-    country_code = models.CharField(max_length=50, verbose_name="简称", null=True, blank=True, help_text="简称")
-    longitude = models.CharField(max_length=50, verbose_name="经度", null=True, blank=True, help_text="经度")
-    latitude = models.CharField(max_length=50, verbose_name="纬度", null=True, blank=True, help_text="纬度")
-    login_type = models.IntegerField(default=1, choices=LOGIN_TYPE_CHOICES, verbose_name="登录类型",
-                                     help_text="登录类型")
+    username = models.CharField(max_length=150, verbose_name="Nom d'utilisateur de connexion", null=True, blank=True,
+                                help_text="Nom d'utilisateur de connexion")
+    ip = models.CharField(max_length=32, verbose_name="IP de connexion", null=True, blank=True, help_text="IP de connexion")
+    agent = models.TextField(verbose_name="Informations sur l'agent", null=True, blank=True, help_text="Informations sur l'agent")
+    browser = models.CharField(max_length=200, verbose_name="Nom du navigateur", null=True, blank=True, help_text="Nom du navigateur")
+    os = models.CharField(max_length=200, verbose_name="Système d'exploitation", null=True, blank=True, help_text="Système d'exploitation")
+    continent = models.CharField(max_length=50, verbose_name="Continent", null=True, blank=True, help_text="Continent")
+    country = models.CharField(max_length=50, verbose_name="Pays", null=True, blank=True, help_text="Pays")
+    province = models.CharField(max_length=50, verbose_name="Province", null=True, blank=True, help_text="Province")
+    city = models.CharField(max_length=50, verbose_name="Ville", null=True, blank=True, help_text="Ville")
+    district = models.CharField(max_length=50, verbose_name="District", null=True, blank=True, help_text="District")
+    isp = models.CharField(max_length=50, verbose_name="Opérateur", null=True, blank=True, help_text="Opérateur")
+    area_code = models.CharField(max_length=50, verbose_name="Code de zone", null=True, blank=True, help_text="Code de zone")
+    country_english = models.CharField(max_length=50, verbose_name="Nom complet en anglais", null=True, blank=True,
+                                       help_text="Nom complet en anglais")
+    country_code = models.CharField(max_length=50, verbose_name="Abréviation", null=True, blank=True, help_text="Abréviation")
+    longitude = models.CharField(max_length=50, verbose_name="Longitude", null=True, blank=True, help_text="Longitude")
+    latitude = models.CharField(max_length=50, verbose_name="Latitude", null=True, blank=True, help_text="Latitude")
+    login_type = models.IntegerField(default=1, choices=LOGIN_TYPE_CHOICES, verbose_name="Type de connexion",
+                                     help_text="Type de connexion")
 
     class Meta:
         db_table = table_prefix + "system_login_log"
-        verbose_name = "登录日志"
+        verbose_name = "Journal des connexions"
         verbose_name_plural = verbose_name
         ordering = ("-create_datetime",)
 
 
 class MessageCenter(CoreModel):
-    title = models.CharField(max_length=100, verbose_name="标题", help_text="标题")
-    content = models.TextField(verbose_name="内容", help_text="内容")
-    target_type = models.IntegerField(default=0, verbose_name="目标类型", help_text="目标类型")
+    title = models.CharField(max_length=100, verbose_name="Titre", help_text="Titre")
+    content = models.TextField(verbose_name="Contenu", help_text="Contenu")
+    target_type = models.IntegerField(default=0, verbose_name="Type de cible", help_text="Type de cible")
     target_user = models.ManyToManyField(to=Users, related_name='user', through='MessageCenterTargetUser',
-                                         through_fields=('messagecenter', 'users'), blank=True, verbose_name="目标用户",
-                                         help_text="目标用户")
+                                         through_fields=('messagecenter', 'users'), blank=True, verbose_name="Utilisateurs cibles",
+                                         help_text="Utilisateurs cibles")
     target_dept = models.ManyToManyField(to=Dept, blank=True, db_constraint=False,
-                                         verbose_name="目标部门", help_text="目标部门")
+                                         verbose_name="Départements cibles", help_text="Départements cibles")
     target_role = models.ManyToManyField(to=Role, blank=True, db_constraint=False,
-                                         verbose_name="目标角色", help_text="目标角色")
+                                         verbose_name="Rôles cibles", help_text="Rôles cibles")
 
     class Meta:
         db_table = table_prefix + "message_center"
-        verbose_name = "消息中心"
+        verbose_name = "Centre de messages"
         verbose_name_plural = verbose_name
         ordering = ("-create_datetime",)
 
 
 class MessageCenterTargetUser(CoreModel):
     users = models.ForeignKey(Users, related_name="target_user", on_delete=models.CASCADE, db_constraint=False,
-                              verbose_name="关联用户表", help_text="关联用户表")
+                              verbose_name="Table utilisateurs associée", help_text="Table utilisateurs associée")
     messagecenter = models.ForeignKey(MessageCenter, on_delete=models.CASCADE, db_constraint=False,
-                                      verbose_name="关联消息中心表", help_text="关联消息中心表")
-    is_read = models.BooleanField(default=False, blank=True, null=True, verbose_name="是否已读", help_text="是否已读")
+                                      verbose_name="Table centre de messages associée", help_text="Table centre de messages associée")
+    is_read = models.BooleanField(default=False, blank=True, null=True, verbose_name="Lu", help_text="Lu")
 
     class Meta:
         db_table = table_prefix + "message_center_target_user"
-        verbose_name = "消息中心目标用户表"
+        verbose_name = "Table des utilisateurs cibles du centre de messages"
         verbose_name_plural = verbose_name

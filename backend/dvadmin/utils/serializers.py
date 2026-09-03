@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/6/1 001 22:47
-@Remark: 自定义序列化器
+@Remark: Sérialiseur personnalisé
 """
 from rest_framework import serializers
 from rest_framework.fields import empty
@@ -19,11 +19,11 @@ from django_restql.mixins import DynamicFieldsMixin
 
 class CustomModelSerializer(DynamicFieldsMixin, ModelSerializer):
     """
-    增强DRF的ModelSerializer,可自动更新模型的审计字段记录
-    (1)self.request能获取到rest_framework.request.Request对象
+    Améliore le ModelSerializer de DRF et met à jour automatiquement les champs d'audit du modèle
+    (1) self.request permet d'obtenir l'objet rest_framework.request.Request
     """
 
-    # 修改人的审计字段名称, 默认modifier, 继承使用时可自定义覆盖
+    # Nom du champ d'audit du modificateur, modifier par défaut, personnalisable par surcharge lors de l'héritage
     modifier_field_id = "modifier"
     modifier_name = serializers.SerializerMethodField(read_only=True)
 
@@ -39,14 +39,14 @@ class CustomModelSerializer(DynamicFieldsMixin, ModelSerializer):
             return queryset
         return None
 
-    # 创建人的审计字段名称, 默认creator, 继承使用时可自定义覆盖
+    # Nom du champ d'audit du créateur, creator par défaut, personnalisable par surcharge lors de l'héritage
     creator_field_id = "creator"
     creator_name = serializers.SlugRelatedField(
         slug_field="name", source="creator", read_only=True
     )
-    # 数据所属部门字段
+    # Champ du département d'appartenance des données
     dept_belong_id_field_name = "dept_belong_id"
-    # 添加默认时间返回格式
+    # Ajouter le format de retour de date par défaut
     create_datetime = serializers.DateTimeField(
         format="%Y-%m-%d %H:%M:%S", required=False, read_only=True
     )

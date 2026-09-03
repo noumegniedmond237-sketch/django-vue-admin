@@ -42,7 +42,7 @@ export function BatchDel (keys) {
 }
 
 /**
- * 重置密码
+ * Réinitialiser le mot de passe
  * @param obj
  * @returns {*}
  * @constructor
@@ -56,7 +56,7 @@ export function ResetPwd (obj) {
 }
 
 /**
- * 导出
+ * Exporter install
  * @param params
  */
 export function exportData (params) {

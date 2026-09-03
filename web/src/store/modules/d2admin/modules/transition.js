@@ -1,22 +1,22 @@
-// 设置文件
+// Définir le fichier
 import setting from '@/setting.js'
 
 export default {
   namespaced: true,
   state: {
-    // 是否开启页面过度动画
+    // Indique si l'animation de transition des pages est activée
     active: setting.transition.active
   },
   actions: {
     /**
-     * @description 设置开启状态
+     * @description Définir l'état d'activation
      * @param {Object} context
-     * @param {Boolean} active 新的状态
+     * @param {Boolean} active nouvel état
      */
     async set ({ state, dispatch }, active) {
-      // store 赋值
+      // store Assignation du store
       state.active = active
-      // 持久化
+      // Persistance
       await dispatch('d2admin/db/set', {
         dbName: 'sys',
         path: 'transition.active',
@@ -25,11 +25,11 @@ export default {
       }, { root: true })
     },
     /**
-     * 从数据库读取页面过渡动画设置
+     * Lire les paramètres d'animation de transition depuis la base de données
      * @param {Object} context
      */
     async load ({ state, dispatch }) {
-      // store 赋值
+      // store Assignation du store
       state.active = await dispatch('d2admin/db/get', {
         dbName: 'sys',
         path: 'transition.active',

@@ -2,7 +2,7 @@ import { request } from '@/api/service'
 
 export const urlPrefix = '/api/init/settings/'
 
-// 系统配置
+// Configuration système
 export default {
   namespaced: true,
   state: {
@@ -10,16 +10,16 @@ export default {
   },
   actions: {
     /**
-     * @description 请求最新配置
+     * @description Demander la dernière configuration
      * @param {Object} context
      */
     async init ({ state, dispatch, commit }) {
-      // 请求配置
+      // Demander la configuration
       request({
         url: urlPrefix,
         method: 'get'
       }).then(async res => {
-        // 赋值
+        // Assignation du store
         await dispatch('d2admin/db/set', {
           dbName: 'sys',
           path: 'settings.init',
@@ -30,11 +30,11 @@ export default {
       })
     },
     /**
-     * @description 本地加载配置
+     * @description Charger la configuration locale
      * @param {Object} context
      */
     async load ({ state, dispatch, commit }) {
-      // store 赋值
+      // store Assignation du store
       const data = await dispatch('d2admin/db/get', {
         dbName: 'sys',
         path: 'settings.init',
@@ -46,7 +46,7 @@ export default {
   },
   mutations: {
     /**
-     * @description 获取配置
+     * @description Récupérer la configuration
      * @param {Object} state state
      * @param {String} key active
      * @param {Object} value active
@@ -55,7 +55,7 @@ export default {
       return state[key]
     },
     /**
-     * @description 赋值系统配置
+     * @description Assigner la configuration système
      * @param {Object} state state
      * @param {Object} value active
      */

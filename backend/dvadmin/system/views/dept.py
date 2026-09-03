@@ -3,7 +3,7 @@
 """
 @author: H0nGzA1
 @contact: QQ:2505811377
-@Remark: 部门管理
+@Remark: Gestion des départements
 """
 from rest_framework import serializers
 from rest_framework.decorators import action
@@ -18,7 +18,7 @@ from dvadmin.utils.filters import LazyLoadFilter
 
 class DeptSerializer(CustomModelSerializer):
     """
-    部门-序列化器
+    Sérialiseur de département
     """
     parent_name = serializers.CharField(read_only=True, source='parent.name')
     status_label = serializers.SerializerMethodField()
@@ -33,8 +33,8 @@ class DeptSerializer(CustomModelSerializer):
 
     def get_status_label(self, obj: Dept):
         if obj.status:
-            return "启用"
-        return "禁用"
+            return "Activé"
+        return "Désactivé"
 
     def get_has_children(self, obj: Dept):
         return Dept.objects.filter(parent_id=obj.id).count()
@@ -47,7 +47,7 @@ class DeptSerializer(CustomModelSerializer):
 
 class DeptImportSerializer(CustomModelSerializer):
     """
-    部门-导入-序列化器
+    Sérialiseur d'import des départements
     """
 
     class Meta:
@@ -58,7 +58,7 @@ class DeptImportSerializer(CustomModelSerializer):
 
 class DeptInitSerializer(CustomModelSerializer):
     """
-    递归深度获取数信息(用于生成初始化json文件)
+    Récupération récursive des informations (pour générer le fichier JSON d'initialisation)
     """
     children = serializers.SerializerMethodField()
 
@@ -104,7 +104,7 @@ class DeptInitSerializer(CustomModelSerializer):
 
 class DeptCreateUpdateSerializer(CustomModelSerializer):
     """
-    部门管理 创建/更新时的列化器
+    Sérialiseur de création / mise à jour de la gestion des départements
     """
 
     def create(self, validated_data):
@@ -129,12 +129,12 @@ class DeptLazyFilter(LazyLoadFilter):
 
 class DeptViewSet(CustomModelViewSet):
     """
-    部门管理接口
-    list:查询
-    create:新增
-    update:修改
-    retrieve:单例
-    destroy:删除
+    Interface de gestion des départements
+    list:Rechercher
+    create:Créer
+    update:Modifier
+    retrieve:Détail
+    destroy:Supprimer
     """
 
     queryset = Dept.objects.all()
@@ -147,12 +147,12 @@ class DeptViewSet(CustomModelViewSet):
     # extra_filter_backends = []
     import_serializer_class = DeptImportSerializer
     import_field_dict = {
-        "name": "部门名称",
-        "key": "部门标识",
+        "name": "Nom du département",
+        "key": "Identifiant du département",
     }
 
     def list(self, request, *args, **kwargs):
-        # 如果懒加载，则只返回父级
+        # Si chargement paresseux, ne renvoyer que le niveau parent
         params = request.query_params
         parent = params.get('parent', None)
         if params:
@@ -189,17 +189,17 @@ class DeptViewSet(CustomModelViewSet):
                 else:
                     dept_list = []
             queryset = Dept.objects.filter(id__in=dept_list).values('id', 'name', 'parent')
-        return DetailResponse(data=queryset, msg="获取成功")
+        return DetailResponse(data=queryset, msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[AnonymousUserPermission])
     def all_dept(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         data = queryset.filter(status=True).order_by('sort').values('name', 'id', 'parent')
-        return DetailResponse(data=data, msg="获取成功")
+        return DetailResponse(data=data, msg="Récupéré avec succès")
 
     @action(methods=["GET"], detail=False, permission_classes=[AnonymousUserPermission])
     def all_dept_not_extra(self, request, *args, **kwargs):
         self.extra_filter_backends = []
         queryset = self.filter_queryset(self.get_queryset())
         data = queryset.filter(status=True).order_by('sort').values('name', 'id', 'parent')
-        return DetailResponse(data=data, msg="获取成功")
+        return DetailResponse(data=data, msg="Récupéré avec succès")

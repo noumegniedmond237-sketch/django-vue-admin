@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/6/1 001 22:57
-@Remark: 自定义视图集
+@Remark: Ensemble de vues personnalisé
 """
 import uuid
 
@@ -22,13 +22,13 @@ from django_restql.mixins import QueryArgumentsMixin
 
 class CustomModelViewSet(ModelViewSet,ImportSerializerMixin,ExportSerializerMixin,QueryArgumentsMixin):
     """
-    自定义的ModelViewSet:
-    统一标准的返回格式;新增,查询,修改可使用不同序列化器
-    (1)ORM性能优化, 尽可能使用values_queryset形式
-    (2)xxx_serializer_class 某个方法下使用的序列化器(xxx=create|update|list|retrieve|destroy)
-    (3)filter_fields = '__all__' 默认支持全部model中的字段查询(除json字段外)
-    (4)import_field_dict={} 导入时的字段字典 {model值: model的label}
-    (5)export_field_label = [] 导出时的字段
+    ModelViewSet personnalisé :
+    Format de retour standard unifié ; des sérialiseurs différents peuvent être utilisés pour la création, la consultation et la modification
+    (1) Optimisation des performances ORM, utiliser autant que possible la forme values_queryset
+    (2) xxx_serializer_class sérialiseur utilisé sous une méthode donnée (xxx=create|update|list|retrieve|destroy)
+    (3) filter_fields = '__all__' prend en charge par défaut la recherche sur tous les champs du modèle (sauf les champs JSON)
+    (4) import_field_dict={} dictionnaire des champs à l'import {valeur du modèle : label du modèle}
+    (5) export_field_label = [] champs à l'export
     """
     values_queryset = None
     ordering_fields = '__all__'
@@ -59,7 +59,7 @@ class CustomModelViewSet(ModelViewSet,ImportSerializerMixin,ExportSerializerMixi
             return action_serializer_class
         return super().get_serializer_class()
 
-    # 通过many=True直接改造原有的API，使其可以批量创建
+    # Via many=True, transformer directement l'API d'origine pour permettre la création en masse
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.get_serializer_class()
         kwargs.setdefault('context', self.get_serializer_context())

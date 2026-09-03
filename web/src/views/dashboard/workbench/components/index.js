@@ -2,9 +2,9 @@ import { markRaw } from 'vue'
 
 const resultComps = {}
 const requireComponent = require.context(
-  './', // 在当前目录下查找
-  false, // 不遍历子文件夹
-  /\.vue$/ // 正则匹配 以 .vue结尾的文件
+  './', // Rechercher dans le répertoire courant
+  false, // Ne pas parcourir les sous-dossiers
+  /\.vue$/ // Correspondance par expression régulière Se baser sur le champ fullPath .vueles fichiers se terminant par .vue
 )
 requireComponent.keys().forEach(fileName => {
   const comp = requireComponent(fileName)

@@ -1,5 +1,5 @@
 """
-日志 django中间件
+Middleware Django de journalisation
 """
 import json
 import logging
@@ -16,7 +16,7 @@ from dvadmin.utils.request_util import get_request_user, get_request_ip, get_req
 
 class ApiLoggingMiddleware(MiddlewareMixin):
     """
-    用于记录API访问日志中间件
+    Middleware pour enregistrer les journaux d'accès à l'API
     """
 
     def __init__(self, get_response=None):
@@ -32,9 +32,9 @@ class ApiLoggingMiddleware(MiddlewareMixin):
         request.request_path = get_request_path(request)
 
     def __handle_response(self, request, response):
-        # request_data,request_ip由PermissionInterfaceMiddleware中间件中添加的属性
+        # request_data et request_ip sont des attributs ajoutés par le middleware PermissionInterfaceMiddleware
         body = getattr(request, 'request_data', {})
-        # 请求含有password则用*替换掉(暂时先用于所有接口的password请求参数)
+        # Si la requête contient un mot de passe, le remplacer par * (pour l'instant pour le paramètre password de toutes les interfaces)
         if isinstance(body, dict) and body.get('password', ''):
             body['password'] = '*' * len(body['password'])
         if not hasattr(response, 'data') or not isinstance(response.data, dict):
@@ -80,7 +80,7 @@ class ApiLoggingMiddleware(MiddlewareMixin):
 
     def process_response(self, request, response):
         """
-        主要请求处理完之后记录
+        Enregistrer principalement après le traitement de la requête
         :param request:
         :param response:
         :return:
@@ -93,7 +93,7 @@ class ApiLoggingMiddleware(MiddlewareMixin):
 logger = logging.getLogger("healthz")
 class HealthCheckMiddleware(object):
     """
-    存活检查中间件
+    Middleware de contrôle de disponibilité
     """
     def __init__(self, get_response):
         self.get_response = get_response

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     """
-    项目初始化命令: python manage.py init
+    Commande d'initialisation du projet : python manage.py init
     """
 
     def add_arguments(self, parser):
@@ -30,9 +30,9 @@ class Command(BaseCommand):
             reset = True
         if isinstance(options.get("n"), list) or isinstance(options.get("N"), list):
             reset = False
-        signals.pre_init_complete.send(sender=None, msg='开始初始化', data={"reset": reset})
+        signals.pre_init_complete.send(sender=None, msg='Début de l’initialisation', data={"reset": reset})
         for app in settings.INSTALLED_APPS:
-            signals.detail_init_complete.send(sender=None, msg='初始化中', data={"app": app, "reset": reset})
+            signals.detail_init_complete.send(sender=None, msg='Initialisation en cours', data={"app": app, "reset": reset})
             try:
                 exec(
                     f"""
@@ -41,7 +41,7 @@ Initialize(reset={reset},app="{app}").run()
                 """
                 )
             except ModuleNotFoundError:
-                # 兼容之前版本初始化
+                # Compatibilité avec l'initialisation des versions précédentes
                 try:
                     exec(
                         f"""
@@ -51,5 +51,5 @@ main(reset={reset})
                     )
                 except ModuleNotFoundError:
                     pass
-        signals.post_init_complete.send(sender=None, msg='初始化完成', data={"reset": reset})
-        print("初始化数据完成！")
+        signals.post_init_complete.send(sender=None, msg='Initialisation terminée', data={"reset": reset})
+        print("Initialisation des données terminée !")

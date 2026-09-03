@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/6/6 006 12:39
-@Remark: 自定义过滤器
+@Remark: Filtres personnalisés
 """
 import operator
 import re
@@ -30,10 +30,10 @@ from dvadmin.system.models import Dept, ApiWhiteList
 
 def get_dept(dept_id: int, dept_all_list=None, dept_list=None):
     """
-    递归获取部门的所有下级部门
-    :param dept_id: 需要获取的部门id
-    :param dept_all_list: 所有部门列表
-    :param dept_list: 递归部门list
+    Récupérer récursivement tous les sous-départements d'un département
+    :param dept_id: identifiant du département à récupérer
+    :param dept_all_list: liste de tous les départements
+    :param dept_list: liste récursive des départements
     :return:
     """
     if not dept_all_list:
@@ -49,26 +49,26 @@ def get_dept(dept_id: int, dept_all_list=None, dept_list=None):
 
 class DataLevelPermissionsFilter(BaseFilterBackend):
     """
-    数据 级权限过滤器
-    0. 获取用户的部门id，没有部门则返回空
-    1. 判断过滤的数据是否有创建人所在部门 "creator" 字段,没有则返回全部
-    2. 如果用户没有关联角色则返回本部门数据
-    3. 根据角色的最大权限进行数据过滤(会有多个角色，进行去重取最大权限)
-    3.1 判断用户是否为超级管理员角色/如果有1(所有数据) 则返回所有数据
+    Filtre d'autorisations de niveau de données
+    0. Récupérer l'identifiant du département de l'utilisateur, renvoyer vide s'il n'a pas de département
+    1. Vérifier si les données filtrées possèdent le champ du département d'appartenance du créateur "creator", sinon renvoyer tout
+    2. Si l'utilisateur n'a aucun rôle associé, renvoyer les données de son département
+    3. Filtrer les données selon l'autorisation maximale des rôles (plusieurs rôles possibles, dédupliquer et prendre le maximum)
+    3.1 Vérifier si l'utilisateur a un rôle super administrateur / s'il a 1 (toutes les données), renvoyer toutes les données
 
-    4. 只为仅本人数据权限时只返回过滤本人数据，并且部门为自己本部门(考虑到用户会变部门，只能看当前用户所在的部门数据)
-    5. 自定数据权限 获取部门，根据部门过滤
+    4. Pour une autorisation limitée aux seules données personnelles, ne renvoyer que les données personnelles et du département actuel (l'utilisateur pouvant changer de département, seul le département actuel est pris en compte)
+    5. Autorisations de données personnalisées : récupérer les départements et filtrer selon eux
     """
 
     def filter_queryset(self, request, queryset, view):
         """
-        接口白名单是否认证数据权限
+        Vérifier si la liste blanche d'interfaces authentifie les autorisations de données
         """
-        api = request.path  # 当前请求接口
-        method = request.method  # 当前请求方法
+        api = request.path  # Interface de la requête actuelle
+        method = request.method  # Méthode de la requête actuelle
         methodList = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
         method = methodList.index(method)
-        # ***接口白名单***
+        # ***Liste blanche d'interfaces***
         api_white_list = ApiWhiteList.objects.filter(enable_datasource=False).values(
             permission__api=F("url"), permission__method=F("method")
         )
@@ -85,43 +85,43 @@ class DataLevelPermissionsFilter(BaseFilterBackend):
             else:
                 return queryset
         """
-        判断是否为超级管理员:
-        如果不是超级管理员,则进入下一步权限判断
+        Vérifier s'il s'agit d'un super administrateur :
+        Si ce n'est pas un super administrateur, passer à l'étape suivante de vérification des autorisations
         """
         if request.user.is_superuser == 0:
-            # 0. 获取用户的部门id，没有部门则返回空
+            # 0. Récupérer l'identifiant du département de l'utilisateur, renvoyer vide s'il n'en a pas
             user_dept_id = getattr(request.user, "dept_id", None)
             if not user_dept_id:
                 return queryset.none()
 
-            # 1. 判断过滤的数据是否有创建人所在部门 "dept_belong_id" 字段
+            # 1. Vérifier si les données filtrées possèdent le champ du département d'appartenance "dept_belong_id"
             if not getattr(queryset.model, "dept_belong_id", None):
                 return queryset
 
-            # 2. 如果用户没有关联角色则返回本部门数据
+            # 2. Si l'utilisateur n'a aucun rôle associé, renvoyer les données de son département
             if not hasattr(request.user, "role"):
                 return queryset.filter(dept_belong_id=user_dept_id)
 
-            # 3. 根据所有角色 获取所有权限范围
-            # (0, "仅本人数据权限"),
-            # (1, "本部门及以下数据权限"),
-            # (2, "本部门数据权限"),
-            # (3, "全部数据权限"),
-            # (4, "自定数据权限")
+            # 3. Récupérer toutes les portées d'autorisation selon tous les rôles
+            # (0, "Données personnelles uniquement"),
+            # (1, "Données du département et des sous-départements"),
+            # (2, "Données du département"),
+            # (3, "Toutes les données"),
+            # (4, "Données personnalisées")
             role_list = request.user.role.filter(status=1).values("admin", "data_range")
-            dataScope_list = []  # 权限范围列表
+            dataScope_list = []  # Liste des portées d'autorisation
             for ele in role_list:
-                # 判断用户是否为超级管理员角色/如果拥有[全部数据权限]则返回所有数据
+                # Vérifier si l'utilisateur a un rôle super administrateur / s'il possède [toutes les données], renvoyer toutes les données
                 if 3 == ele.get("data_range") or ele.get("admin") == True:
                     return queryset
                 dataScope_list.append(ele.get("data_range"))
             dataScope_list = list(set(dataScope_list))
 
-            # 4. 只为仅本人数据权限时只返回过滤本人数据，并且部门为自己本部门(考虑到用户会变部门，只能看当前用户所在的部门数据)
+            # 4. Pour une autorisation limitée aux seules données personnelles, ne renvoyer que les données personnelles et du département actuel (l'utilisateur pouvant changer de département, seul le département actuel est pris en compte)
             if 0 in dataScope_list:
                 return queryset.filter(creator=request.user, dept_belong_id=user_dept_id)
 
-            # 5. 自定数据权限 获取部门，根据部门过滤
+            # 5. Autorisations de données personnalisées : récupérer les départements et filtrer selon eux
             dept_list = []
             for ele in dataScope_list:
                 if ele == 4:
@@ -168,7 +168,7 @@ class CustomDjangoFilterBackend(DjangoFilterBackend):
         for lookup in orm_lookups:
             # if lookup.find(search_term_key) >= 0:
             new_lookup = LOOKUP_SEP.join(lookup.split(LOOKUP_SEP)[:-1]) if len(lookup.split(LOOKUP_SEP)) > 1 else lookup
-            # 修复条件搜索错误 bug
+            # Corriger le bug de recherche conditionnelle
             if new_lookup == search_term_key:
                 return lookup
         return None
@@ -284,13 +284,13 @@ class CustomDjangoFilterBackend(DjangoFilterBackend):
                         from django.db import models
                         from timezone_field import TimeZoneField
 
-                        # 不进行 过滤的model 类
+                        # Classes de modèles exclues du filtrage
                         if isinstance(field, (models.JSONField, TimeZoneField)):
                             continue
                         # warn if the field doesn't exist.
                         if field is None:
                             undefined.append(field_name)
-                        # 更新默认字符串搜索为模糊搜索
+                        # Mettre à jour la recherche de chaînes par défaut en recherche floue
                         if (
                             isinstance(field, (models.CharField))
                             and filterset_fields == "__all__"
@@ -373,7 +373,7 @@ class CustomDjangoFilterBackend(DjangoFilterBackend):
         return filterset.qs
 
 
-# ####################### 懒加载FilterSet ####################### #
+# ####################### FilterSet de chargement paresseux ####################### #
 
 import time
 
@@ -415,7 +415,7 @@ def next_layer_data(qs_filter, qs_node):
     parent_nodes = set(qs_node.values_list("id", flat=True))
     if set(qs_filter) == set(qs_node):
         return parent_nodes
-    # qs_filter内所有父级id     去重
+    # Tous les identifiants parents dans qs_filter, dédupliqués
     parent_ids = set()
     for node in qs_filter:
         while node.parent:
@@ -426,9 +426,9 @@ def next_layer_data(qs_filter, qs_node):
                 parent_ids.add(node.parent.id)
                 break
             node = node.parent
-    # print(f"过滤查询集           ==>         {qs_filter}", flush=True)
-    # print(f"待渲染节点的id        ==>         {parent_nodes=}", flush=True)
-    # print(f"过滤查询集的父节点id   ==>         {parent_ids=}", flush=True)
+    # print(f"Ensemble de requêtes filtré           ==>         {qs_filter}", flush=True)
+    # print(f"Identifiants des noeuds à rendre        ==>         {parent_nodes=}", flush=True)
+    # print(f"Identifiants parents de l'ensemble filtré   ==>         {parent_ids=}", flush=True)
     return parent_ids
 
 
@@ -444,11 +444,11 @@ def construct_data(qs_filter, qs_node, is_parent):
             node = node.parent
     on_show = filter_node_ids.difference(hidden_node_ids)
     on_expand = hidden_node_ids & render_node_ids
-    # print(f"完整查询结果 {filter_node_ids}")
-    # print(f"待展示的节点(未过滤) {render_node_ids}")
-    # print(f"查询结果中的子节点 {hidden_node_ids}")
-    # print(f"查询后首先渲染的父节点 {on_show}")
-    # print(f"展开父节点时要渲染的节点 {on_expand}")
+    # print(f"Résultat complet de la requête {filter_node_ids}")
+    # print(f"Noeuds à afficher (non filtrés) {render_node_ids}")
+    # print(f"Noeuds enfants dans le résultat {hidden_node_ids}")
+    # print(f"Noeuds parents rendus en premier après filtrage {on_show}")
+    # print(f"Noeuds à rendre lors de l'expansion du parent {on_expand}")
     return on_expand if is_parent else on_show
 
 
@@ -458,7 +458,7 @@ class FilterSetOptions:
         self.fields = getattr(options, "fields", None)
         self.exclude = getattr(options, "exclude", None)
 
-        # CharField默认模糊查询
+        # Recherche floue par défaut pour CharField
         self.filter_overrides = getattr(
             options,
             "filter_overrides",
@@ -506,10 +506,10 @@ class LazyLoadFilter(FilterSet, metaclass=LazyLoadFilterSetMetaclass):
         if self.form.cleaned_data:
             self.queryset = queryset.model.objects.all()
 
-            # 从根节点开始
+            # Commencer depuis les noeuds racines
             # node_ids = next_layer_data(super().qs, queryset)
 
-            # 按匹配结果显示
+            # Afficher selon les résultats correspondants
             node_ids = construct_data(super().qs, queryset, is_parent)
 
             return queryset.model.objects.filter(id__in=node_ids)

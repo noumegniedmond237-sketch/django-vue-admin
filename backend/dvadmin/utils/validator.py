@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/6/2 002 17:03
-@Remark: 自定义验证器
+@Remark: Validateurs personnalisés
 """
 
 from django.db import DataError
@@ -14,7 +14,7 @@ from rest_framework.validators import UniqueValidator
 
 class CustomValidationError(APIException):
     """
-    继承并重写验证器返回的结果,避免暴露字段
+    Hériter et surcharger le résultat renvoyé par le validateur pour éviter d'exposer les champs
     """
 
     def __init__(self, detail):
@@ -37,7 +37,7 @@ def qs_filter(queryset, **kwargs):
 
 class CustomUniqueValidator(UniqueValidator):
     """
-    继承,重写必填字段的验证器结果,防止字段暴露
+    Hériter et surcharger le résultat du validateur des champs obligatoires pour éviter d'exposer les champs
     """
 
     def filter_queryset(self, value, queryset, field_name):

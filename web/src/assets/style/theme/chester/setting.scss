@@ -1,16 +1,16 @@
-// 主题名称
+// Nom du thème
 $theme-name: 'chester';
-// 主题背景颜色
+// Couleur de fond du thème
 $theme-bg-color: #2C3643;
-// 主题背景图片遮罩
+// Masque de l'image de fond du thème
 $theme-bg-mask: rgba(#000, 0);
 
-// 消息提示
+// Invite de message
 $theme-message-info-background-color: #FFFFFF;
 $theme-message-info-text-color: #222A34;
 $theme-message-info-border-color: #222A34;
 
-// container组件
+// containerComposant
 $theme-container-background-color: rgba(#FFF, 1);
 $theme-container-header-footer-background-color: #FFF;
 $theme-container-border-inner: 1px solid #CFD7E5;
@@ -25,37 +25,37 @@ $theme-multiple-page-control-border-color-active: #FFFFFF;
 $theme-multiple-page-control-background-color: #242D38;
 $theme-multiple-page-control-background-color-active: #FFFFFF;
 
-// 顶栏和侧边栏中展开的菜单 hover 状态下
+// Menu déplié de la barre supérieure et latérale, au survol hover
 $theme-menu-item-color-hover: #CCCCCC;
 $theme-menu-item-background-color-hover: #2A2D2E;
 
-// 顶栏上的文字颜色
+// Couleur du texte de la barre supérieure
 $theme-header-item-color: #CCCCCC;
 $theme-header-item-background-color: transparent;
-// 顶栏上的项目在 hover 时
+// Élément de la barre supérieure au survol
 $theme-header-item-color-hover: #CCCCCC;
 $theme-header-item-background-color-hover: #2A2D2E;
-// 顶栏上的项目在 focus 时
+// Élément de la barre supérieure au focus
 $theme-header-item-color-focus: #CCCCCC;
 $theme-header-item-background-color-focus: #222A34;
-// 顶栏上的项目在 active 时
+// Élément de la barre supérieure à l'état actif
 $theme-header-item-color-active: #FFFFFF;
 $theme-header-item-background-color-active: #222A34;
 
-// 侧边栏上的文字颜色
+// Couleur du texte de la barre latérale
 $theme-aside-item-color: #CCCCCC;
 $theme-aside-item-background-color: transparent;
-// 侧边栏上的项目在 hover 时
+// Élément de la barre latérale au survol
 $theme-aside-item-color-hover: #CCCCCC;
 $theme-aside-item-background-color-hover: #2A2D2E;
-// 侧边栏上的项目在 focus 时
+// Élément de la barre latérale au focus
 $theme-aside-item-color-focus: #CCCCCC;
 $theme-aside-item-background-color-focus: #222A34;
-// 侧边栏上的项目在 active 时
+// Élément de la barre latérale à l'état actif
 $theme-aside-item-color-active: #FFFFFF;
 $theme-aside-item-background-color-active: #222A34;
 
-// 侧边栏菜单为空的时候显示的元素
+// Élément affiché quand le menu latéral est vide
 $theme-aside-menu-empty-icon-color: #CCCCCC;
 $theme-aside-menu-empty-text-color: #CCCCCC;
 $theme-aside-menu-empty-background-color: #242D38;

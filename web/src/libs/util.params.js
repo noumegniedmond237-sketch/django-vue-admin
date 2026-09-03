@@ -1,7 +1,7 @@
 /**
- * 对请求参数进行过滤
+ * Filtrer les paramètres de la requête
  *@param that=>this
- *@param array:其他字段数组
+ *@param array : tableau des autres champs
  */
 const filterParams = function (that, array) {
   that.$nextTick(() => {

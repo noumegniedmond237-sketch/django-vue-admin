@@ -3,20 +3,20 @@ import util from '@/libs/util'
 
 export default {
   install (Vue, options) {
-    // 快速打印 log
+    // Impression rapide des logs log
     Vue.prototype.$log = {
       ...util.log,
       push (data) {
         if (typeof data === 'string') {
-          // 如果传递来的数据是字符串
-          // 赋值给 message 字段
-          // 为了方便使用
+          // Si les données transmises sont une chaîne
+          // Assigner au champ message
+          // Pour faciliter l'utilisation
           // eg: this.$log.push('foo text')
           store.dispatch('d2admin/log/push', {
             message: data
           })
         } else if (typeof data === 'object') {
-          // 如果传递来的数据是对象
+          // Si les données transmises sont un objet
           store.dispatch('d2admin/log/push', data)
         }
       }

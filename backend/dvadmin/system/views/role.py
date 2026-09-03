@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/6/3 003 0:30
-@Remark: 角色管理
+@Remark: Gestion des rôles
 """
 from rest_framework import serializers
 from rest_framework.decorators import action
@@ -22,7 +22,7 @@ from dvadmin.utils.viewset import CustomModelViewSet
 
 class RoleSerializer(CustomModelSerializer):
     """
-    角色-序列化器
+    Sérialiseur de rôle
     """
 
     class Meta:
@@ -33,7 +33,7 @@ class RoleSerializer(CustomModelSerializer):
 
 class RoleInitSerializer(CustomModelSerializer):
     """
-    初始化获取数信息(用于生成初始化json文件)
+    Informations d'initialisation (pour générer le fichier JSON d'initialisation)
     """
 
     class Meta:
@@ -49,13 +49,13 @@ class RoleInitSerializer(CustomModelSerializer):
 
 class RoleCreateUpdateSerializer(CustomModelSerializer):
     """
-    角色管理 创建/更新时的列化器
+    Sérialiseur de création / mise à jour de la gestion des rôles
     """
     menu = MenuSerializer(many=True, read_only=True)
     dept = DeptSerializer(many=True, read_only=True)
     permission = MenuButtonSerializer(many=True, read_only=True)
     key = serializers.CharField(max_length=50,
-                                validators=[CustomUniqueValidator(queryset=Role.objects.all(), message="权限字符必须唯一")])
+                                 validators=[CustomUniqueValidator(queryset=Role.objects.all(), message="Le code de permission doit être unique")])
     name = serializers.CharField(max_length=50, validators=[CustomUniqueValidator(queryset=Role.objects.all())])
 
     def validate(self, attrs: dict):
@@ -78,7 +78,7 @@ class RoleCreateUpdateSerializer(CustomModelSerializer):
 
 class MenuPermissonSerializer(CustomModelSerializer):
     """
-    菜单的按钮权限
+    Autorisations de boutons du menu
     """
     menuPermission = serializers.SerializerMethodField()
 
@@ -99,12 +99,12 @@ class MenuPermissonSerializer(CustomModelSerializer):
 
 class RoleViewSet(CustomModelViewSet):
     """
-    角色管理接口
-    list:查询
-    create:新增
-    update:修改
-    retrieve:单例
-    destroy:删除
+    Interface de gestion des rôles
+    list:Rechercher
+    create:Créer
+    update:Modifier
+    retrieve:Détail
+    destroy:Supprimer
     """
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
@@ -114,7 +114,7 @@ class RoleViewSet(CustomModelViewSet):
 
     @action(methods=['GET'], detail=False, permission_classes=[IsAuthenticated])
     def role_get_menu(self, request):
-        """根据当前用户的角色返回角色拥有的菜单"""
+        """Renvoyer les menus détenus par le rôle selon le rôle de l'utilisateur actuel"""
         is_superuser = request.user.is_superuser
         is_admin = request.user.role.values_list('admin',flat=True)
         if is_superuser or True in is_admin:
@@ -134,23 +134,23 @@ class RoleViewSet(CustomModelViewSet):
             data = [
                 {
                     "value": 0,
-                    "label": '仅本人数据权限'
+                    "label": 'Données personnelles uniquement'
                 },
                 {
                     "value": 1,
-                    "label": '本部门及以下数据权限'
+                    "label": 'Données du département et des sous-départements'
                 },
                 {
                     "value": 2,
-                    "label": '本部门数据权限'
+                    "label": 'Données du département'
                 },
                 {
                     "value": 3,
-                    "label": '全部数据权限'
+                    "label": 'Toutes les données'
                 },
                 {
                     "value": 4,
-                    "label": '自定义数据权限'
+                    "label": 'Données personnalisées'
                 }
             ]
         else:
@@ -160,46 +160,46 @@ class RoleViewSet(CustomModelViewSet):
                 if item == 0:
                     data = [{
                         "value": 0,
-                        "label": '仅本人数据权限'
+                        "label": 'Données personnelles uniquement'
                     }]
                 elif item == 1:
                     data = [{
                         "value": 0,
-                        "label": '仅本人数据权限'
+                        "label": 'Données personnelles uniquement'
                     }, {
                         "value": 1,
-                        "label": '本部门及以下数据权限'
+                        "label": 'Données du département et des sous-départements'
                     },
                         {
                             "value": 2,
-                            "label": '本部门数据权限'
+                            "label": 'Données du département'
                         }]
                 elif item == 2:
                     data = [{
                         "value": 0,
-                        "label": '仅本人数据权限'
+                        "label": 'Données personnelles uniquement'
                     },
                         {
                             "value": 2,
-                            "label": '本部门数据权限'
+                            "label": 'Données du département'
                         }]
                 elif item == 3:
                     data = [{
                         "value": 0,
-                        "label": '仅本人数据权限'
+                        "label": 'Données personnelles uniquement'
                     },
                         {
                             "value": 3,
-                            "label": '全部数据权限'
+                            "label": 'Toutes les données'
                         }, ]
                 elif item == 4:
                     data = [{
                         "value": 0,
-                        "label": '仅本人数据权限'
+                        "label": 'Données personnelles uniquement'
                     },
                         {
                             "value": 4,
-                            "label": '自定义数据权限'
+                            "label": 'Données personnalisées'
                         }]
                 else:
                     data = []
@@ -207,7 +207,7 @@ class RoleViewSet(CustomModelViewSet):
 
     @action(methods=['GET'], detail=False, permission_classes=[IsAuthenticated])
     def data_scope_dept(self,request):
-        """根据当前角色获取部门信息"""
+        """Récupérer les informations du département selon le rôle actuel"""
         is_superuser = request.user.is_superuser
         if is_superuser:
             queryset = Dept.objects.values('id','name','parent')

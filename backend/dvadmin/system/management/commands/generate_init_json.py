@@ -25,10 +25,10 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     """
-    生产初始化菜单: python3 manage.py generate_init_json 生成初始化的model名
-    例如：
-    全部生成：python3 manage.py generate_init_json
-    只生成某个model的： python3 manage.py generate_init_json users
+    Générer le menu d'initialisation : python3 manage.py generate_init_json <nom du modèle d'initialisation>
+    Exemples :
+    Tout générer : python3 manage.py generate_init_json
+    Générer uniquement un modèle : python3 manage.py generate_init_json users
     """
 
     def serializer_data(self, serializer, query_set: QuerySet):
@@ -39,7 +39,7 @@ class Command(BaseCommand):
         return
 
     def add_arguments(self, parser):
-        parser.add_argument("generate_name", nargs="*", type=str, help="初始化生成的表名")
+        parser.add_argument("generate_name", nargs="*", type=str, help="Nom de la table à générer pour l'initialisation")
 
     def generate_users(self):
         self.serializer_data(UsersInitSerializer, Users.objects.all())
@@ -80,8 +80,8 @@ class Command(BaseCommand):
 
         for generate_name in generate_name:
             if generate_name not in generate_name_dict:
-                print(f"该初始化方法尚未配置\n{generate_name_dict}")
-                raise Exception(f"该初始化方法尚未配置,已配置项:{list(generate_name_dict.keys())}")
+                print(f"Cette méthode d'initialisation n'est pas encore configurée\n{generate_name_dict}")
+                raise Exception(f"Cette méthode d'initialisation n'est pas encore configurée, éléments configurés :{list(generate_name_dict.keys())}")
             generate_name_dict[generate_name]()
             return
 

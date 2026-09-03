@@ -109,7 +109,7 @@ export default {
     color:#4cc134;
     margin: 10px;
     animation: changeshadow 1s  ease-in  infinite ;
-    /* 其它浏览器兼容性前缀 */
+    /* Préfixes de compatibilité pour les autres navigateurs */
     -webkit-animation: changeshadow 1s linear infinite;
     -moz-animation: changeshadow 1s linear infinite;
     -ms-animation: changeshadow 1s linear infinite;

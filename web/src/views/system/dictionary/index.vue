@@ -1,6 +1,6 @@
 <template>
   <d2-container :class="{ 'page-compact': crud.pageOptions.compact }">
-    <!--    <template slot="header">测试页面1</template>-->
+    <!--    <template slot="header">Page de test1</template>-->
     <d2-crud-x
       ref="d2Crud"
       v-bind="_crudProps"
@@ -77,7 +77,7 @@ export default {
     delRequest (row) {
       return api.DelObj(row.id)
     },
-    // 字典配置
+    // Configuration du dictionnaire
     dictionaryConfigure (scope) {
       this.drawer = true
       this.dictionaryRow = scope.row

@@ -1,14 +1,14 @@
 <!--
- * @创建文件时间: 2021-06-01 22:41:21
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-08-12 00:06:38
- * 联系Qq:1638245306
- * @文件介绍:
+ * @date-de-creation: 2021-06-01 22:41:21
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-08-12 00:06:38
+ * Contact QQ : 1638245306
+ * @description-fichier:
 -->
 <template>
   <d2-container :class="{ 'page-compact': crud.pageOptions.compact }">
-    <!--    <template slot="header">测试页面1</template>-->
+    <!--    <template slot="header">Page de test1</template>-->
     <d2-crud-x
       ref="d2Crud"
       v-bind="_crudProps"
@@ -68,14 +68,14 @@ export default {
     delRequest (row) {
       return api.DelObj(row.id)
     },
-    // 授权
+    // Autorisation
     createPermission (scope) {
       this.$router.push({
         name: 'menuButton',
         query: { id: scope.row.id, name: scope.row.name }
       })
     },
-    // 返回views目录下所有vue文件路径
+    // Retourner les chemins de tous les fichiers vue sous views
     searchFiles () {
       const files = require.context('@/views', true, /\.vue$/)
       const result = []
@@ -88,7 +88,7 @@ export default {
       return result
     },
     /**
-     * 懒加载
+     * Chargement différé (lazy)
      * @param row
      * @returns {Promise<unknown>}
      */

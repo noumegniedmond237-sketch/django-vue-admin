@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/6/3 003 0:30
-@Remark: 字典管理
+@Remark: Gestion des dictionnaires
 """
 from rest_framework import serializers
 from rest_framework.views import APIView
@@ -18,7 +18,7 @@ from dvadmin.utils.viewset import CustomModelViewSet
 
 class DictionarySerializer(CustomModelSerializer):
     """
-    字典-序列化器
+    Sérialiseur de dictionnaire
     """
 
     class Meta:
@@ -29,7 +29,7 @@ class DictionarySerializer(CustomModelSerializer):
 
 class DictionaryInitSerializer(CustomModelSerializer):
     """
-    初始化获取数信息(用于生成初始化json文件)
+    Informations d'initialisation (pour générer le fichier JSON d'initialisation)
     """
     children = serializers.SerializerMethodField()
 
@@ -44,7 +44,7 @@ class DictionaryInitSerializer(CustomModelSerializer):
     def save(self, **kwargs):
         instance = super().save(**kwargs)
         children = self.initial_data.get('children')
-        # 菜单表
+        # Table des menus
         if children:
             for data in children:
                 data['parent'] = instance.id
@@ -73,7 +73,7 @@ class DictionaryInitSerializer(CustomModelSerializer):
 
 class DictionaryCreateUpdateSerializer(CustomModelSerializer):
     """
-    字典管理 创建/更新时的列化器
+    Sérialiseur de création / mise à jour de la gestion des dictionnaires
     """
 
     class Meta:
@@ -83,12 +83,12 @@ class DictionaryCreateUpdateSerializer(CustomModelSerializer):
 
 class DictionaryViewSet(CustomModelViewSet):
     """
-    字典管理接口
-    list:查询
-    create:新增
-    update:修改
-    retrieve:单例
-    destroy:删除
+    Interface de gestion des dictionnaires
+    list:Rechercher
+    create:Créer
+    update:Modifier
+    retrieve:Détail
+    destroy:Supprimer
     """
     queryset = Dictionary.objects.all()
     serializer_class = DictionarySerializer
@@ -98,7 +98,7 @@ class DictionaryViewSet(CustomModelViewSet):
 
 class InitDictionaryViewSet(APIView):
     """
-    获取初始化配置
+    Récupérer la configuration d'initialisation
     """
     authentication_classes = []
     permission_classes = []
@@ -115,5 +115,5 @@ class InitDictionaryViewSet(APIView):
             else:
                 data = self.queryset.filter(parent__value=dictionary_key, status=True).values('label', 'value', 'type',
                                                                                               'color')
-            return SuccessResponse(data=data, msg="获取成功")
-        return SuccessResponse(data=[], msg="获取成功")
+            return SuccessResponse(data=data, msg="Récupéré avec succès")
+        return SuccessResponse(data=[], msg="Récupéré avec succès")

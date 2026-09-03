@@ -12,7 +12,7 @@ export function GetList (query) {
     method: 'get',
     params: { ...query, limit: 100 }
   }).then(res => {
-    // 将列表数据转换为树形数据
+    // Convertir la liste en données arborescentes
     res.data.data.map(value => {
       value.hasChildren = value.pcode_count !== 0
     })

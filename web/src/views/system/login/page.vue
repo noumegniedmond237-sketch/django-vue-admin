@@ -113,9 +113,9 @@
               <a href="https://beian.miit.gov.cn" target="_blank">{{
                 keepRecord
                 }}</a>
-              | <a :href="helpUrl || '#'" target="_blank">帮助</a> |
-              <a :href="privacyUrl || '#'" target="_blank">隐私</a> |
-              <a :href="clauseUrl || '#'" target="_blank">条款</a>
+              | <a :href="helpUrl || '#'" target="_blank">Aide</a> |
+              <a :href="privacyUrl || '#'" target="_blank">Confidentialité</a> |
+              <a :href="clauseUrl || '#'" target="_blank">Conditions</a>
             </p>
           </div>
           <!-- footer -->
@@ -149,7 +149,7 @@ export default {
     }
   },
   created () {
-    // 注册第三方登录插件
+    // Enregistrer le plugin de connexion tierce
     var componentTag = ''
     try {
       componentTag = pluginImport('dvadmin-third-web/src/login/index')
@@ -175,7 +175,7 @@ export default {
     overflow: hidden;
   }
 
-  // 快速选择用户面板
+  // Panneau de sélection rapide d'utilisateur
   .page-login--quick {
     margin-top: 20px;
   }

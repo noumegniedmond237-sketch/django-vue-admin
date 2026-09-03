@@ -14,24 +14,24 @@
 </template>
 
 <script>
-// 文件格式化展示组件
+// Composant d'affichage formaté des fichiers
 export default {
   name: 'd2p-files-format',
   props: {
-    // 值
+    // Valeur
     value: {
       require: true
     },
-    // 颜色，【primary, success, warning, danger ,info】
+    // Couleur,[primary, success, warning, danger ,info]
     color: {
       require: false,
       default: 'primary'
     },
-    // 展示类型【text, tag】
+    // Type d'affichage[text, tag]
     type: {
-      default: 'tag' // 可选【text,tag】
+      default: 'tag' // Optionnel[text,tag]
     },
-    // 构建下载url方法
+    // Méthode de construction de l'URL de téléchargementurl
     buildUrl: {
       type: Function,
       default: function (value, item) { return value }
@@ -50,7 +50,7 @@ export default {
       if (typeof (this.value) === 'string') {
         valueArr = [this.getItem(this.value)]
       } else if (this.value instanceof Array) {
-        // 本来就是数组的
+        // Déjà un tableau à l'origine
         valueArr = []
         for (const val of this.value) {
           valueArr.push(this.getItem(val))

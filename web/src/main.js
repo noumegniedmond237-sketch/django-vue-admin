@@ -1,30 +1,30 @@
 /*
- * @创建文件时间: 2021-06-01 22:41:19
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-08-12 00:57:05
- * 联系Qq:1638245306
- * @文件介绍:
+ * @date-de-creation: 2021-06-01 22:41:19
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-08-12 00:57:05
+ * Contact QQ : 1638245306
+ * @description-fichier:
  */
 // Vue
 import Vue from 'vue'
 import i18n from './i18n'
 import App from './App'
-// 核心插件
+// Plugin principal
 import d2Admin from '@/plugin/d2admin'
 // store
 import store from '@/store/index'
 
-// 菜单和路由设置
+// Paramètres de menu et de routes
 import router from './router'
 import { menuHeader } from '@/menu'
 
-// 按钮权限
-import '@/plugin/permission' // 加载permission
+// Permissions des boutons
+import '@/plugin/permission' // Charger permissionpermission
 
-// d2-crud-plus 安装与初始化
+// d2-crud-plus Installation et initialisation
 import './install'
-// 配置vxe-table
+// Configuration du SDKvxe-table
 import 'xe-utils'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
@@ -33,9 +33,9 @@ import 'vxe-table/lib/style.css'
 import websocket from '@/api/websocket'
 import util from '@/libs/util'
 import VueCoreVideoPlayer from 'vue-core-video-player'
-// 引入echarts
-import * as echarts from 'echarts' // 注册echarts组件
-// 第三方组件
+// Enregistrer le composant echarts
+import * as echarts from 'echarts' // Enregistrer le composant echarts
+// Composants tiers
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 // NOTE: vue-core-video-player écrase Vue.prototype.$t avec son i18n interne
@@ -45,7 +45,7 @@ Vue.use(VueClipboard)
 const vueI18nT = Vue.prototype.$t
 Vue.use(VueCoreVideoPlayer)
 if (vueI18nT) Vue.prototype.$t = vueI18nT
-// 核心插件
+// Plugin principal
 Vue.use(d2Admin)
 Vue.use(VXETable)
 Vue.prototype.$util = util
@@ -57,33 +57,33 @@ new Vue({
   i18n,
   render: h => h(App),
   beforeCreate () {
-    // 初始化配置
+    // Initialiser la configuration
     this.$store.dispatch('d2admin/settings/load')
     this.$store.dispatch('d2admin/dictionary/load')
   },
   created () {
 
-    // 处理路由 得到每一级的路由设置
+    // Traiter les routes (obtenir les paramètres de chaque niveau)
     // this.$store.commit('d2admin/page/init', frameInRoutes)
-    // 设置顶栏菜单
+    // Définir le menu de la barre supérieure
     // this.$store.commit('d2admin/menu/headerSet', menuHeader)
-    // 设置侧边栏菜单
+    // Définir le menu latéral
     // this.$store.commit('d2admin/menu/asideSet', menuAside)
-    // 初始化菜单搜索功能
+    // Initialiser la recherche dans le menu
     // this.$store.commit('d2admin/search/init', menuAside)
   },
   mounted () {
-    // 展示系统信息
+    // Afficher les informations système
     this.$store.commit('d2admin/releases/versionShow')
-    // 用户登录后从数据库加载一系列的设置
+    // Après la connexion, charger une série de paramètres depuis la base de données
     this.$store.dispatch('d2admin/account/load')
-    // 获取并记录用户 UA
+    // Obtenir et enregistrer l'UA de l'utilisateur UA
     this.$store.commit('d2admin/ua/get')
-    // 初始化全屏监听
+    // Initialiser l'écoute du plein écran
     this.$store.dispatch('d2admin/fullscreen/listen')
   },
   watch: {
-    // 检测路由变化切换侧边栏内容
+    // Détecter les changements de route pour changer le contenu latéral
     '$route.matched': {
       handler (matched) {
         if (matched.length > 0) {

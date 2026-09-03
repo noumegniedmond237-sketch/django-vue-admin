@@ -3,7 +3,7 @@ const urlPrefix = '/api/system/menu_button/get_btn_permission/'
 export default {
   namespaced: true,
   state: {
-    // 未读消息
+    // Messages non lus
     data: []
   },
   getters: {
@@ -13,11 +13,11 @@ export default {
   },
   actions: {
     /**
-     * @description 获取数据
+     * @description Récupérer les données
      * @param {Object} context
-     * @param {String} param message {String} 信息
-     * @param {String} param type {String} 类型
-     * @param {Object} payload meta {Object} 附带的信息
+     * @param {String} param message {String} information
+     * @param {String} param type {String} type
+     * @param {Object} payload meta {Object} informations jointes
      */
     async load ({
       state,
@@ -35,7 +35,7 @@ export default {
   },
   mutations: {
     /**
-     * 设置权限数据
+     * Définir les données de permission
      * @param state
      * @param number
      */

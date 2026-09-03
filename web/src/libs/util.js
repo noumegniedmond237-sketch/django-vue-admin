@@ -11,20 +11,18 @@ const util = {
 }
 
 /**
- * @description 更新标题
- * @param {String} titleText 标题
+ * @description Mettre à jour le titre
+ * @param {String} titleText titre
  */
 util.title = function (titleText) {
-  let processTitle = process.env.VUE_APP_TITLE || 'Django Vue Admin'
-  if (processTitle === '企业级后台管理系统') processTitle = 'Django Vue Admin'
-  let displayTitle = titleText
-  if (displayTitle === '控制台') displayTitle = 'Tableau de bord'
+  const processTitle = process.env.VUE_APP_TITLE || 'Django Vue Admin'
+  const displayTitle = titleText
   window.document.title = `${processTitle}${displayTitle ? ` | ${displayTitle}` : ''}`
 }
 
 /**
- * @description 打开新页面
- * @param {String} url 地址
+ * @description Ouvrir une nouvelle page
+ * @param {String} url adresse
  */
 util.open = function (url) {
   var a = document.createElement('a')
@@ -36,15 +34,15 @@ util.open = function (url) {
   document.body.removeChild(document.getElementById('d2admin-link-temp'))
 }
 /**
- * @description 校验是否为租户模式。租户模式把域名替换成 域名 加端口
+ * @description Vérifier si le mode locataire (tenant) est actif (le nom de domaine est remplacé par domaine + port)
  */
 util.baseURL = function () {
   var baseURL = process.env.VUE_APP_API
   var param = baseURL.split('/')[3] || ''
   if (window.pluginsAll && window.pluginsAll.indexOf('dvadmin-tenants-web') !== -1 && (!param || baseURL.startsWith('/'))) {
-    // 1.把127.0.0.1 替换成和前端一样域名
-    // 2.把 ip 地址替换成和前端一样域名
-    // 3.把 /api 或其他类似的替换成和前端一样域名
+    // 1. Remplacer 127.0.0.1 par le même nom de domaine que le frontend
+    // 2. Remplacer l'adresse IP par le même nom de domaine que le frontend
+    // 3. Remplacer /api ou similaire par le même nom de domaine que le frontend
     // document.domain
     var host = baseURL.split('/')[2]
     if (host) {
@@ -75,9 +73,9 @@ util.wsBaseURL = function () {
   var baseURL = process.env.VUE_APP_API
   var param = baseURL.split('/')[3] || ''
   if (window.pluginsAll && window.pluginsAll.indexOf('dvadmin-tenants-web') !== -1 && (!param || baseURL.startsWith('/'))) {
-    // 1.把127.0.0.1 替换成和前端一样域名
-    // 2.把 ip 地址替换成和前端一样域名
-    // 3.把 /api 或其他类似的替换成和前端一样域名
+    // 1. Remplacer 127.0.0.1 par le même nom de domaine que le frontend
+    // 2. Remplacer l'adresse IP par le même nom de domaine que le frontend
+    // 3. Remplacer /api ou similaire par le même nom de domaine que le frontend
     // document.domain
     var host = baseURL.split('/')[2]
     if (host) {
@@ -97,19 +95,19 @@ util.wsBaseURL = function () {
   if (!baseURL.endsWith('/')) {
     baseURL += '/'
   }
-  if (baseURL.startsWith('http')) { // https 也默认会被替换成 wss
+  if (baseURL.startsWith('http')) { // https https est aussi remplacé par wss par défaut wss
     baseURL = baseURL.replace('http', 'ws')
   }
   return baseURL
 }
 /**
- * 自动生成ID
+ * Générer automatiquementID
  */
 util.autoCreateCode = function () {
   return dayjs().format('YYYYMMDDHHmmssms') + Math.round(Math.random() * 80 + 20)
 }
 /**
- * 自动生成短 ID
+ * Générer automatiquementcourt ID
  */
 util.autoShortCreateCode = function () {
   var Num = ''
@@ -120,7 +118,7 @@ util.autoShortCreateCode = function () {
 }
 
 /**
- * 生产随机字符串
+ * Générer une chaîne aléatoire
  */
 util.randomString = function (e) {
   e = e || 32
@@ -166,7 +164,7 @@ util.ArrayToTree = function (rootList, parentValue, parentName, list) {
   }
 
   for (const i of list) {
-    // 如果子元素里面存在children就直接递归，不存在就生成一个children
+    // S'il y a des children, récursion directe, sinon créer un childrenchildren,children
     if (i.children) {
       util.ArrayToTree(rootList, i.id, i.name, i.children)
     } else {
@@ -180,7 +178,7 @@ util.ArrayToTree = function (rootList, parentValue, parentName, list) {
   }
   return list
 }
-// 格式化字节大小
+// Formater la taille en octets
 util.formatBytes = function (bytes, decimals = 2) {
   if (isNaN(bytes)) {
     return bytes

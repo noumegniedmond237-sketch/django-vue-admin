@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <router-view/>
-    <!--  用来兼容乾坤前端微服务  -->
+    <!--  Pour la compatibilité avec le micro-frontend Qiankun  -->
     <div id="qiankun"></div>
-    <!-- 授权后可以删除-->
+    <!-- Peut être supprimé après autorisation-->
     <div class="dvadmin-auth">
       <span>Powered by Django-Vue-Admin</span>
       <el-divider direction="vertical"></el-divider>
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss">
-// 授权样式
+// Style d'autorisation
 .dvadmin-auth {
   font-size: 0.8em;
   position: fixed;

@@ -1,4 +1,4 @@
-// 每个主题特有的设置
+// Paramètres propres à chaque thème
 .theme-#{$theme-name} {
 
   .el-message {
@@ -18,7 +18,7 @@
     }
   }
 
-  // 背景图片和遮罩
+  // Image d'arrière-plan et masque
   .d2-layout-header-aside-group {
     background-color: $theme-bg-color;
     .d2-layout-header-aside-mask {
@@ -26,7 +26,7 @@
     }
   }
 
-  // 菜单项目
+  // Éléments du menu
   @mixin theme-menu-hover-style {
     color: $theme-menu-item-color-hover;
     i.fa {
@@ -68,10 +68,10 @@
   .el-menu--horizontal .el-menu .el-submenu__title:hover {
     @include theme-menu-hover-style;
   }
-  
-  // 顶栏
+
+  // Barre supérieure
   .d2-theme-header {
-    // 顶栏菜单空间不足时显示的滚动控件
+    // Contrôle de défilement quand le menu supérieur manque de place
     .d2-theme-header-menu {
       .d2-theme-header-menu__prev, .d2-theme-header-menu__next {
         color: $theme-header-item-color;
@@ -82,7 +82,7 @@
         }
       }
     }
-    // 切换按钮
+    // Bouton de bascule
     .toggle-aside-btn {
       i {
         color: $theme-header-item-color;
@@ -92,7 +92,7 @@
         }
       }
     }
-    // 顶栏菜单
+    // Menu de la barre supérieure
     .el-menu {
       .el-menu-item {
         transition: border-top-color 0s;
@@ -150,7 +150,7 @@
         }
       }
     }
-    // 顶栏右侧
+    // Côté droit de la barre supérieure
     .d2-header-right {
       .btn-text {
         color: $theme-header-item-color;
@@ -163,11 +163,11 @@
       }
     }
   }
-  // [布局] 顶栏下面
+  // [Disposition] Sous la barre supérieure
   .d2-theme-container {
-    // 侧边栏
+    // Barre latérale
     .d2-theme-container-aside {
-      // 菜单为空的时候显示的信息
+      // Information affichée quand le menu est vide
       .d2-layout-header-aside-menu-empty {
         background: $theme-aside-menu-empty-background-color;
         i {
@@ -186,7 +186,7 @@
           }
         }
       }
-      // [菜单] 正常状态
+      // [Menu] état normal
       .el-menu {
         .el-menu-item {
           color: $theme-aside-item-color;
@@ -244,9 +244,9 @@
       }
     }
     .d2-theme-container-main {
-      // 主体部分分为多页面控制器 和主体
+      // La zone principale se divise en contrôleur multi-pages et corps
       .d2-theme-container-main-header {
-        // 多页面控制器
+        // Contrôleur multi-pages
         .d2-multiple-page-control {
           .el-tabs__header.is-top {
             border-bottom-color: $theme-multiple-page-control-border-color;
@@ -283,7 +283,7 @@
             color: $theme-multiple-page-control-nav-next-color;
           }
         }
-        // 多页控制器的关闭控制
+        // Contrôle de fermeture du contrôleur multi-pages
         .d2-multiple-page-control-btn {
           .el-dropdown {
             .el-button-group {
@@ -294,12 +294,12 @@
           }
         }
       }
-      // 主体
+      // Zone principale
       .d2-theme-container-main-body {
-        // 布局组件
+        // Composant de disposition
         .container-component {
-          // [组件]
-          // d2-container-full 填充型
+          // [Composant]
+          // d2-container-full type remplissage
           .d2-container-full {
             border: $theme-container-border-outer;
             border-top: none;
@@ -316,8 +316,8 @@
               background: $theme-container-header-footer-background-color;
             }
           }
-          // [组件]
-          // d2-container-full-bs 填充型 滚动优化
+          // [Composant]
+          // d2-container-full-bs type remplissage optimisation du défilement
           .d2-container-full-bs {
             border: $theme-container-border-outer;
             border-top: none;
@@ -334,8 +334,8 @@
               background: $theme-container-header-footer-background-color;
             }
           }
-          // [组件]
-          // d2-container-ghost 隐形布局组件
+          // [Composant]
+          // d2-container-ghost Composant de disposition invisible
           .d2-container-ghost {
             .d2-container-ghost__header {
               border-bottom: $theme-container-border-outer;
@@ -350,8 +350,8 @@
               background: $theme-container-header-footer-background-color;
             }
           }
-          // [组件]
-          // d2-container-ghost-bs 隐形布局组件 滚动优化
+          // [Composant]
+          // d2-container-ghost-bs Composant de disposition invisible optimisation du défilement
           .d2-container-ghost-bs {
             .d2-container-ghost-bs__header {
               border-bottom: $theme-container-border-outer;
@@ -366,8 +366,8 @@
               background: $theme-container-header-footer-background-color;
             }
           }
-          // [组件]
-          // d2-container-card 卡片型
+          // [Composant]
+          // d2-container-card type carte
           .d2-container-card {
             .d2-container-card__header {
               border-bottom: $theme-container-border-inner;
@@ -390,8 +390,8 @@
               background: $theme-container-header-footer-background-color;
             }
           }
-          // [组件]
-          // d2-container-card-bs 卡片型 滚动优化
+          // [Composant]
+          // d2-container-card-bs type carte optimisation du défilement
           .d2-container-card-bs {
             .d2-container-card-bs__header {
               border-bottom: $theme-container-border-inner;

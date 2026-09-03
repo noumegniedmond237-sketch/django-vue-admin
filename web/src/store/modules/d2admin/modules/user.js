@@ -1,19 +1,19 @@
 export default {
   namespaced: true,
   state: {
-    // 用户信息
+    // Informations utilisateur
     info: {}
   },
   actions: {
     /**
-     * @description 设置用户数据
+     * @description Définir les données utilisateur
      * @param {Object} context
      * @param {*} info info
      */
     async set ({ state, dispatch }, info) {
-      // store 赋值
+      // store Assignation du store
       state.info = info
-      // 持久化
+      // Persistance
       // await dispatch('d2admin/db/set', {
       //   dbName: 'sys',
       //   path: 'user.info',
@@ -22,11 +22,11 @@ export default {
       // }, { root: true })
     },
     /**
-     * @description 从数据库取用户数据
+     * @description Récupérer les données utilisateur depuis la base de données
      * @param {Object} context
      */
     async load ({ state, dispatch }) {
-      // store 赋值
+      // store Assignation du store
       // state.info = await dispatch('d2admin/db/get', {
       //   dbName: 'sys',
       //   path: 'user.info',

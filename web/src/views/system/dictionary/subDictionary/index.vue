@@ -32,7 +32,7 @@ export default {
   name: 'subDictionary',
   mixins: [d2CrudPlus.crud],
   props: {
-    // 容器样式
+    // Style du conteneur
     dictionaryRow: {
       type: Object,
       required: true

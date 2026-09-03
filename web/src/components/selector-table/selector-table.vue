@@ -101,7 +101,7 @@ export default {
   },
   mixins: [d2CrudPlus.input, d2CrudPlus.inputDict],
   props: {
-    // 值
+    // Valeur
     value: {
       type: [String, Number, Array],
       required: false,
@@ -112,12 +112,12 @@ export default {
       required: false,
       default: ''
     },
-    // 数据字典配置
+    // Configuration du dictionnaire de données
     dict: {
       type: Object,
       require: false
     },
-    // 其他配置
+    // Autres configurations
     elProps: {
       type: Object,
       require: false,
@@ -131,7 +131,7 @@ export default {
         }
       }
     },
-    // 你可以定义一些参数，通过component.props传进来
+    // On peut définir des paramètres transmis via component.props
     color: {
       required: false
     },
@@ -149,7 +149,7 @@ export default {
   },
   data () {
     return {
-      // 由于value值是props参数，是不允许修改的，需要用别的值存起来
+      // Comme la valeur value est un paramètre props (non modifiable), la stocker dans une autre variable
       currentValue: [],
       pageConfig: {
         page: 1,
@@ -164,7 +164,7 @@ export default {
     }
   },
   computed: {
-    // 你也可以通过computed来监听value的变化，跟watch作用类似，根据实际情况选用
+    // On peut aussi surveiller les changements de value via computed (similaire à watch, à choisir selon le cas)computedsurveiller les changements de value,watch,
     _elProps () {
       return this.elProps
     }
@@ -172,12 +172,12 @@ export default {
   watch: {
     // value: {
     //   handler (value, oldVal) {
-    //     // 父组件收到input事件后会通过v-model改变value参数的值
-    //     // 然后此处会watch到value的改变，发出change事件
-    //     // change事件放在此处发射的好处是，当外部修改value值时，也能够触发form-data-change事件
+    //     // Après réception de l'événement input, le composant parent modifie la valeur du paramètre value via v-model
+    //     // Ici on détectera le changement et on émettra l'événement changewatchàvalue,émetchangeévénement
+    //     // L'avantage d'émettre l'événement change ici : même si la valeur est modifiée de l'extérieur, l'événement form-data-change est aussi déclenché
     //     this.$emit('change', value)
     //     this.$emit('input', value)
-    //     // 如果值是被外部改变的，则修改本组件的currentValue
+    //     // Si la valeur a été modifiée de l'extérieur, modifier currentValue de ce composant,currentValue
     //     if (Array.isArray(value) && value.length === 0) {
     //       this.currentValue = null
     //       this.multipleSelection = null
@@ -193,7 +193,7 @@ export default {
     multipleSelection: {
       handler (newValue, oldVal) {
         const { tableConfig } = this._elProps
-        // 是否多选
+        // Indique si sélection multiple
         if (tableConfig.multiple) {
           this.currentValue = newValue
         } else {
@@ -224,11 +224,11 @@ export default {
     // }
   },
   mounted () {
-    // 给currentValue设置初始值
+    // Définir la valeur initiale de currentValue
     this.setCurrentValue(this.value)
   },
   methods: {
-    // 设置显示值
+    // Définir la valeur affichée
     setCurrentValue (val) {
       const params = {}
       if (this._elProps.tableConfig.pagination) {
@@ -236,7 +236,7 @@ export default {
         params.limit = this.pageConfig.limit
       }
       if (val && val.toString().length > 0) {
-        // 在这里对 传入的value值做处理
+        // Traiter ici la valeur value entrante
         const { url, value, label } = this.dict
         params[value] = val
         const queryList = ['id', label, value]
@@ -263,7 +263,7 @@ export default {
         this.currentValue = []
       }
     },
-    // 获取数据
+    // Récupérer les données
     getDict () {
       const that = this
       const { value, label } = this.dict
@@ -312,7 +312,7 @@ export default {
       }
     },
     /**
-     * 下拉框展开/关闭
+     * Ouverture de la liste déroulante/Fermer websocket
      * @param bool
      */
     visibleChange () {
@@ -320,7 +320,7 @@ export default {
       that.getDict()
       const { tableConfig } = that._elProps
       if (tableConfig.multiple) {
-        that.$refs.tableRef.clearSelection() // 先清空选择,再赋值选择
+        that.$refs.tableRef.clearSelection() // D'abord vider la sélection, puis assigner,
         // eslint-disable-next-line no-unused-expressions
         that.currentValue ? that.currentValue.forEach(item => {
           that.$refs.tableRef.toggleRowSelection(item, true)
@@ -328,7 +328,7 @@ export default {
       }
     },
     /**
-     * 分页
+     * Pagination
      * @param page
      */
     handlePageChange (page) {
@@ -336,7 +336,7 @@ export default {
       this.getDict()
     },
     /**
-     * 表格多选
+     * Sélection multiple du tableau
      * @param val:Array
      */
     handleSelectionChange (val) {
@@ -349,7 +349,7 @@ export default {
       this.$emit('change', result)
     },
     /**
-     * 表格单选
+     * Sélection unique du tableau
      * @param val:Object
      */
     handleCurrentChange (val) {
@@ -362,7 +362,7 @@ export default {
       }
     },
     /***
-     * 清空
+     * Vider les informations utilisateur de vuex
      */
     onClear () {
       const { tableConfig } = this._elProps
@@ -375,7 +375,7 @@ export default {
       }
     },
     /**
-     * tag删除事件
+     * tagÉvénement de suppression
      * @param obj
      */
     itemClosed (obj, index) {

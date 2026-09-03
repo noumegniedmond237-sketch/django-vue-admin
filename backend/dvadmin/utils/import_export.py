@@ -11,21 +11,21 @@ from dvadmin.utils.validator import CustomValidationError
 
 def import_to_data(file_url, field_data, m2m_fields=None):
     """
-    读取导入的excel文件
+    Lire le fichier Excel à importer
     :param file_url:
-    :param field_data: 首行数据源
-    :param m2m_fields: 多对多字段
+    :param field_data: Données sources de la première ligne
+    :param m2m_fields: Champs plusieurs-à-plusieurs
     :return:
     """
-    # 读取excel 文件
+    # Lire le fichier Excel
     file_path_dir = os.path.join(settings.BASE_DIR, file_url)
     workbook = openpyxl.load_workbook(file_path_dir)
     table = workbook[workbook.sheetnames[0]]
-    theader = tuple(table.values)[0]  # Excel的表头
-    is_update = '更新主键(勿改)' in theader  # 是否导入更新
-    if is_update is False:  # 不是更新时,删除id列
+    theader = tuple(table.values)[0]  # En-tête du tableau Excel
+    is_update = 'Update key (do not modify)' in theader  # Vérifier s'il s'agit d'un import avec mise à jour
+    if is_update is False:  # Si ce n'est pas une mise à jour, supprimer la colonne id
         field_data.pop('id')
-    # 获取参数映射
+    # Obtenir le mappage des paramètres
     validation_data_dict = {}
     for key, value in field_data.items():
         if isinstance(value, dict):
@@ -42,7 +42,7 @@ def import_to_data(file_url, field_data, m2m_fields=None):
             else:
                 continue
             validation_data_dict[key] = data_dict
-    # 创建一个空列表，存储Excel的数据
+    # Créer une liste vide pour stocker les données Excel
     tables = []
     for i, row in enumerate(range(table.max_row)):
         if i == 0:
@@ -62,11 +62,11 @@ def import_to_data(file_url, field_data, m2m_fields=None):
                 try:
                     cell_value = datetime.strptime(str(cell_value), '%Y-%m-%d %H:%M:%S').date()
                 except:
-                    raise CustomValidationError('日期格式不正确')
+                    raise CustomValidationError('Format de date incorrect')
             elif value_type == 'datetime':
                 cell_value = datetime.strptime(str(cell_value), '%Y-%m-%d %H:%M:%S')
             else:
-                # 由于excel导入数字类型后，会出现数字加 .0 的，进行处理
+                # Les nombres importés depuis Excel pouvant afficher un .0 superflu, les traiter
                 if type(cell_value) is float and str(cell_value).split(".")[1] == "0":
                     cell_value = int(str(cell_value).split(".")[0])
                 elif type(cell_value) is str:

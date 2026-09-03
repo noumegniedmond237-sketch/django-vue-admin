@@ -5,9 +5,9 @@ import { frameInRoutes, frameOutRoutes } from '@/router/routes'
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 const pluginImport = require('@/libs/util.import.plugin')
 /**
- * @description 给菜单数据补充上 path 字段
+ * @description Compléter les données du menu avec le champ path
  * @description https://github.com/d2-projects/d2-admin/issues/209
- * @param {Array} menu 原始的菜单数据
+ * @param {Array} menu données de menu d'origine
  */
 function supplementPath (menu) {
   return menu.map(e => ({
@@ -23,14 +23,14 @@ export const menuHeader = supplementPath([])
 
 export const menuAside = supplementPath([])
 
-// 请求菜单数据,用于解析路由和侧边栏菜单
+// Demander les données de menu (pour analyser routes et menu latéral)
 export const getMenu = function () {
   return request({
     url: '/api/system/menu/web_router/',
     method: 'get',
     params: {}
   }).then((res) => {
-    // 设置动态路由
+    // Définir les routes dynamiques
     const menuData = res.data.data
     sessionStorage.setItem('menuData', JSON.stringify(menuData))
     return menuData
@@ -38,7 +38,7 @@ export const getMenu = function () {
 }
 
 /**
- * 校验路由是否有效
+ * Vérifier si la route est valide
  */
 export const checkRouter = function (menuData) {
   const result = []
@@ -49,13 +49,13 @@ export const checkRouter = function (menuData) {
       }
       result.push(item)
     } catch (err) {
-      console.log(`导入菜单错误，会导致页面无法访问，请检查文件是否存在：${item.component}`)
+      console.log(`Erreur d'import du menu (la page sera inaccessible). Vérifier que le fichier existe : ${item.component}`)
     }
   }
   return result
 }
 /**
- * 将获取到的后端菜单数据,解析为前端路由
+ * Analyser les données de menu du backend en routes frontend
  */
 export const handleRouter = function (menuData) {
   const result = []
@@ -88,10 +88,10 @@ export const handleRouter = function (menuData) {
 }
 
 /**
- * 将前端的侧边菜单进行处理
+ * Traiter le menu latéral du frontend
  */
 export const handleAsideMenu = function (menuData) {
-  // 将列表数据转换为树形数据
+  // Convertir la liste en données arborescentes
   const data = XEUtils.toArrayTree(menuData, {
     parentKey: 'parent',
     strict: true

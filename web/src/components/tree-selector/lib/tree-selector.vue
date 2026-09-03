@@ -63,27 +63,27 @@
 import lodash from 'lodash'
 import { d2CrudPlus } from 'd2-crud-plus'
 import log from 'd2p-extends/src/utils/util.log'
-// 树形选择组件，需要import {D2pTreeSelector} from 'd2p-extends'
+// Composant de sélection arborescente,nécessiteimport {D2pTreeSelector} from 'd2p-extends'
 export default {
   name: 'd2p-tree-selector',
   mixins: [d2CrudPlus.input, d2CrudPlus.inputDict],
   props: {
-    // 值
+    // Valeur
     value: {
       type: [Number, String, Boolean, Array, Object]
     },
-    // 过滤，value中的nodes过滤方法 参数为nodes
+    // Filtrage : méthode de filtrage des nodes dans value paramètre : nodes
     filter: {
       type: Function,
       require: false
     },
-    // 占位符
+    // Texte d'espace réservé (placeholder)
     placeholder: {
       type: String,
       required: false,
       default: 'Sélectionner'
     },
-    // 过滤的placeholder
+    // Placeholder du filtre
     filterPlaceholder: {
       type: String,
       default: 'Filtrer par mot-clé'
@@ -100,35 +100,35 @@ export default {
       type: String,
       default: 'Confirmer'
     },
-    // 树形组件节点过滤，可以配置elProps.filterNodeMethod ，覆盖默认的过滤方法
+    // Filtrage des nœuds du composant arborescent (configurer elProps.filterNodeMethod pour remplacer le filtre par défaut),elProps.filterNodeMethod ,
     treeFilter: {
       type: Boolean,
       require: false,
       default: true
     },
-    // 是否多选，传入false为单选
+    // Indique si sélection multiple,transmettre false pour une sélection unique
     multiple: {
       type: Boolean,
       default: true
     },
-    // 是否忽略选中节点的子节点
+    // Indique s'il faut ignorer les enfants des nœuds sélectionnés
     ignoreFullCheckedChildren: { type: Boolean, default: true },
-    // 是否只返回叶子节点
+    // Indique s'il faut ne retourner que les nœuds feuilles
     leafOnly: { type: Boolean, default: false },
-    // 是否包含半选节点
+    // Indique s'il faut inclure les nœuds à moitié sélectionnés
     includeHalfChecked: { type: Boolean, default: false },
-    // el-tree的属性配置
+    // el-treeConfiguration des propriétés de el-tree
     elProps: {
       type: Object
     },
     /**
-     * 是否可以清除
+     * Indique si effaçable
      */
     clearable: {
       type: Boolean,
       default: true
     },
-    // 数据字典配置
+    // Configuration du dictionnaire de données
     dict: {
       type: Object,
       require: false

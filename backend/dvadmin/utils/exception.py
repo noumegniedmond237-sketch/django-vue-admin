@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/6/2 002 16:06
-@Remark: 自定义异常处理
+@Remark: Gestion des exceptions personnalisée
 """
 import logging
 import traceback
@@ -22,31 +22,31 @@ logger = logging.getLogger(__name__)
 
 def CustomExceptionHandler(ex, context):
     """
-    统一异常拦截处理
-    目的:(1)取消所有的500异常响应,统一响应为标准错误返回
-        (2)准确显示错误信息
+    Interception et traitement unifiés des exceptions
+    Objectifs : (1) annuler toutes les réponses d'exception 500 et les unifier en retour d'erreur standard
+        (2) afficher précisément les informations d'erreur
     :param ex:
     :param context:
     :return:
     """
     msg = ""
     code = 4000
-    # 调用默认的异常处理函数
+    # Appeler la fonction de traitement des exceptions par défaut
     response = exception_handler(ex, context)
     if isinstance(ex, AuthenticationFailed):
-        # 如果是身份验证错误
+        # S'il s'agit d'une erreur d'authentification
         if response and response.data.get("detail") == "Given token not valid for any token type":
             code = 401
             msg = ex.detail
         elif response and response.data.get("detail") == "Token is blacklisted":
-            # token在黑名单
+            # Token dans la liste noire
             return ErrorResponse(status=HTTP_401_UNAUTHORIZED)
         else:
             code = 401
             msg = ex.detail
     elif isinstance(ex, Http404):
         code = 400
-        msg = "接口地址不正确"
+        msg = "Adresse d'interface incorrecte"
     elif isinstance(ex, DRFAPIException):
         set_rollback()
         msg = ex.detail
@@ -58,10 +58,10 @@ def CustomExceptionHandler(ex, context):
                     msg = "%s:%s" % (k, i)
     elif isinstance(ex, (ProtectedError, RestrictedError)):
         set_rollback()
-        msg = "无法删除:该条数据与其他数据有相关绑定"
+        msg = "Suppression impossible : ces données sont liées à d'autres données"
     # elif isinstance(ex, DatabaseError):
     #     set_rollback()
-    #     msg = "接口服务器异常,请联系管理员"
+    #     msg = "Exception du serveur d'interface, veuillez contacter l'administrateur"
     elif isinstance(ex, Exception):
         logger.exception(traceback.format_exc())
         msg = str(ex)

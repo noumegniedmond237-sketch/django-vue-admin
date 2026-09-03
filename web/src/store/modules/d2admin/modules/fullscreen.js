@@ -3,12 +3,12 @@ import screenfull from 'screenfull'
 export default {
   namespaced: true,
   state: {
-    // 全屏激活
+    // Activation du plein écran
     active: false
   },
   actions: {
     /**
-     * @description 初始化监听
+     * @description Initialiser les écouteurs
      * @param {Object} context
      */
     listen ({ commit }) {
@@ -19,7 +19,7 @@ export default {
       }
     },
     /**
-     * @description 切换全屏
+     * @description Basculer en plein écran
      * @param {Object} context
      */
     toggle ({ commit }) {
@@ -34,7 +34,7 @@ export default {
   },
   mutations: {
     /**
-     * @description 设置 store 里的全屏状态
+     * @description Définir les informations utilisateur de vuex store l'état plein écran dans le store
      * @param {Object} state state
      * @param {Boolean} active active
      */

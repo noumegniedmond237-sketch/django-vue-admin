@@ -1,4 +1,4 @@
-# 初始化基类
+# Classe de base d'initialisation
 import json
 import os
 
@@ -13,7 +13,7 @@ from dvadmin.system.models import Users, Menu
 
 class CoreInitialize:
     """
-    使用方法：继承此类，重写 run方法，在 run 中调用 save 进行数据初始化
+    Mode d'emploi : hériter de cette classe, surcharger la méthode run, et appeler save dans run pour initialiser les données
     """
     creator_id = None
     reset = False
@@ -22,8 +22,8 @@ class CoreInitialize:
 
     def __init__(self, reset=False, creator_id=None, app=None):
         """
-        reset: 是否重置初始化数据
-        creator_id: 创建人id
+        reset: réinitialiser ou non les données d'initialisation
+        creator_id: identifiant du créateur
         """
         self.reset = reset or self.reset
         self.creator_id = creator_id or self.creator_id
@@ -33,7 +33,7 @@ class CoreInitialize:
     def init_base(self, Serializer, unique_fields=None):
         model = Serializer.Meta.model
         if is_tenants_mode() and connection.tenant.schema_name !='public' and model._meta.model_name == 'menu':
-            # 超级租户模式下，取消初始化菜单
+            # En mode super locataire, annuler l'initialisation des menus
             return
         path_file = os.path.join(apps.get_app_config(self.app.split('.')[-1]).path, 'fixtures',
                                  f'init_{Serializer.Meta.model._meta.model_name}.json')
@@ -42,7 +42,7 @@ class CoreInitialize:
         with open(path_file, encoding="utf-8") as f:
             for data in json.load(f):
                 filter_data = {}
-                # 配置过滤条件,如果有唯一标识字段则使用唯一标识字段，否则使用全部字段
+                # Configurer les conditions de filtrage : utiliser les champs d'identifiant unique s'ils existent, sinon tous les champs
                 if unique_fields:
                     for field in unique_fields:
                         if field in data:
@@ -57,11 +57,11 @@ class CoreInitialize:
                 serializer = Serializer(instance, data=data, request=self.request)
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
-        print(f"[{self.app}][{model._meta.model_name}]初始化完成")
+        print(f"[{self.app}][{model._meta.model_name}]Initialisation terminée")
 
     def save(self, obj, data: list, name=None, no_reset=False):
         name = name or obj._meta.verbose_name
-        print(f"正在初始化[{obj._meta.label} => {name}]")
+        print(f"Initialisation en cours[{obj._meta.label} => {name}]")
         if not no_reset and self.reset and obj not in settings.INITIALIZE_RESET_LIST:
             try:
                 obj.objects.all().delete()
@@ -72,7 +72,7 @@ class CoreInitialize:
             m2m_dict = {}
             new_data = {}
             for key, value in ele.items():
-                # 判断传的 value 为 list 的多对多进行抽离，使用set 进行更新
+                # Si la valeur transmise est une liste, extraire les relations plusieurs-à-plusieurs et les mettre à jour avec set
                 if isinstance(value, list) and value and isinstance(value[0], int):
                     m2m_dict[key] = value
                 else:
@@ -87,7 +87,7 @@ if object.{key}:
     values_list = list(set(list(values_list) + {m2m}))
     object.{key}.set(values_list)
 """)
-        print(f"初始化完成[{obj._meta.label} => {name}]")
+        print(f"Initialisation terminée[{obj._meta.label} => {name}]")
 
     def run(self):
         raise NotImplementedError('.run() must be overridden')

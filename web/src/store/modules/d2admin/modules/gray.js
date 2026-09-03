@@ -1,19 +1,19 @@
 export default {
   namespaced: true,
   state: {
-    // 灰度
+    // Niveaux de gris
     active: false
   },
   mutations: {
     /**
-     * @description 切换灰度状态
+     * @description Basculer le mode niveaux de gris
      * @param {Object} state state
      */
     toggle (state) {
       state.active = !state.active
     },
     /**
-     * @description 设置灰度模式
+     * @description Définir le mode niveaux de gris
      * @param {Object} state state
      * @param {Boolean} active active
      */

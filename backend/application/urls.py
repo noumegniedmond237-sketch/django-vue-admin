@@ -34,10 +34,10 @@ from dvadmin.system.views.login import (
 from dvadmin.system.views.system_config import InitSettingsViewSet
 from dvadmin.utils.swagger import CustomOpenAPISchemaGenerator
 
-# =========== 初始化系统配置 =================
+# =========== Initialiser la configuration système =================
 dispatch.init_system_config()
 dispatch.init_dictionary()
-# =========== 初始化系统配置 =================
+# =========== Initialiser la configuration système =================
 
 schema_view = get_schema_view(
     openapi.Info(

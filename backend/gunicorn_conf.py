@@ -1,48 +1,48 @@
 # gunicorn.conf
 # coding:utf-8
-# 启动命令：gunicorn -c gunicorn.py application.asgi:application
+# Commande de démarrage : gunicorn -c gunicorn.py application.asgi:application
 import multiprocessing
-# 并行工作进程数, int，cpu数量*2+1 推荐进程数
+# Nombre de processus workers en parallèle, int, nombre recommandé : cpu*2+1
 workers = multiprocessing.cpu_count() * 2 + 1
-# 指定每个进程开启的线程数
+# Nombre de threads démarrés pour chaque processus
 threads = 3
-# 绑定的ip与端口
+# IP et port liés
 bind = '0.0.0.0:8000'
-# 设置守护进程,将进程交给第三方管理
+# Activer le mode démon, confier le processus à un gestionnaire tiers
 daemon = 'false'
-# 工作模式协程，默认的是sync模式,推荐使用 gevent，此处使用与uvicorn配合使用 uvicorn.workers.UvicornWorker
+# Mode coroutine, le mode sync par défaut, utilisation recommandée de gevent, ici utilisé avec uvicorn : uvicorn.workers.UvicornWorker
 worker_class = 'uvicorn.workers.UvicornWorker'
-# 设置最大并发量（每个worker处理请求的工作线程数，正整数，默认为1）
+# Concurrence maximale (nombre de threads de traitement des requêtes par worker, entier positif, 1 par défaut)
 worker_connections = 10000
-# 最大客户端并发数量，默认情况下这个值为1000。此设置将影响gevent和eventlet工作模式
-# 每个工作进程将在处理max_requests请求后自动重新启动该进程
+# Nombre maximal de clients concurrents, 1000 par défaut. Ce paramètre affecte les modes gevent et eventlet
+# Chaque processus worker redémarrera automatiquement après avoir traité max_requests requêtes
 max_requests = 10000
 max_requests_jitter = 200
-# 设置进程文件目录
+# Répertoire du fichier de processus
 pidfile = './gunicorn.pid'
-# 日志级别，这个日志级别指的是错误日志的级别，而访问日志的级别无法设置
+# Niveau de journalisation, ce niveau concerne le journal des erreurs, celui du journal d'accès ne peut pas être défini
 loglevel = 'info'
-# 设置gunicorn访问日志格式，错误日志无法设置
-access_log_format = '' # worker_class 为 uvicorn.workers.UvicornWorker 时，日志格式为Django的loggers
-# 监听队列
+# Format du journal d'accès gunicorn, le journal des erreurs ne peut pas être défini
+access_log_format = '' # lorsque worker_class vaut uvicorn.workers.UvicornWorker, le format du journal correspond aux loggers de Django
+# File d'écoute
 backlog = 512
-#进程名
+#Nom du processus
 proc_name = 'gunicorn_process'
-# 设置超时时间120s，默认为30s。按自己的需求进行设置timeout = 120
+# Délai d'expiration 120s, 30s par défaut. À ajuster selon vos besoins : timeout = 120
 timeout = 120
-# 超时重启
+# Redémarrage après expiration
 graceful_timeout = 300
-# 在keep-alive连接上等待请求的秒数，默认情况下值为2。一般设定在1~5秒之间。
+# Secondes d'attente des requêtes sur une connexion keep-alive, 2 par défaut. Généralement entre 1 et 5 secondes.
 keepalive = 3
-# HTTP请求行的最大大小，此参数用于限制HTTP请求行的允许大小，默认情况下，这个值为4094。
-# 值是0~8190的数字。此参数可以防止任何DDOS攻击
+# Taille maximale de la ligne de requête HTTP, ce paramètre limite la taille autorisée de la ligne de requête, 4094 par défaut.
+# Valeur numérique de 0 à 8190. Ce paramètre permet de prévenir toute attaque DDOS
 limit_request_line = 5120
-# 限制HTTP请求中请求头字段的数量。
-#  此字段用于限制请求头字段的数量以防止DDOS攻击，与limit-request-field-size一起使用可以提高安全性。
-# 默认情况下，这个值为100，这个值不能超过32768
+# Limiter le nombre de champs d'en-tête dans les requêtes HTTP.
+#  Ce champ limite le nombre de champs d'en-tête pour prévenir les attaques DDOS, à utiliser avec limit-request-field-size pour améliorer la sécurité.
+# Par défaut, cette valeur vaut 100 et ne peut pas dépasser 32768
 limit_request_fields = 101
-# 限制HTTP请求中请求头的大小，默认情况下这个值为8190。
-# 值是一个整数或者0，当该值为0时，表示将对请求头大小不做限制
+# Limiter la taille des en-têtes dans les requêtes HTTP, 8190 par défaut.
+# Valeur entière ou 0, lorsque cette valeur vaut 0, aucune limite n'est appliquée à la taille des en-têtes
 limit_request_field_size = 0
-# 记录到标准输出
+# Journaliser vers la sortie standard
 accesslog = '-'

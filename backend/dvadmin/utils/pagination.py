@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 
 @contact: QQ:1638245306
 

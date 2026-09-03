@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/5/31 031 22:08
-@Remark: 公共基础model类
+@Remark: Classe de modèle de base publique
 """
 import uuid
 from datetime import date, timedelta
@@ -16,7 +16,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from application import settings
 from application.dispatch import is_tenants_mode
 
-table_prefix = settings.TABLE_PREFIX  # 数据库表名前缀
+table_prefix = settings.TABLE_PREFIX  # Préfixe des noms de tables de la base de données
 
 
 class SoftDeleteQuerySet(models.query.QuerySet):
@@ -32,14 +32,14 @@ class SoftDeleteQuerySet(models.query.QuerySet):
 
 
 class SoftDeleteManager(models.Manager):
-    """支持软删除"""
+    """Prend en charge la suppression logicielle"""
 
     def __init__(self, *args, **kwargs):
         self.__add_is_del_filter = False
         super(SoftDeleteManager, self).__init__(*args, **kwargs)
 
     def filter(self, *args, **kwargs):
-        # 考虑是否主动传入is_deleted
+        # Vérifier si is_deleted est transmis activement
         if not kwargs.get("is_deleted") is None:
             self.__add_is_del_filter = kwargs.get("is_deleted")
         return super(SoftDeleteManager, self).filter(*args, **kwargs)
@@ -64,22 +64,22 @@ def get_month_range(start_day, end_day):
 
 class SoftDeleteModel(models.Model):
     """
-    软删除模型
-    一旦继承,就将开启软删除
+    Modèle de suppression logicielle
+    Une fois hérité, la suppression logicielle est activée
     """
 
-    is_deleted = models.BooleanField(verbose_name="是否软删除", help_text="是否软删除", default=False, db_index=True)
+    is_deleted = models.BooleanField(verbose_name="Suppression logicielle", help_text="Suppression logicielle", default=False, db_index=True)
     objects = SoftDeleteManager()
 
     class Meta:
         abstract = True
-        verbose_name = "软删除模型"
+        verbose_name = "Modèle de suppression logicielle"
         verbose_name_plural = verbose_name
 
     @transaction.atomic
     def delete(self, using=None, cascade=True, *args, **kwargs):
         """
-        重写删除方法,直接开启软删除
+        Surcharger la méthode de suppression pour activer directement la suppression logicielle
         """
         self.is_deleted = True
         self.save(using=using)
@@ -165,41 +165,41 @@ class SoftDeleteModel(models.Model):
 
 class CoreModel(models.Model):
     """
-    核心标准抽象模型模型,可直接继承使用
-    增加审计字段, 覆盖字段时, 字段名称请勿修改, 必须统一审计字段名称
+    Modèle abstrait standard de base, utilisable directement par héritage
+    Ajoute des champs d'audit ; lors de la surcharge des champs, ne pas modifier les noms, les noms des champs d'audit doivent rester uniformes
     """
     id = models.BigAutoField(primary_key=True, help_text="Id", verbose_name="Id")
-    description = models.CharField(max_length=255, verbose_name="描述", null=True, blank=True, help_text="描述")
+    description = models.CharField(max_length=255, verbose_name="Description", null=True, blank=True, help_text="Description")
     creator = models.ForeignKey(to=settings.AUTH_USER_MODEL, related_query_name='creator_query', null=True,
-                                verbose_name='创建人', help_text="创建人", on_delete=models.SET_NULL,
+                                verbose_name='Créateur', help_text="Créateur", on_delete=models.SET_NULL,
                                 db_constraint=False)
-    modifier = models.CharField(max_length=255, null=True, blank=True, help_text="修改人", verbose_name="修改人")
-    dept_belong_id = models.CharField(max_length=255, help_text="数据归属部门", null=True, blank=True,
-                                      verbose_name="数据归属部门")
-    update_datetime = models.DateTimeField(auto_now=True, null=True, blank=True, help_text="修改时间",
-                                           verbose_name="修改时间")
-    create_datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True, help_text="创建时间",
-                                           verbose_name="创建时间")
+    modifier = models.CharField(max_length=255, null=True, blank=True, help_text="Modificateur", verbose_name="Modificateur")
+    dept_belong_id = models.CharField(max_length=255, help_text="Département d'appartenance des données", null=True, blank=True,
+                                      verbose_name="Département d'appartenance des données")
+    update_datetime = models.DateTimeField(auto_now=True, null=True, blank=True, help_text="Date de modification",
+                                           verbose_name="Date de modification")
+    create_datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True, help_text="Date de création",
+                                           verbose_name="Date de création")
 
     class Meta:
         abstract = True
-        verbose_name = '核心模型'
+        verbose_name = 'Modèle de base'
         verbose_name_plural = verbose_name
 
 
 class AddPostgresPartitionedBase:
     """
-    pgsql表分表基类
+    Classe de base de partitionnement de tables pgsql
     """
 
     @classmethod
     def add_hash_partition(cls, number=36):
         """
-        创建分区表
+        Créer la table partitionnée
         :return:
         """
         if cls.PartitioningMeta.method != 'hash':
-            raise ProgrammingError("表分区错误，无法进行分区")
+            raise ProgrammingError("Erreur de partitionnement de table, partitionnement impossible")
         schema_editor = connection.schema_editor()
         if is_tenants_mode():
             schema_editor.sql_add_hash_partition = f'CREATE TABLE "{connection.tenant.schema_name}".%s PARTITION OF "{connection.tenant.schema_name}".%s FOR VALUES WITH (MODULUS %s, REMAINDER %s)'
@@ -212,17 +212,17 @@ class AddPostgresPartitionedBase:
                     remainder=item,
                 )
             except ProgrammingError as e:
-                print(f"{cls.__name__}分表失败：" + str(e).rstrip('\n'))
+                print(f"{cls.__name__}Échec du partitionnement :" + str(e).rstrip('\n'))
         return
 
     @classmethod
     def add_range_day_partition(cls, day=7):
         """
-        按照创建时间"天"分表
+        Partitionner par "jour" de création
         :return:
         """
         if cls.PartitioningMeta.method != 'range':
-            raise ProgrammingError("表分区错误，无法进行分区")
+            raise ProgrammingError("Erreur de partitionnement de table, partitionnement impossible")
         day_before = date.today().strftime("%Y-%m-%d")
         schema_editor = connection.schema_editor()
         if is_tenants_mode():
@@ -240,17 +240,17 @@ class AddPostgresPartitionedBase:
                 )
                 day_before = day_following
             except ProgrammingError as e:
-                print(f"{cls.__name__}分表失败：" + str(e).rstrip('\n'))
+                print(f"{cls.__name__}Échec du partitionnement :" + str(e).rstrip('\n'))
         return
 
     @classmethod
     def add_range_month_partition(cls, start_date, end_date):
         """
-        按照创建时间"月"分表
+        Partitionner par "mois" de création
         :return:
         """
         if cls.PartitioningMeta.method != 'range':
-            raise ProgrammingError("表分区错误，无法进行分区")
+            raise ProgrammingError("Erreur de partitionnement de table, partitionnement impossible")
         range_month_partition_list = get_month_range(start_date, end_date)
         schema_editor = connection.schema_editor()
         if is_tenants_mode():
@@ -268,18 +268,18 @@ class AddPostgresPartitionedBase:
                     to_values=ele,
                 )
             except ProgrammingError as e:
-                print(f"{cls.__name__}分表失败：" + str(e).rstrip('\n'))
+                print(f"{cls.__name__}Échec du partitionnement :" + str(e).rstrip('\n'))
         return
 
     @classmethod
     def add_list_partition(cls, unique_value):
         """
-        按照某个值进行分区
+        Partitionner selon une valeur donnée
         :param unique_value:
         :return:
         """
         if cls.PartitioningMeta.method != 'list':
-            raise ProgrammingError("表分区错误，无法进行分区")
+            raise ProgrammingError("Erreur de partitionnement de table, partitionnement impossible")
         schema_editor = connection.schema_editor()
         if is_tenants_mode():
             schema_editor.sql_add_list_partition = (
@@ -292,13 +292,13 @@ class AddPostgresPartitionedBase:
                 values=[unique_value],
             )
         except ProgrammingError as e:
-            print(f"{cls.__name__}分表失败：" + str(e).rstrip('\n'))
+            print(f"{cls.__name__}Échec du partitionnement :" + str(e).rstrip('\n'))
         return
 
 
 def get_all_models_objects(model_name=None):
     """
-    获取所有 models 对象
+    Récupérer tous les objets models
     :return: {}
     """
     settings.ALL_MODELS_OBJECTS = {}

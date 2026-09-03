@@ -9,7 +9,7 @@ export function GetList (query) {
 }
 
 /**
- * 获取自己接收的消息
+ * Obtenir les messages reçus
  * @param query
  * @returns {*}
  * @constructor

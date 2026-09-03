@@ -8,7 +8,7 @@ export function elMenuItem (h, menu) {
   if (menu.icon) icon = <i class={ `fa fa-${menu.icon}` }/>
   else if (menu.iconSvg) icon = <d2-icon-svg name={ menu.iconSvg }/>
   else icon = <i class="fa fa-file-o"/>
-  const displayTitle = (menu.title === '控制台' || menu.path === '/index') ? 'Tableau de bord' : (menu.title || 'Sans titre')
+  const displayTitle = (menu.path === '/index') ? 'Tableau de bord' : (menu.title || 'Sans titre')
   return <el-menu-item
     key={ menu.path }
     index={ menu.path }>
@@ -27,7 +27,7 @@ export function elSubmenu (h, menu) {
   if (menu.icon) icon = <i slot="title" class={ `fa fa-${menu.icon}` }/>
   else if (menu.iconSvg) icon = <d2-icon-svg slot="title" name={ menu.iconSvg }/>
   else icon = <i slot="title" class="fa fa-folder-o"/>
-  const displayTitle = (menu.title === '控制台' || menu.path === '/index') ? 'Tableau de bord' : (menu.title || 'Sans titre')
+  const displayTitle = (menu.path === '/index') ? 'Tableau de bord' : (menu.title || 'Sans titre')
   return <el-submenu
     key={ menu.path }
     index={ menu.path }>

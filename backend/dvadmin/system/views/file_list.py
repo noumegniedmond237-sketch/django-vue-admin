@@ -97,7 +97,7 @@ class FileSerializer(CustomModelSerializer):
             if file_path:
                 validated_data['file_url'] = file_path
             else:
-                raise ValueError("上传失败")
+                raise ValueError("Échec du téléversement")
         elif file_engine == 'cos':
             from dvadmin_cloud_storage.views.tencent import tencent_cos_upload
             h = validated_data['md5sum']
@@ -106,10 +106,10 @@ class FileSerializer(CustomModelSerializer):
             if file_path:
                 validated_data['file_url'] = file_path
             else:
-                raise ValueError("上传失败")
+                raise ValueError("Échec du téléversement")
         else:
             validated_data['url'] = file
-        # 审计字段
+        # Champs d'audit
         try:
             request_user = self.request.user
             validated_data['dept_belong_id'] = request_user.dept.id
@@ -122,12 +122,12 @@ class FileSerializer(CustomModelSerializer):
 
 class FileViewSet(CustomModelViewSet):
     """
-    文件管理接口
-    list:查询
-    create:新增
-    update:修改
-    retrieve:单例
-    destroy:删除
+    Interface de gestion des fichiers
+    list:Rechercher
+    create:Créer
+    update:Modifier
+    retrieve:Détail
+    destroy:Supprimer
     """
     queryset = FileList.objects.all()
     serializer_class = FileSerializer
@@ -142,7 +142,7 @@ class FileViewSet(CustomModelViewSet):
         serializer = self.get_serializer(data=request.data, request=request)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        return DetailResponse(data=serializer.data, msg="新增成功")
+        return DetailResponse(data=serializer.data, msg="Créé avec succès")
 
     @csrf_exempt
     @action(methods=["GET", "POST"], detail=False, permission_classes=[])
@@ -165,7 +165,7 @@ class FileViewSet(CustomModelViewSet):
         return HttpResponse(json.dumps(ueditor_upload_settings, ensure_ascii=False),
                             content_type="application/javascript")
 
-    # 保存上传的文件
+    # Enregistrer le fichier téléversé
     def save_upload_file(self, file, file_path):
         with open(file_path, 'wb') as f:
             try:
@@ -173,7 +173,7 @@ class FileViewSet(CustomModelViewSet):
                     f.write(chunk)
 
             except Exception as e:
-                return f"写入文件错误:{e}"
+                return f"Erreur d'écriture du fichier : {e}"
         return u"SUCCESS"
 
     def get_path_format_vars(self):
@@ -189,18 +189,18 @@ class FileViewSet(CustomModelViewSet):
 
     def get_output_path(self, path_format_var):
         """
-        取得输出文件的路径
+        Obtenir le chemin du fichier de sortie
         :param path_format_var:
         :return:
         """
         file_name = (ueditor_settings["defaultPathFormat"] % path_format_var).replace("\\", "/")
-        # 分解OutputPathFormat
+        # Décomposer OutputPathFormat
         output_path = os.path.join('media', 'ueditor', f'{self.request.user.id}')
         if not os.path.exists(output_path):
             os.makedirs(output_path)
         return (file_name, output_path)
 
-    # 涂鸦功能上传处理
+    # Traitement du téléversement de la fonction gribouillage
     def save_scrawl_file(self, request, file_path, file_name):
         import base64
         instance = None
@@ -212,14 +212,14 @@ class FileViewSet(CustomModelViewSet):
             state = "SUCCESS"
             instance = FileList.save_file(request, file_path, file_name, mime_type='image/png')
         except Exception as e:
-            state = f"写入图片文件错误:{e}"
+            state = f"Erreur d'écriture du fichier image : {e}"
         return state, instance
 
     def upload_file(self, request):
-        """上传文件"""
+        """Téléverser un fichier"""
         state = "SUCCESS"
         action = self.request.query_params.get("action")
-        # 上传文件
+        # Téléverser le fichier
         upload_field_name_list = {
             "uploadfile": "fileFieldName",
             "uploadimage": "imageFieldName",
@@ -229,12 +229,12 @@ class FileViewSet(CustomModelViewSet):
         }
         upload_field_name = self.request.query_params.get(upload_field_name_list[action],
                                                           ueditor_upload_settings.get(action, "upfile"))
-        # 上传涂鸦，涂鸦是采用base64编码上传的，需要单独处理
+        # Téléversement du gribouillage, encodé en base64, nécessite un traitement séparé
         if action == "uploadscrawl":
             upload_file_name = "scrawl.png"
             upload_file_size = 0
         else:
-            # 取得上传的文件
+            # Récupérer le fichier téléversé
             file = request.FILES.get(upload_field_name, None)
             if file is None:
                 return HttpResponse(json.dumps({"state": "ERROR"}, ensure_ascii=False),
@@ -242,17 +242,17 @@ class FileViewSet(CustomModelViewSet):
             upload_file_name = file.name
             upload_file_size = file.size
 
-        # 取得上传的文件的原始名称 (assaini : basename uniquement)
+        # Obtenir le nom d'origine du fichier téléversé (assaini : basename uniquement)
         upload_original_name, upload_original_ext = os.path.splitext(upload_file_name)
         upload_original_name = sanitize_upload_name(upload_original_name)
         upload_file_name = upload_original_name + upload_original_ext
         upload_original_ext = upload_original_ext.lower()
         # Denylist serveur (prioritaire) : bloque exécutables/scripts/actifs XSS
         if upload_original_ext in BLOCKED_UPLOAD_EXTENSIONS:
-            state = u"服务器不允许上传%s类型的文件。" % upload_original_ext
+            state = u"Le serveur n'autorise pas le téléversement des fichiers de type %s." % upload_original_ext
             return HttpResponse(json.dumps({"state": state}, ensure_ascii=False),
                                 content_type="application/javascript")
-        # 文件类型检验 — listes côté SERVEUR uniquement (les query params sont ignorés
+        # Vérification du type de fichier — listes côté SERVEUR uniquement (les query params sont ignorés
         # pour empêcher le contournement de type ?fileAllowFiles=.py)
         upload_allow_type = {
             "uploadfile": "fileAllowFiles",
@@ -263,11 +263,11 @@ class FileViewSet(CustomModelViewSet):
             allow_type = ueditor_upload_settings.get(upload_allow_type[action], []) or []
             allow_type = [str(e).lower() for e in allow_type]
             if upload_original_ext not in allow_type:
-                state = u"服务器不允许上传%s类型的文件。" % upload_original_ext
+                state = u"Le serveur n'autorise pas le téléversement des fichiers de type %s." % upload_original_ext
                 return HttpResponse(json.dumps({"state": state}, ensure_ascii=False),
                                     content_type="application/javascript")
 
-        # 大小检验 — plafond côté SERVEUR uniquement
+        # Vérification de la taille — plafond côté SERVEUR uniquement
         upload_max_size = {
             "uploadfile": "filwMaxSize",
             "uploadimage": "imageMaxSize",
@@ -277,7 +277,7 @@ class FileViewSet(CustomModelViewSet):
         max_size = int(ueditor_upload_settings.get(upload_max_size[action], 0))
         if max_size != 0:
             if upload_file_size > max_size:
-                state = u"上传文件大小不允许超过%s。" % format_bytes(max_size)
+                state = u"La taille du fichier téléversé ne doit pas dépasser %s." % format_bytes(max_size)
                 return HttpResponse({"state": state}, content_type="application/javascript")
 
         path_format_var = self.get_path_format_vars()
@@ -286,9 +286,9 @@ class FileViewSet(CustomModelViewSet):
             "extname": upload_original_ext[1:],
             "filename": upload_file_name,
         })
-        # 取得输出文件的路径
+        # Obtenir le chemin du fichier de sortie
         format_file_name, output_path = self.get_output_path(path_format_var)
-        # 所有检测完成后写入文件
+        # Écrire le fichier une fois tous les contrôles terminés
         file_instance = None
         if state == "SUCCESS":
             if action == "uploadscrawl":
@@ -296,17 +296,17 @@ class FileViewSet(CustomModelViewSet):
                                                              file_name=format_file_name)
             else:
                 file = request.FILES.get(upload_field_name, None)
-                # 保存到文件中，如果保存错误，需要返回ERROR
+                # Enregistrer dans le fichier, renvoyer ERROR en cas d'échec d'enregistrement
                 state = self.save_upload_file(file, os.path.join(BASE_DIR, output_path, format_file_name))
-                # 保存到附件管理中
+                # Enregistrer dans la gestion des pièces jointes
                 file_instance = FileList.save_file(request, output_path, format_file_name, mime_type=file.content_type)
 
-        # 返回数据
+        # Renvoyer les données
         return_info = {
-            'url': file_instance.file_url if file_instance else os.path.join(output_path, format_file_name),  # 保存后的文件名称
-            'original': upload_file_name,  # 原始文件名
+            'url': file_instance.file_url if file_instance else os.path.join(output_path, format_file_name),  # Nom du fichier après enregistrement
+            'original': upload_file_name,  # Nom du fichier d'origine
             'type': upload_original_ext,
-            'state': state,  # 上传状态，成功时返回SUCCESS,其他任何值将原样返回至图片上传框中
+            'state': state,  # Statut du téléversement, SUCCESS si réussi, toute autre valeur est renvoyée telle quelle à la boîte de téléversement d'image
             'size': upload_file_size
         }
         return HttpResponse(json.dumps(return_info, ensure_ascii=False), content_type="application/javascript")

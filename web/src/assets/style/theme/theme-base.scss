@@ -1,4 +1,4 @@
-// 减小弹出菜单的项目高度
+// Réduire la hauteur des éléments du menu contextuel
 .el-menu--popup {
   .el-menu-item {
     height: 36px;
@@ -10,7 +10,7 @@
   }
 }
 
-// 整体框架结构
+// Structure globale du cadre
 .d2-layout-header-aside-group {
   height: 100%;
   width: 100%;
@@ -19,11 +19,11 @@
   background-position: center;
   overflow: hidden;
   position: relative;
-  // 背景上面的半透明遮罩
+  // Masque semi-transparent sur l'arrière-plan
   .d2-layout-header-aside-mask {
     @extend %full;
   }
-  // 内容层
+  // Couche de contenu
   .d2-layout-header-aside-content {
     @extend %full;
     .d2-theme-header {
@@ -102,7 +102,7 @@
   }
 }
 
-// 主题公用
+// Parties communes du thème
 .d2-layout-header-aside-group {
   &.grayMode {
     -webkit-filter: grayscale(100%);
@@ -112,11 +112,11 @@
     filter: grayscale(100%);
     filter: gray;
   }
-  // 主体
+  // Zone principale
   .d2-layout-header-aside-content {
-    // [布局] 顶栏
+    // [Disposition] Barre supérieure
     .d2-theme-header {
-      // logo区域
+      // logoZone du logo
       .logo-group {
         float: left;
         text-align: center;
@@ -127,7 +127,7 @@
       .logo-transition {
         transition: width .3s;
       }
-      // 折叠侧边栏切换按钮
+      // Bouton de bascule de la barre latérale
       .toggle-aside-btn {
         float: left;
         height: 60px;
@@ -141,7 +141,7 @@
           margin-top: 4px;
         }
       }
-      // [菜单] 顶栏
+      // [Menu] Barre supérieure
       .el-menu {
         float: left;
         border-bottom: none;
@@ -164,7 +164,7 @@
           }
         }
       }
-      // 顶栏右侧的按钮
+      // Boutons du côté droit de la barre supérieure
       .d2-header-right {
         float: right;
         height: 60px;
@@ -183,16 +183,16 @@
         }
       }
     }
-    // [布局] 顶栏下面
+    // [Disposition] Sous la barre supérieure
     .d2-theme-container {
-      // 侧边栏
+      // Barre latérale
       .d2-theme-container-aside {
         %d2-theme-container-aside-menu-icon {
           width: 20px;
           text-align: center;
           font-size: 16px;
         }
-        // [菜单] 正常状态
+        // [Menu] état normal
         .el-menu {
           @extend %unable-select;
           background-color: transparent;
@@ -214,7 +214,7 @@
             }
           }
         }
-        // 菜单为空的时候显示的信息
+        // Information affichée quand le menu est vide
         .d2-layout-header-aside-menu-empty {
           height: 160px;
           margin: 10px;
@@ -229,7 +229,7 @@
             font-size: 14px;
           }
         }
-        // [菜单] 折叠状态
+        // [Menu] état replié
         .el-menu--collapse {
           background-color: transparent;
           .el-submenu__title {
@@ -237,12 +237,12 @@
           }
         }
       }
-      // 右下 主体
+      // En bas à droite Zone principale
       .d2-theme-container-main {
-        // 主体部分分为多页面控制器 和主体
+        // La zone principale se divise en contrôleur multi-pages et corps
         .d2-theme-container-main-header {
           height: 41px;
-          // 多页面控制器
+          // Contrôleur multi-pages
           .d2-multiple-page-control-group {
             padding-right: 20px;
             .d2-multiple-page-control-content {
@@ -275,13 +275,13 @@
             }
           }
         }
-        // 主体
+        // Zone principale
         .d2-theme-container-main-body {
-          // 布局组件
+          // Composant de disposition
           .container-component {
             @extend %full;
             overflow: hidden;
-            // 填充式布局组件
+            // Composant de disposition plein
             .d2-container-full {
               position: absolute;
               top: 0px;
@@ -305,7 +305,7 @@
                 padding: 20px;
               }
             }
-            // 填充式布局组件 - 滚动优化
+            // Composant de disposition plein - optimisation du défilement
             .d2-container-full-bs {
               position: absolute;
               top: 0px;
@@ -331,7 +331,7 @@
                 padding: 20px;
               }
             }
-            // 隐形布局组件
+            // Composant de disposition invisible
             .d2-container-ghost {
               position: absolute;
               top: 0px;
@@ -357,7 +357,7 @@
                 border-top-right-radius: 4px;
               }
             }
-            // 隐形布局组件 - 滚动优化
+            // Composant de disposition invisible - optimisation du défilement
             .d2-container-ghost-bs {
               position: absolute;
               top: 0px;
@@ -383,7 +383,7 @@
                 border-top-right-radius: 4px;
               }
             }
-            // 卡片式布局组件
+            // Composant de disposition en carte
             .d2-container-card {
               position: absolute;
               top: 0px;
@@ -413,7 +413,7 @@
                 border-top-right-radius: 4px;
               }
             }
-            // 卡片式布局组件 - 滚动优化
+            // Composant de disposition en carte - optimisation du défilement
             .d2-container-card-bs {
               position: absolute;
               top: 0px;

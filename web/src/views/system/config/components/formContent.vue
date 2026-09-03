@@ -25,7 +25,7 @@
 
           <el-input-number :key="index" v-else-if="item.form_item_type_label === 'number'" v-model="form[item.key]"
                            :min="0"></el-input-number>
-          <!--     datetime、date、time     -->
+          <!--     datetime,date,time     -->
           <el-date-picker
             v-else-if="['datetime','date','time'].indexOf(item.form_item_type_label) >-1"
             v-model="form[item.key]"

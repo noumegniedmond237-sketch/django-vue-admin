@@ -11,20 +11,20 @@ import { checkPlugins } from '@/views/plugins'
 export default {
   mixins: [localeMixin],
   beforeCreate () {
-    // 初始化配置
+    // Initialiser la configuration
     this.$store.dispatch('d2admin/settings/init')
   },
   data () {
     return {
-      processTitle: (process.env.VUE_APP_TITLE === '企业级后台管理系统' ? 'Django Vue Admin' : process.env.VUE_APP_TITLE) || 'Django Vue Admin',
+      processTitle: (process.env.VUE_APP_TITLE === 'Django Vue Admin' ? 'Django Vue Admin' : process.env.VUE_APP_TITLE) || 'Django Vue Admin',
       backgroundImage: 'url(' + this.loginBackground + ')',
-      // 表单
+      // Formulaire
       formLogin: {
         username: '',
         password: '',
         captcha: ''
       },
-      // 表单校验
+      // Validation du formulaire
       rules: {
         username: [
           {
@@ -43,7 +43,7 @@ export default {
       },
       captchaKey: null,
       image_base: null,
-      // 快速登录，用于dev开发环境
+      // Connexion rapide, pour l'environnement de développement
       selectUsersDialogVisible: false,
       users: [
         {
@@ -62,16 +62,16 @@ export default {
   },
   computed: {
     ...mapState('d2admin', {
-      siteLogo: state => state.settings.data['login.site_logo'] || require('@/assets/image/dvadmin.png'), // 网站logo地址
+      siteLogo: state => state.settings.data['login.site_logo'] || require('@/assets/image/dvadmin.png'), // Adresse du logo du site
       keepRecord: state => state.settings.data['login.keep_record'],
-      siteName: state => state.settings.data['login.site_name'], // 网站名称
+      siteName: state => state.settings.data['login.site_name'], // Nom du site
       copyright: state => state.settings.data['login.copyright'],
-      loginBackground: state => state.settings.data['login.login_background'] || require('@/assets/image/bg.jpg'), // 登录页背景图
-      helpUrl: state => state.settings.data['login.help_url'], // 帮助
-      privacyUrl: state => state.settings.data['login.privacy_url'], // 隐私
-      clauseUrl: state => state.settings.data['login.clause_url'], // 条款
-      captchaState: state => state.settings.data['base.captcha_state'] !== undefined ? state.settings.data['base.captcha_state'] : true, // 验证码
-      isPublic: state => state.settings.data.schema_name === 'public' // 是否超级租户
+      loginBackground: state => state.settings.data['login.login_background'] || require('@/assets/image/bg.jpg'), // Image de fond de la page de connexion
+      helpUrl: state => state.settings.data['login.help_url'], // Aide
+      privacyUrl: state => state.settings.data['login.privacy_url'], // Confidentialité
+      clauseUrl: state => state.settings.data['login.clause_url'], // Conditions
+      captchaState: state => state.settings.data['base.captcha_state'] !== undefined ? state.settings.data['base.captcha_state'] : true, // Code de vérification
+      isPublic: state => state.settings.data.schema_name === 'public' // Indique si super-locataire (tenant)
     })
   },
   mounted () {
@@ -81,7 +81,7 @@ export default {
   methods: {
     ...mapActions('d2admin/account', ['login']),
     /**
-     * 获取验证码
+     * Obtenir le code de vérification
      */
     getCaptcha () {
       if (this.captchaState !== undefined && !this.captchaState) return
@@ -92,16 +92,16 @@ export default {
       })
     },
     /**
-     * @description 提交表单
+     * @description Soumettre le formulaire
      */
-    // 提交登录信息
+    // Soumettre les informations de connexion
     submit () {
       const that = this
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          // 登录
-          // 注意 这里的演示没有传验证码
-          // 具体需要传递的数据请自行修改代码
+          // Connexion
+          // Attention : la démo ne transmet pas de code de vérification
+          // Modifier le code selon les données à transmettre
           this.login({
             username: that.formLogin.username,
             // Mot de passe en clair (TLS) : hash natif côté serveur (cf. CustomBackend)
@@ -110,7 +110,7 @@ export default {
             captchaKey: that.captchaKey
           })
             .then(() => {
-              // 重定向对象不存在则返回顶层路径
+              // Si l'objet de redirection n'existe pas, retourner le chemin racine
               // this.$router.replace(this.$route.query.redirect || '/')
               this.$router.replace('/')
             })
@@ -118,12 +118,12 @@ export default {
               this.getCaptcha()
             })
         } else {
-          // 登录表单校验失败
+          // Échec de validation du formulaire de connexion
           this.$message.error('Veuillez vérifier les champs du formulaire')
         }
       })
     },
-    // 快速登录
+    // Connexion rapide
     handleUserBtnClick (user) {
       this.formLogin.username = user.username
       this.formLogin.password = user.password
@@ -153,8 +153,8 @@ export default {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  -webkit-background-size: cover; /* 兼容Webkit内核浏览器如Chrome和Safari */
-  -o-background-size: cover; /* 兼容Opera */
+  -webkit-background-size: cover; /* Compatible avec les navigateurs à noyau Webkit comme Chrome et Safari */
+  -o-background-size: cover; /* Compatible avec Opera */
   zoom: 1;
 }
 

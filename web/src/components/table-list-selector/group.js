@@ -1,12 +1,12 @@
 export default {
-  // 字段类型配置，注册之后即可在crud.js中使用了
+  // Configuration des types de champs (utilisable dans crud.js après enregistrement),crud.js
   'table-list-selector': {
-    // 表单组件配置
+    // Configuration du composant de formulaire
     form: { component: { name: 'table-list-selector-input', props: { color: 'danger' } } },
-    // 行组件配置
+    // Configuration du composant de ligne
     component: { name: 'values-format', props: {} },
-    // 行展示时居中
+    // Centrer lors de l'affichage en ligne
     align: 'center'
-    // 您还可以写更多默认配置
+    // Vous pouvez écrire d'autres configurations par défaut
   }
 }

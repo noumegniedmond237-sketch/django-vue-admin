@@ -1,4 +1,4 @@
-// 过渡动画 横向渐变
+// Animation de transition (dégradé horizontal)
 .fade-transverse-leave-active,
 .fade-transverse-enter-active {
   transition: all .5s;
@@ -12,7 +12,7 @@
   transform: translateX(30px);
 }
 
-// 过渡动画 缩放渐变
+// Animation de transition (zoom en fondu)
 .fade-scale-leave-active,
 .fade-scale-enter-active {
   transition: all .3s;

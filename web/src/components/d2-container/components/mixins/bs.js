@@ -1,7 +1,7 @@
 import BScroll from 'better-scroll'
 export default {
   props: {
-    // 滚动优化的选项
+    // Options d'optimisation du défilement
     betterScrollOptions: {
       type: Object,
       required: false,
@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     scrollInit () {
-      // 初始化 bs
+      // Initialisation bs
       this.BS = new BScroll(this.$refs.wrapper, Object.assign({
         mouseWheel: true,
         click: true,
@@ -30,7 +30,7 @@ export default {
           interactive: false
         }
       }, this.betterScrollOptions))
-      // 滚动时发出事件 并且统一返回的数据格式
+      // Émettre un événement au défilement avec un format de données unifié
       this.BS.on('scroll', ({ x, y }) => this.$emit('scroll', {
         x: -x,
         y: -y
@@ -45,11 +45,11 @@ export default {
         this.BS = null
       }
     },
-    // 外部调用的方法 返回顶部
+    // Méthode d'appel externe Retour en haut
     scrollToTop () {
       if (this.BS) this.BS.scrollTo(0, 0, 300)
     },
-    // 手动发出滚动事件
+    // Émettre manuellement l'événement de défilement
     scroll () {
       if (this.BS) {
         this.$emit('scroll', {

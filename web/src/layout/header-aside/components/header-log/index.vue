@@ -1,10 +1,10 @@
 <!--
- * @创建文件时间: 2021-06-01 22:41:20
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-06-09 11:37:44
- * 联系Qq:1638245306
- * @文件介绍: 前端日志
+ * @date-de-creation: 2021-06-01 22:41:20
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-06-09 11:37:44
+ * Contact QQ : 1638245306
+ * @description-fichier: journaux frontend
 -->
 <template>
   <el-tooltip effect="dark" :content="tooltipContent" placement="bottom">

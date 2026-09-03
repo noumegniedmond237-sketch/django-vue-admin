@@ -14,14 +14,14 @@ UserModel = get_user_model()
 
 class CustomBackend(ModelBackend):
     """
-    Django原生认证方式
-    - 新哈希: pbkdf2/argon2 natif sur le mot de passe en clair (Django check_password).
+    Méthode d'authentification native Django
+    - Nouveau hachage : pbkdf2/argon2 natif sur le mot de passe en clair (Django check_password).
     - Ancien schéma (compat migration): pbkdf2(md5(mot de passe)) — vérifié en
       fallback puis re-haché en natif à la première connexion réussie.
     """
 
     def authenticate(self, request, username=None, password=None, **kwargs):
-        msg = '%s 正在使用本地登录...' % username
+        msg = '%s utilise la connexion locale...' % username
         logger.info(msg)
         if username is None:
             username = kwargs.get(UserModel.USERNAME_FIELD)
@@ -50,4 +50,4 @@ class CustomBackend(ModelBackend):
                     user.last_login = timezone.now()
                     user.save(update_fields=['last_login'])
                     return user
-                raise CustomValidationError("当前用户已被禁用，请联系管理员!")
+                raise CustomValidationError("L'utilisateur actuel est désactivé, veuillez contacter l'administrateur !")

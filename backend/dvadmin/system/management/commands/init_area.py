@@ -1,9 +1,9 @@
-# 城市联动
+# Liaison des villes en cascade
 """
-到乡级 使用方法
-1. https://www.npmjs.com/package/china-division 下载数据，把对应的json放入对应目录
-2. 修改此文件中对应json名
-3. 右击执行此py文件进行初始化
+Jusqu'au niveau communal. Mode d'emploi
+1. https://www.npmjs.com/package/china-division Télécharger les données et placer le fichier json correspondant dans le répertoire prévu
+2. Modifier le nom du fichier json correspondant dans ce fichier
+3. Faire un clic droit pour exécuter ce fichier py afin de procéder à l'initialisation
 """
 import json
 import os
@@ -25,7 +25,7 @@ area_code_list = []
 
 def area_list(code_list, pcode=None, depth=1):
     """
-    递归获取所有列表
+    Récupérer récursivement toutes les listes
     """
     for code_dict in code_list:
         code = code_dict.get('code', None)
@@ -60,7 +60,7 @@ def main():
 
 class Command(BaseCommand):
     """
-    项目初始化命令: python manage.py init
+    Commande d'initialisation du projet : python manage.py init
     """
 
     def add_arguments(self, parser):
@@ -68,16 +68,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        print(f"正在准备初始化省份数据...")
+        print(f"Préparation de l'initialisation des données de provinces en cours...")
 
         if dispatch.is_tenants_mode():
             from django_tenants.utils import get_tenant_model
             from django_tenants.utils import tenant_context
             for tenant in get_tenant_model().objects.exclude(schema_name='public'):
                 with tenant_context(tenant):
-                    print(f"租户[{connection.tenant.schema_name}]初始化数据开始...")
+                    print(f"Tenant[{connection.tenant.schema_name}] début de l'initialisation des données...")
                     main()
-                    print(f"租户[{connection.tenant.schema_name}]初始化数据完成！")
+                    print(f"Tenant[{connection.tenant.schema_name}] initialisation des données terminée !")
         else:
             main()
-        print("省份数据初始化数据完成！")
+        print("Initialisation des données de provinces terminée !")

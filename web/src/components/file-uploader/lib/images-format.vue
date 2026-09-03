@@ -22,22 +22,22 @@
 </template>
 
 <script>
-// 图片行展示组件
+// Composant d'affichage d'image en ligne
 export default {
   name: 'd2p-images-format',
   props: {
-    // 图片的url
-    // 'url' 或 ['url1','url2']
+    // URL de l'imageurl
+    // 'url' ou ['url1','url2']
     value: {
       type: [String, Array],
       require: true
     },
-    // 图片的宽度设置
+    // Paramètre de largeur de l'image
     width: {
       require: false,
       default: 30
     },
-    // 图片的高度设置
+    // Paramètre de hauteur de l'image
     height: {
       require: false,
       default: 30
@@ -45,14 +45,14 @@ export default {
     fit: {
       default: 'contain'
     },
-    // 内部封装[el-image](https://element.eleme.cn/#/zh-CN/component/image)组件的属性参数<br/>
+    // Encapsule en interne les paramètres du composant[el-image](https://element.eleme.cn/#/zh-CN/component/image)<br/>
     elProps: {
       type: Object
     },
     error: {
       default: undefined
     },
-    // 构建下载url方法
+    // Méthode de construction de l'URL de téléchargementurl
     buildUrl: {
       type: Function,
       default: function (value, item) { return value }

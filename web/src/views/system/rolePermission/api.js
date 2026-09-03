@@ -1,10 +1,10 @@
 /*
- * @创建文件时间: 2021-06-01 22:41:21
- * @Auther: 猿小天
- * @最后修改人: 猿小天
- * @最后修改时间: 2021-08-12 16:29:27
- * 联系Qq:1638245306
- * @文件介绍: 角色管理接口
+ * @date-de-creation: 2021-06-01 22:41:21
+ * @Auther: Yuan Xiaotian
+ * @derniere-modification-par: Yuan Xiaotian
+ * @derniere-modification-le: 2021-08-12 16:29:27
+ * Contact QQ : 1638245306
+ * @description-fichier: API de gestion des rôles
  */
 import { request } from '@/api/service'
 
@@ -44,20 +44,20 @@ export function DelObj (id) {
   })
 }
 
-// 通过角色id,获取菜单数据
+// Obtenir les données de menu via l'id du rôleid,
 export function GetMenuData (obj) {
   return request({
     url: '/api/system/role/role_get_menu/',
     method: 'get',
     params: {}
   }).then(res => {
-    // 将列表数据转换为树形数据
+    // Convertir la liste en données arborescentes
     return res.data
   })
 }
 
 /**
- * 获取数据权限
+ * Obtenir les permissions sur les données
  * @param obj
  * @returns {*}
  * @constructor
@@ -71,7 +71,7 @@ export function GetDataScope () {
 }
 
 /**
- * 获取角色部门
+ * Obtenir les départements du rôle
  * @returns {*}
  * @constructor
  */

@@ -4,12 +4,12 @@
   </div>
 </template>
 <script>
-// 行展示组件进阶版
-// 本示例演示要对传入的值做一些改变，然后再展示
+// Version avancée du composant d'affichage en ligne
+// Cet exemple montre comment modifier la valeur entrante avant de l'afficher,
 export default {
   name: 'table-progress',
   props: {
-    // 接收row.xxx的值
+    // Recevoir la valeur de row.xxx
     value: {
       type: String || Number,
       required: false
@@ -34,9 +34,9 @@ export default {
   },
   methods: {
     setValue (value) {
-      // 在这里对 传入的value值做处理
+      // Traiter ici la valeur value entrante
       this.currentValue = Number(this.value)
-      // 根据值的key 递归获取对应的名称
+      // Obtenir récursivement le nom correspondant à la clé de la valeurkey
     },
     setColor () {
       if (this.value <= 50) {

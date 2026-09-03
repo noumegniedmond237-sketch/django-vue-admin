@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
+@author: Yuan Xiaotian
 @contact: QQ:1638245306
 @Created on: 2021/6/3 003 0:30
-@Remark: 按钮权限管理
+@Remark: Gestion des autorisations des boutons
 """
 from dvadmin.system.models import LoginLog
 from dvadmin.utils.serializers import CustomModelSerializer
@@ -13,7 +13,7 @@ from dvadmin.utils.viewset import CustomModelViewSet
 
 class LoginLogSerializer(CustomModelSerializer):
     """
-    登录日志权限-序列化器
+    Sérialiseur des autorisations du journal de connexion
     """
 
     class Meta:
@@ -24,12 +24,12 @@ class LoginLogSerializer(CustomModelSerializer):
 
 class LoginLogViewSet(CustomModelViewSet):
     """
-    登录日志接口
-    list:查询
-    create:新增
-    update:修改
-    retrieve:单例
-    destroy:删除
+    Interface du journal de connexion
+    list:Rechercher
+    create:Créer
+    update:Modifier
+    retrieve:Détail
+    destroy:Supprimer
     """
     queryset = LoginLog.objects.all()
     serializer_class = LoginLogSerializer

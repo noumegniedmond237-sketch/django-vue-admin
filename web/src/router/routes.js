@@ -1,10 +1,10 @@
 import layoutHeaderAside from '@/layout/header-aside'
 import { checkPlugins } from '@/views/plugins/index.js'
-// 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
+// Trop de pages en chargement différé ralentissent le rechargement à chaud de webpack : pas de lazy loading en développement, uniquement en production
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 const pluginImport = require('@/libs/util.import.plugin')
 /**
- * 在主框架内显示
+ * Afficher dans le cadre principal
  */
 const frameIn = [{
   path: '/',
@@ -38,7 +38,7 @@ const frameIn = [{
       },
       component: () => import('@/layout/header-aside/components/header-user/userinfo')
     },
-    // dashboard 工作台
+    // dashboard Espace de travail
     {
       path: 'workbench',
       name: 'workbench',
@@ -48,14 +48,14 @@ const frameIn = [{
       },
       component: _import('dashboard/workbench')
     },
-    // 刷新页面 必须保留
+    // Actualiser la page (à conserver impérativement)
     {
       path: 'refresh',
       name: 'refresh',
       hidden: true,
       component: _import('system/function/refresh')
     },
-    // 页面重定向 必须保留
+    // Redirection de page (à conserver impérativement)
     {
       path: 'redirect/:route*',
       name: 'redirect',
@@ -66,10 +66,10 @@ const frameIn = [{
 }]
 
 /**
- * 在主框架之外显示
+ * Afficher en dehors du cadre principal
  */
 const frameOut = [
-  // 登录
+  // Connexion
   {
     path: '/login',
     name: 'login',
@@ -77,7 +77,7 @@ const frameOut = [
   }
 ]
 /**
- * 第三方登录
+ * Connexion via un tiers
  */
 const oauth2PluginsType = checkPlugins('dvadmin-oauth2-web')
 if (oauth2PluginsType) {
@@ -88,7 +88,7 @@ if (oauth2PluginsType) {
   })
 }
 /**
- * 租户申请注册
+ * Demande d'inscription d'un locataire (tenant)
  */
 const tenantsPluginsType = checkPlugins('dvadmin-tenants-web')
 if (tenantsPluginsType) {
@@ -99,7 +99,7 @@ if (tenantsPluginsType) {
   })
 }
 /**
- * 错误页面
+ * Page d'erreur
  */
 const errorPage = [{
   path: '/404',
@@ -107,11 +107,11 @@ const errorPage = [{
   component: _import('system/error/404')
 }]
 
-// 导出需要显示菜单的
+// Exporter les menus à afficher
 export const frameInRoutes = frameIn
 export const frameOutRoutes = frameOut
 
-// 重新组织后导出
+// Exporter après réorganisation
 export default [
   ...frameIn,
   ...frameOut,

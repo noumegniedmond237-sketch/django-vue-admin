@@ -3,7 +3,7 @@ import XEUtils from 'xe-utils'
 export const urlPrefix = '/api/system/dictionary/'
 
 /**
- * 列表查询
+ * Recherche dans la liste
  */
 export function GetList (query) {
   return request({
@@ -11,13 +11,13 @@ export function GetList (query) {
     method: 'get',
     params: query
   }).then(res => {
-    // 将列表数据转换为树形数据
+    // Convertir la liste en données arborescentes
     res.data.data = XEUtils.toArrayTree(res.data.data, { parentKey: 'parent' })
     return res
   })
 }
 /**
- * 新增
+ * Ajouter
  */
 export function createObj (obj) {
   return request({
@@ -28,7 +28,7 @@ export function createObj (obj) {
 }
 
 /**
- * 修改
+ * Modifier
  */
 export function UpdateObj (obj) {
   return request({
@@ -38,7 +38,7 @@ export function UpdateObj (obj) {
   })
 }
 /**
- * 删除
+ * Supprimer
  */
 export function DelObj (id) {
   return request({
