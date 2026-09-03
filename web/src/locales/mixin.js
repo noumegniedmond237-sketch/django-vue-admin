@@ -12,7 +12,7 @@ export default {
       }
       this.$notify({
         title: titles[command] || 'Langue / Language',
-        dangerouslyUseHTMLString: true,
+        dangerouslyUseHTMLString: false,
         message: messages[command] || `Current: ${this.$t('_name')}`
       })
     }

@@ -3,7 +3,7 @@
   <el-divider content-position="left">Centre de notifications</el-divider>
   <div v-if="msgObj">
      <h3>{{msgObj.title}}</h3>
-    <div class="content-style" v-html="msgObj.content"></div>
+    <div class="content-style" v-html="sanitizedContent"></div>
   </div>
   <div v-else>
     <el-empty description="Aucune notification" :image-size="100"></el-empty>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import DOMPurify from 'dompurify'
 import { mapActions } from 'vuex'
 export default {
   name: 'msgList',
@@ -23,6 +24,12 @@ export default {
     msgObj: {
       type: Object,
       default: null
+    }
+  },
+  computed: {
+    // Contenu riche assaini (anti-XSS) avant rendu HTML
+    sanitizedContent () {
+      return DOMPurify.sanitize((this.msgObj && this.msgObj.content) || '', { USE_PROFILES: { html: true } })
     }
   },
   methods: {

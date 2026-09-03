@@ -1,5 +1,4 @@
 import base64
-import hashlib
 from datetime import datetime, timedelta
 
 from captcha.views import CaptchaStore, captcha_image
@@ -11,9 +10,11 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import serializers
 from rest_framework.status import HTTP_401_UNAUTHORIZED
+from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -31,6 +32,8 @@ from dvadmin.utils.validator import CustomValidationError
 class CaptchaView(APIView):
     authentication_classes = []
     permission_classes = []
+    throttle_classes = [AnonRateThrottle]
+    throttle_scope = "login"
 
     @swagger_auto_schema(
         responses={"200": openapi.Response("获取成功")},
@@ -127,17 +130,35 @@ class LoginSerializer(TokenObtainPairSerializer):
 
 class CustomTokenRefreshView(TokenRefreshView):
     """
-    自定义token刷新
+    自定义token刷新 (avec rotation: l'ancien refresh est blacklisté,
+    une nouvelle paire est émise — le front doit stocker le nouveau refresh).
     """
     def post(self, request, *args, **kwargs):
         refresh_token = request.data.get("refresh")
         try:
             token = RefreshToken(refresh_token)
-            data = {
-                "access":str(token.access_token),
-                "refresh":str(token)
-            }
-        except:
+            user_id = token.get("user_id")
+            user = Users.objects.filter(id=user_id).first()
+            if not user:
+                return ErrorResponse(status=HTTP_401_UNAUTHORIZED)
+            if api_settings.ROTATE_REFRESH_TOKENS:
+                try:
+                    token.blacklist()
+                except Exception:
+                    pass
+                new_refresh = RefreshToken.for_user(user)
+                data = {
+                    "access": str(new_refresh.access_token),
+                    "refresh": str(new_refresh),
+                }
+            else:
+                data = {
+                    "access": str(token.access_token),
+                    "refresh": str(token),
+                }
+            # Maintenir le suivi single-login sur le refresh courant
+            Users.objects.filter(id=user.id).update(last_token=data["refresh"])
+        except Exception:
             return ErrorResponse(status=HTTP_401_UNAUTHORIZED)
         return DetailResponse(data=data)
 
@@ -147,6 +168,8 @@ class LoginView(TokenObtainPairView):
     """
     serializer_class = LoginSerializer
     permission_classes = []
+    throttle_classes = [AnonRateThrottle]
+    throttle_scope = "login"
 
 
 class LoginTokenSerializer(TokenObtainPairSerializer):
@@ -177,10 +200,18 @@ class LoginTokenView(TokenObtainPairView):
 
     serializer_class = LoginTokenSerializer
     permission_classes = []
+    throttle_classes = [AnonRateThrottle]
+    throttle_scope = "login"
 
 
 class LogoutView(APIView):
     def post(self, request):
+        refresh_token = request.data.get("refresh")
+        if refresh_token:
+            try:
+                RefreshToken(refresh_token).blacklist()
+            except Exception:
+                pass
         Users.objects.filter(id=self.request.user.id).update(last_token=None)
         return DetailResponse(msg="Déconnexion réussie")
 
@@ -202,14 +233,17 @@ class ApiLogin(APIView):
     serializer_class = ApiLoginSerializer
     authentication_classes = []
     permission_classes = []
+    throttle_classes = [AnonRateThrottle]
+    throttle_scope = "login"
 
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
+        # Mot de passe en clair: le CustomBackend gère le natif + fallback md5 historique
         user_obj = auth.authenticate(
             request,
             username=username,
-            password=hashlib.md5(password.encode(encoding="UTF-8")).hexdigest(),
+            password=password,
         )
         if user_obj:
             login(request, user_obj)

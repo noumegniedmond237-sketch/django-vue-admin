@@ -152,12 +152,9 @@ export const crudOptions = (vm) => {
             class: { yxtInput: true }
           }
         },
-        disabled: true,
-        valueResolve (row, key) {
-          if (row.password) {
-            row.password = vm.$md5(row.password)
-          }
-        }
+        disabled: true
+        // Mot de passe transmis en clair (TLS) : hash natif côté serveur,
+        // aucune transformation cliente requise.
       },
       {
         title: 'Nom complet',

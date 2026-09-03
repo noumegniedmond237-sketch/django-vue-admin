@@ -54,10 +54,7 @@ class Users(CoreModel, AbstractUser):
         help_text="关联部门",
     )
     last_token = models.CharField(max_length=255, null=True, blank=True, verbose_name="最后一次登录Token",
-                                  help_text="最后一次登录Token")
-
-    def set_password(self, raw_password):
-        super().set_password(hashlib.md5(raw_password.encode(encoding="UTF-8")).hexdigest())
+                                   help_text="最后一次登录Token")
 
     class Meta:
         db_table = table_prefix + "system_users"

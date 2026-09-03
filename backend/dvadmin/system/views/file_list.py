@@ -10,6 +10,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import serializers
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 from application.settings import BASE_DIR
 from application import dispatch, settings
 from dvadmin.system.models import FileList, media_file_name
@@ -18,6 +20,34 @@ from dvadmin.utils.json_response import DetailResponse
 from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.string_util import format_bytes
 from dvadmin.utils.viewset import CustomModelViewSet
+
+# Extensions bannies côté serveur (exécutables / scripts / actifs XSS),
+# appliquées quel que soit le endpoint d'upload.
+BLOCKED_UPLOAD_EXTENSIONS = frozenset({
+    ".php", ".phtml", ".py", ".pyc", ".sh", ".bash", ".pl", ".rb",
+    ".exe", ".com", ".dll", ".msi", ".bat", ".cmd", ".ps1", ".vbs", ".jar",
+    ".js", ".jse", ".html", ".htm", ".svg", ".swf", ".xhtml",
+})
+# Taille max d'un upload via l'API fichiers (20 Mo, surchargeable en settings).
+FILE_UPLOAD_MAX_SIZE = getattr(settings, "FILE_UPLOAD_MAX_SIZE", 20 * 1024 * 1024)
+
+
+def sanitize_upload_name(filename):
+    """Ne conserve que le nom de fichier (anti path-traversal)."""
+    return os.path.basename(filename or "")
+
+
+def validate_upload_file(filename, size):
+    """Validation serveur commune : extension + taille. Lève ValidationError."""
+    basename = sanitize_upload_name(filename)
+    if not basename:
+        raise ValidationError("Nom de fichier manquant")
+    _, ext = os.path.splitext(basename)
+    if ext.lower() in BLOCKED_UPLOAD_EXTENSIONS:
+        raise ValidationError(f"Type de fichier interdit : {ext}")
+    if size is not None and size > FILE_UPLOAD_MAX_SIZE:
+        raise ValidationError(f"Fichier trop volumineux (max {format_bytes(FILE_UPLOAD_MAX_SIZE)})")
+    return basename
 
 
 class FileSerializer(CustomModelSerializer):
@@ -44,8 +74,12 @@ class FileSerializer(CustomModelSerializer):
         file_engine = dispatch.get_system_config_values("file_storage.file_engine") or 'local'
         file_backup = dispatch.get_system_config_values("file_storage.file_backup")
         file = self.initial_data.get('file')
+        if file is None:
+            raise ValidationError("Aucun fichier fourni")
+        # Validation serveur : extension + taille (+ nom assaini)
+        clean_name = validate_upload_file(getattr(file, "name", ""), getattr(file, "size", None))
         file_size = file.size
-        validated_data['name'] = file.name
+        validated_data['name'] = clean_name
         validated_data['size'] = file_size
         md5 = hashlib.md5()
         for chunk in file.chunks():
@@ -98,7 +132,11 @@ class FileViewSet(CustomModelViewSet):
     queryset = FileList.objects.all()
     serializer_class = FileSerializer
     filter_fields = ['name', ]
-    permission_classes = []
+    # L'API fichiers exige un utilisateur authentifié (le front envoie le JWT).
+    # NOTE: l'action `ueditor` reste joignable sans JWT car l'uploader JS de
+    # l'éditeur ne sait pas envoyer d'en-tête Authorization ; elle est durcie
+    # par validation serveur stricte (listes côté serveur, anti-traversal).
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, request=request)
@@ -117,7 +155,11 @@ class FileViewSet(CustomModelViewSet):
             "uploadvideo": self.upload_file,
             "uploadfile": self.upload_file,
         }
-        return reponse_action[action](request)
+        handler = reponse_action.get(action)
+        if handler is None:
+            return HttpResponse(json.dumps({"state": "Action non supportée"}),
+                                content_type="application/javascript", status=400)
+        return handler(request)
 
     def get_ueditor_settings(self, request):
         return HttpResponse(json.dumps(ueditor_upload_settings, ensure_ascii=False),
@@ -195,34 +237,44 @@ class FileViewSet(CustomModelViewSet):
             # 取得上传的文件
             file = request.FILES.get(upload_field_name, None)
             if file is None:
-                return HttpResponse(json.dumps(u"{'state:'ERROR'}"), content_type="application/javascript")
+                return HttpResponse(json.dumps({"state": "ERROR"}, ensure_ascii=False),
+                                    content_type="application/javascript")
             upload_file_name = file.name
             upload_file_size = file.size
 
-        # 取得上传的文件的原始名称
+        # 取得上传的文件的原始名称 (assaini : basename uniquement)
         upload_original_name, upload_original_ext = os.path.splitext(upload_file_name)
-        # 文件类型检验
+        upload_original_name = sanitize_upload_name(upload_original_name)
+        upload_file_name = upload_original_name + upload_original_ext
+        upload_original_ext = upload_original_ext.lower()
+        # Denylist serveur (prioritaire) : bloque exécutables/scripts/actifs XSS
+        if upload_original_ext in BLOCKED_UPLOAD_EXTENSIONS:
+            state = u"服务器不允许上传%s类型的文件。" % upload_original_ext
+            return HttpResponse(json.dumps({"state": state}, ensure_ascii=False),
+                                content_type="application/javascript")
+        # 文件类型检验 — listes côté SERVEUR uniquement (les query params sont ignorés
+        # pour empêcher le contournement de type ?fileAllowFiles=.py)
         upload_allow_type = {
             "uploadfile": "fileAllowFiles",
             "uploadimage": "imageAllowFiles",
             "uploadvideo": "videoAllowFiles"
         }
         if action in upload_allow_type:
-            allow_type = list(self.request.query_params.get(upload_allow_type[action],
-                                                            ueditor_upload_settings.get(upload_allow_type[action], "")))
-            if not upload_original_ext.lower() in allow_type:
+            allow_type = ueditor_upload_settings.get(upload_allow_type[action], []) or []
+            allow_type = [str(e).lower() for e in allow_type]
+            if upload_original_ext not in allow_type:
                 state = u"服务器不允许上传%s类型的文件。" % upload_original_ext
-                return HttpResponse({"state": state}, content_type="application/javascript")
+                return HttpResponse(json.dumps({"state": state}, ensure_ascii=False),
+                                    content_type="application/javascript")
 
-        # 大小检验
+        # 大小检验 — plafond côté SERVEUR uniquement
         upload_max_size = {
             "uploadfile": "filwMaxSize",
             "uploadimage": "imageMaxSize",
             "uploadscrawl": "scrawlMaxSize",
             "uploadvideo": "videoMaxSize"
         }
-        max_size = int(self.request.query_params.get(upload_max_size[action],
-                                                     ueditor_upload_settings.get(upload_max_size[action], 0)))
+        max_size = int(ueditor_upload_settings.get(upload_max_size[action], 0))
         if max_size != 0:
             if upload_file_size > max_size:
                 state = u"上传文件大小不允许超过%s。" % format_bytes(max_size)

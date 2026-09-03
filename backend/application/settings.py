@@ -27,7 +27,10 @@ from conf.env import *
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure--z8%exyzt7e_%i@1+#1mm=%lb5=^fx_57=1@a+_y7bg5-w%)sm"
+# Overridable via the DJANGO_SECRET_KEY env var. Booting with DEBUG=False
+# and the bundled development key is refused (see guard below).
+_DEV_SECRET_KEY = "django-insecure--z8%exyzt7e_%i@1+#1mm=%lb5=^fx_57=1@a+_y7bg5-w%)sm"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", locals().get("SECRET_KEY", _DEV_SECRET_KEY))
 # 初始化plugins插件路径到环境变量中
 PLUGINS_PATH = os.path.join(BASE_DIR, "plugins")
 sys.path.insert(0, os.path.join(PLUGINS_PATH))
@@ -40,7 +43,38 @@ sys.path.insert(0, os.path.join(PLUGINS_PATH))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = locals().get("DEBUG", True)
-ALLOWED_HOSTS = locals().get("ALLOWED_HOSTS", ["*"])
+_allowed_hosts_env = os.environ.get("DJANGO_ALLOWED_HOSTS", "")
+if _allowed_hosts_env:
+    ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_env.split(",") if h.strip()]
+else:
+    ALLOWED_HOSTS = locals().get("ALLOWED_HOSTS", ["*"])
+
+if not DEBUG:
+    # Fail closed in production: refuse dev secrets / open hosts.
+    from django.core.exceptions import ImproperlyConfigured
+
+    if SECRET_KEY == _DEV_SECRET_KEY:
+        raise ImproperlyConfigured(
+            "Refusing to start with the bundled development SECRET_KEY. "
+            "Set the DJANGO_SECRET_KEY environment variable."
+        )
+    if ALLOWED_HOSTS == ["*"]:
+        raise ImproperlyConfigured(
+            "Refusing to start with ALLOWED_HOSTS=['*'] in production. "
+            "Set the DJANGO_ALLOWED_HOSTS environment variable."
+        )
+    # HTTPS / cookie hardening (assumes TLS is terminated at the edge/proxy).
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
+    CSRF_COOKIE_SAMESITE = "Lax"
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_REFERRER_POLICY = "same-origin"
+    X_FRAME_OPTIONS = "DENY"
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Application definition
 
@@ -151,7 +185,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-MEDIA_ROOT = "media"  # 项目下的目录
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")  # 项目下的目录 (absolute path)
 MEDIA_URL = "/media/"  # 跟STATIC_URL类似，指定用户可以通过这个url找到文件
 
 # 收集静态文件，必须将 MEDIA_ROOT,STATICFILES_DIRS先注释
@@ -162,8 +196,13 @@ MEDIA_URL = "/media/"  # 跟STATIC_URL类似，指定用户可以通过这个url
 # ******************* 跨域的配置 ******************* #
 # ================================================= #
 
-# 全部允许配置
-CORS_ORIGIN_ALLOW_ALL = True
+# 全部允许配置 (dev only by default; see CORS_ALLOW_ALL / CORS_ALLOWED_ORIGINS env vars)
+_cors_allow_all = os.environ.get("CORS_ALLOW_ALL", "true" if DEBUG else "false").lower() in ("1", "true", "yes")
+CORS_ORIGIN_ALLOW_ALL = _cors_allow_all  # django-cors-headers < 3.13
+CORS_ALLOW_ALL_ORIGINS = _cors_allow_all  # django-cors-headers >= 3.13
+CORS_ALLOWED_ORIGINS = [
+    o.strip() for o in os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",") if o.strip()
+]
 # 允许cookie
 CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作
 
@@ -296,6 +335,15 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.AllowAny', # 允许所有
         # 'rest_framework.permissions.IsAuthenticatedOrReadOnly', # 有身份 或者 只读访问(self.list,self.retrieve)
     ],
+    "DEFAULT_THROTTLE_CLASSES": (
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ),
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/min",
+        "user": "1000/min",
+        "login": "10/min",
+    },
     "EXCEPTION_HANDLER": "dvadmin.utils.exception.CustomExceptionHandler",  # 自定义的异常处理
 }
 # ================================================= #
@@ -369,6 +417,9 @@ CAPTCHA_CHALLENGE_FUNCT = "captcha.helpers.math_challenge"  # 加减乘除验证
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # 是否启动API日志记录
 API_LOG_ENABLE = locals().get("API_LOG_ENABLE", True)
+# Captcha-less backdoor login endpoint (/api/token/). Testing only — always
+# False unless explicitly enabled in local conf (never in production).
+LOGIN_NO_CAPTCHA_AUTH = locals().get("LOGIN_NO_CAPTCHA_AUTH", False)
 # API 日志记录的请求方式
 API_LOG_METHODS = locals().get("API_LOG_METHODS", ["POST", "UPDATE", "DELETE", "PUT"])
 # API_LOG_METHODS = 'ALL' # ['POST', 'DELETE']

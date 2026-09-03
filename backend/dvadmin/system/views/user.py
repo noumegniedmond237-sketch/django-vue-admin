@@ -206,10 +206,8 @@ class UserProfileImportSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
-        password = hashlib.new(
-            "md5", str(self.initial_data.get("password", "admin123456")).encode(encoding="UTF-8")
-        ).hexdigest()
-        data.set_password(password)
+        # Mot de passe saisi en clair (Excel) -> hash natif Django (cf. CustomBackend)
+        data.set_password(str(self.initial_data.get("password", "admin123456")))
         data.save()
         return data
 
@@ -338,8 +336,9 @@ class UserViewSet(CustomModelViewSet):
         if not verify_password:
             verify_password = check_password(hashlib.md5(old_pwd.encode(encoding='UTF-8')).hexdigest(), self.request.user.password)
         if verify_password:
-            request.user.password = make_password(new_pwd)
-            request.user.save()
+            # Stockage en hash natif Django (le CustomBackend migre les anciens hashes au login)
+            request.user.set_password(new_pwd)
+            request.user.save(update_fields=["password"])
             return DetailResponse(data=None, msg="Modifié avec succès")
         else:
             return ErrorResponse(msg="L'ancien mot de passe est incorrect")

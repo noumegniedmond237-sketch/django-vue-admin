@@ -104,7 +104,8 @@ export default {
           // 具体需要传递的数据请自行修改代码
           this.login({
             username: that.formLogin.username,
-            password: that.$md5(that.formLogin.password),
+            // Mot de passe en clair (TLS) : hash natif côté serveur (cf. CustomBackend)
+            password: that.formLogin.password,
             captcha: that.formLogin.captcha,
             captchaKey: that.captchaKey
           })

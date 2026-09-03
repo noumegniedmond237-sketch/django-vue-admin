@@ -71,6 +71,10 @@ function createService () {
             var res = await refreshTken()
             var config = response.config
             util.cookies.set('token', res.data.access)
+            // Le backend applique la rotation : stocker le nouveau refresh s'il est fourni
+            if (res.data.refresh) {
+              util.cookies.set('refresh', res.data.refresh)
+            }
             config.headers.Authorization = 'JWT ' + res.data.access
             config.__retryCount = config.__retryCount || 0
             if (config.__retryCount >= config.retry) {

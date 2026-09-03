@@ -180,8 +180,8 @@ export default {
         if (valid) {
           const params = {
             id: that.resetPwdForm.id,
-            newPassword: that.$md5(that.resetPwdForm.pwd),
-            newPassword2: that.$md5(that.resetPwdForm.pwd2)
+            newPassword: that.resetPwdForm.pwd,
+            newPassword2: that.resetPwdForm.pwd2
           }
           api.ResetPwd(params).then((res) => {
             that.dialogFormVisible = false

@@ -60,7 +60,7 @@ ueditor_upload_settings = {
     "videoFieldName": "upfile",  # 提交的视频表单名称 */
     "videoMaxSize": 102400000,  # 上传大小限制，单位B，默认100MB */
     "videoAllowFiles": [
-        ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
+        ".flv", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
         ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid"],  # 上传视频格式显示 */
 
     # 上传文件配置 */
@@ -70,7 +70,7 @@ ueditor_upload_settings = {
     "fileMaxSize": 204800000,  # 上传大小限制，单位B，200MB */
     "fileAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",
-        ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
+        ".flv", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
         ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid",
         ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
         ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".xml"
@@ -88,12 +88,11 @@ ueditor_upload_settings = {
     "fileManagerListSize": 30,  # 每次列出文件数量 */
     "fileManagerAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tif", ".psd"
-                                                         ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
+                                                         ".flv", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
         ".mpg",
         ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid",
         ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
-        ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".xml",
-        ".exe", ".com", ".dll", ".msi"
+        ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".xml"
     ]  # 列出的文件类型 */
 }
 

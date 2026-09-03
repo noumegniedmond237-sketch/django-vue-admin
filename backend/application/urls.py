@@ -48,8 +48,9 @@ schema_view = get_schema_view(
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
     ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
+    # Public Swagger UI in DEBUG only; require staff login in production.
+    public=settings.DEBUG,
+    permission_classes=(permissions.AllowAny,) if settings.DEBUG else (permissions.IsAdminUser,),
     generator_class=CustomOpenAPISchemaGenerator,
 )
 
@@ -83,6 +84,5 @@ urlpatterns = (
             path("apiLogin/", ApiLogin.as_view()),
         ]
         + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-        + static(settings.STATIC_URL, document_root=settings.STATIC_URL)
         + [re_path(ele.get('re_path'), include(ele.get('include'))) for ele in settings.PLUGINS_URL_PATTERNS]
 )

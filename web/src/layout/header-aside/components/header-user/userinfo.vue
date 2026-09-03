@@ -240,9 +240,7 @@ export default {
           const userId = util.cookies.get('uuid')
           if (userId) {
             const params = JSON.parse(JSON.stringify(_self.userPasswordInfo))
-            params.oldPassword = _self.$md5(params.oldPassword)
-            params.newPassword = _self.$md5(params.newPassword)
-            params.newPassword2 = _self.$md5(params.newPassword2)
+            // Mots de passe en clair (TLS) : hash natif côté serveur
             request({
               url: '/api/system/user/' + userId + '/change_password/',
               method: 'put',

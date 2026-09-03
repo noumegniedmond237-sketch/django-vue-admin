@@ -68,7 +68,7 @@
         popper-class="userprjtreepop"
         @show="showEvents"
         @hide="show=false">
-        <div v-html="value" v-if="show"></div>
+        <div v-html="sanitizedValue" v-if="show"></div>
         <el-button type="primary" plain size="mini" slot="reference" @click="previewClick"><span>Aperçu</span>
         </el-button>
       </el-popover>
@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import DOMPurify from 'dompurify'
 import { d2CrudPlus } from 'd2-crud-plus'
 import { request } from '@/api/service'
 
@@ -127,6 +128,10 @@ export default {
   computed: {
     _elProps () {
       return this.elProps
+    },
+    // Contenu riche assaini (anti-XSS) avant rendu HTML
+    sanitizedValue () {
+      return DOMPurify.sanitize(this.value || '', { USE_PROFILES: { html: true } })
     }
   },
   mounted () {
