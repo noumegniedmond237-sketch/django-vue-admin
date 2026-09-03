@@ -41,7 +41,13 @@ import * as echarts from 'echarts' // 注册echarts组件
 // 第三方组件
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
+// NOTE: vue-core-video-player écrase Vue.prototype.$t avec son i18n interne
+// (dashboard/layers), ce qui casse toutes les traductions vue-i18n de l'app.
+// On sauvegarde le $t de vue-i18n avant et on le restaure après.
+// Le player utilise helper_i18n en interne, il n'a pas besoin du $t global.
+const vueI18nT = Vue.prototype.$t
 Vue.use(VueCoreVideoPlayer)
+if (vueI18nT) Vue.prototype.$t = vueI18nT
 // 核心插件
 Vue.use(d2Admin)
 Vue.use(VXETable)
